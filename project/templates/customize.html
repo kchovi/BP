@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>customize</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="flex column">
+    <header>
+        <div class="wrapper">
+            <h2>Customize your sites apearence!</h2>
+        </div>
+    </header>
+
+    <main class="flex fill-space" id="main">
+
+        <div class="menu fill-space">
+            <form class="flex column" method="POST">
+                <label>Main colour</label>
+                <input type="color" name="--bg-acc-clr" value="{{ colors['--bg-acc-clr'] }}">
+                <label>Secondary colour</label>
+                <input type="color" name="--bg-clr" value="{{ colors['--bg-clr'] }}">
+                <label>Accent colour</label>
+                <input type="color" name="--clr-acc" value="{{ colors['--clr-acc'] }}">
+                <button type="submit">Apply</button>
+                <button type="submit" name="reset">Reset</button>
+            </form>
+        </div>
+
+        <div id="divider"></div>
+        <div class="fill-space">
+            <iframe class="preview-page" src="{{ url_for('iframe_page', filename='index.html') }}"></iframe>
+        </div>
+    </main>
+
+    <footer>
+        <h1>THIS IS A FOOTER</h1>
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='split.js') }}"></script>
+    
+    
+    
+    
+    
+
+</body>
+</html>

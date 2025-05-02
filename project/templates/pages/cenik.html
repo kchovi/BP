@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <title>Ceník</title>
+    <meta name="author" content="Jakub Chovanec">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('dynamic_css') }}">
+</head>
+
+<body>
+    <header class="bg-color-primary">
+        <div class="wrapper flex header-subpg">
+            <hgroup>
+                <img src="{{ url_for('static', filename='pages/podklady/logo-placeholder.png') }}" alt="logo"> 
+                <h1 class="heading">Ceník</h1>
+            </hgroup>
+
+            <div class="flex column header-left">
+                <ul class="nav-bar back-link">
+                    <li class="nav-item"><a class="text" href="javascript:window.history.back();">Zpět</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="bg-color-secondary">
+        <div class="wrapper">
+            <section class=" padding-y padding-x">
+                
+                <h2 class="heading with-accent">Služba-1</h2>
+                    <ul>
+                        <li>
+                            Typ-1
+                            <ul>
+                                <li class="flex price-row">
+                                    <p>možnost-1</p>
+                                    <p>XXX Kč</p>
+                                </li>
+                                <li class="flex price-row">
+                                    <p>možnost-1</p>
+                                    <p>X XXX Kč</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="flex price-row price-row-2">
+                            Typ-2
+                            <p>XXX Kč</p>
+                        </li>
+                        <li>
+                            Typ-1
+                            <ul>
+                                <li class="flex price-row">
+                                    <p>možnost-1</p>
+                                    <p>XXX Kč</p>
+                                </li>
+                                <li class="flex price-row">
+                                    <p>možnost-1</p>
+                                    <p>X XXX Kč</p>
+                                </li>
+                            </ul>
+                        </li>
+            </section>
+            
+            
+    
+            <section class="bg-color-secondary padding-x padding-y">
+                <h2 class="heading with-accent">Služba-2</h2>
+                    <ul>
+                        <li class="flex price-row price-row-2">
+                            Typ-2
+                            <p>X XXX Kč</p>
+                        </li>
+                        <li class="flex price-row price-row-2">
+                            Typ-2
+                            <p>XXX Kč</p>
+                        </li>
+                        <li class="flex price-row price-row-2">
+                            Typ-2
+                            <p>X XXX Kč</p>
+                        </li>
+                    </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-color-primary">
+        <div class="wrapper flex center">
+            <span>&copy;Jakub Chovanec 2024</span>
+        </div>
+    </footer>
+
+</body>

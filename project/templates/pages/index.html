@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <title>Váš Web</title>
+    <link rel="stylesheet" href="{{ url_for('dynamic_css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    
+</head>
+
+<body class="bg-color-secondary">
+    <header class="bg-color-primary">
+        <div class="wrapper flex header-in">
+            <hgroup>
+                <img src="{{ url_for('static', filename='pages/podklady/logo-placeholder.png') }}" alt="logo"> 
+                <h1 class="heading">{{ info["site-name"]}}</h1>
+            </hgroup>
+
+            <ul class="nav-bar">
+                <li class="nav-item"><a class="text" href="#services">Služby</a></li>
+                <li class="nav-item"><a class="text" href="cenik.html">Ceník</a></li>
+                <li class="nav-item"><a class="text" href="gallery.html">Galerie</a></li>
+                <li class="nav-item"><a class="text" href="#contact">Kontakt</a></li>
+                <li class="nav-item"><a class="text" href="">Objednat se</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <section id="about">
+            <div class="wrapper padding-y bg-color-secondary">
+                <h2 class="heading with-accent">O mně</h2>
+                <p class="text box-margin">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin mattis lacinia justo. 
+                    Duis risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
+                    per inceptos hymenaeos. Etiam quis quam. Aliquam in lorem sit amet leo accumsan lacinia. 
+                    Donec vitae arcu. Nunc dapibus tortor vel mi dapibus sollicitudin.  
+                </p>
+            </div>
+        </section>
+
+        <section id="services" class="bg-color-primary">
+            <div class="wrapper padding-y">
+                <h2 class="heading with-accent">Služby</h2>
+                <div class="flex services">
+                    <div class="flex article-services corner-2 box-shadow">
+                        <div class="article bg-color-secondary">
+                            <article class="box-margin">
+                                <h3 class="heading">Služba-1</h3>
+                                <p class="text">
+                                    Integer vulputate sem a nibh rutrum consequat. 
+                                    Nullam justo enim, consectetuer nec, ullamcorper ac, 
+                                    vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, 
+                                    rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.
+                                </p> 
+                            </article>
+                        </div>
+                        <img src="{{ url_for('static', filename='pages/podklady/555.png') }}" alt="img"> 
+                    </div>
+                    <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a></div>
+                </div>
+    
+                <div class="flex services">
+                    <div class="flex article-services reverse corner-2 box-shadow">
+                        <div class="article bg-color-secondary">
+                            <article class="box-margin">
+                                <h3 class="heading">Služba-2</h3>
+                                <p class="text">
+                                    Integer vulputate sem a nibh rutrum consequat. 
+                                    Nullam justo enim, consectetuer nec, ullamcorper ac, 
+                                    vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, 
+                                    rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.
+                                </p> 
+                            </article>
+                        </div>
+                        <img src="{{ url_for('static', filename='pages/podklady/555.png') }}" alt="img"> 
+                    </div>
+                
+                    <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a></div>
+                </div>
+            </div>
+        </section>
+    
+                
+        
+        <section id="recenze" class="padding-y bg-color-secondary">
+            <div class="wrapper">
+                <h2 class="heading with-accent">Napište mi recenzi</h2>
+                <div class="flex services">
+                    <div class="flex article-services corner-1">
+                        <div class="article bg-color-secondary">
+                            <section class="box-margin">
+                                <p class="text">
+                                    Napsáním recenze mě můžete podpořit v růstu a na základě vašeho feedbacku mi pomůžete zlepšovat péči o zákazníky.
+                                </p> 
+                            </section>
+                        </div>
+                        <div class="flex center img-services"><a class="button box-margin box-shadow" href="">Napsat Recenzi</a></div>
+                    </div>
+                </div> 
+            </div>
+        </section>
+
+
+        <section id="contact" class="padding-y bg-color-secondary">
+            <div class="wrapper">
+                <h2 class="heading with-accent">Kontakt</h2>
+                <div class="grid-contact border">
+                    <div class="bg-color-secondary">
+                        <ul class="no-padding">
+                            <li class="custom-bullet" id="fb">
+                                <p class="bold"><a href="{{ info["fb"] }}">{{ info["site-name"]}}</a></p>
+                            </li>
+                            <li class="custom-bullet" id="tel">
+                                <p class="bold">{{ info["tel"] }} </p>
+                            </li>
+                            <li class="custom-bullet" id="email">
+                                <p class="bold">{{ info["email"] }}</p>
+                            </li>
+                           
+                            <li class="custom-bullet" id="map">
+                                <p class="bold">{{ info["addr"] }}</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <iframe class="map corner-1" src="{{ info["map"] }}"  loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+
+            </div>
+        </section>
+
+
+
+        
+    </main>
+
+    <footer class="bg-color-primary">
+        <div class="wrapper flex center">
+            <span>&copy;Jakub Chovanec 2024</span>
+        </div>
+    </footer>
+</body>
+

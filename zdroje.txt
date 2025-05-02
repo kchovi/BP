@@ -1,0 +1,5 @@
+
+Miguel Grinberg : Flask Web Development
+Martin Trnecka : Tvorba webových stránek
+Michalek Martin : Vzhůru do (responziv­ního) webdesignu
+https://developer.mozilla.org/

@@ -1,0 +1,56 @@
+
+# Webova aplikace - systém na objednávání sezení 
+    - integrace s google calendar ? (google calendar je mozna moc jednoducha varianta)
+    - || klient uvidi kalendar kde se muze zapsat
+    - login a auth 
+    - autentizace zda je to opravdu clovek (ochrana proti botum)
+    - uzivatelské ucty? 
+    - vyber sluzby a data sezení 
+    - prehled minulych / planovanych sezeni
+    - moznost recenze jednotlivych sluzeb / sezeni
+    - vyuziti flasku a nejake databaze? / flutter
+    - admin ucet kde si ten poskytovatel sluzeb muze potrvzovat jednotlivé klienty
+    - maybe moznost uploadnuti fotek do galerie ? 
+    - ukazat https://kosmetika-laskova.cz/ a vysvetlit na tom 
+
+
+# Generátor webových stránek na základě klientských dat
+    - gui // web app
+    - klient si vybere: - různé typy stránek 
+                        - barevnou paletu (předdefinovaná // custom)
+                        - zadá si jednotlivé služby / články 
+                        - live preview
+                        - moznost pridavat a odebirat elementy
+
+Název projektu:
+      Generátor webových stránek poskytující rezervační služby pro malé podnikatele na základě klientských dat
+   
+         
+Funkcionalita kterou bych chtěl implementovat přímo v "Generátoru":
+
+    Uživatelské rozhraní v podobě webové aplikace
+    Získání hlavních klientských dat v podobě formuláře
+        - Kontaktní informace
+        - Popis profese
+    Výběr barevné palety (předdefinovaná + vlastní)
+    Live preview stránek
+    Export stránek
+
+
+Poté by se v nějaké admin sekci nacházely věci jako:
+
+    Přidávaní / Odebíraní služeb
+    Nastavení ceny a časové náročnosti jednotlivých služeb
+    Vypisování volných termínů
+
+
+
+Finální téma ::
+
+
+Název: Generátor webových aplikací pro rezervační systémy
+
+Cílem bakalářské práce je navrhnout a implementovat generátor webových aplikací pro rezervační systémy. Generátor bude obsahovat uživatelské rozhraní pro zadání kontaktních informací, popisu profese a vzhledu výsledné webové stránky. Výsledný rezervační systém bude mít administrátorskou sekci, která bude umožňovat správu nabízených služeb (například cenu nebo časovou náročnost služeb) a dostupných termínů. Součástí aplikace bude náhled výsledného rezervačního systému. 
+
+
+

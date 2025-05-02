@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cutomize</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="wrapper">
+            <h1>Web gen</h1>
+        </div>
+    </header>
+    <main>
+        <div class="wrapper">
+            <h2>Please fill out your info :)</h2>
+            <form method="POST">
+                <label>Name of your site:</Label>
+                <input type="text" name="site-name">
+                <label>Email where people can rach you:</label>
+                <input type="email" name="email">
+                <label>Facebook:</label>
+                <input type="url" name="fb">
+                <label>Mobile numer:</label>
+                <input type="tel" name="tel">
+                <label>Your bussines´s address:</label>
+                <input type="text" name="addr">
+                <button type="submit" onclick="javascript:alert('Your data has been saved!');">Submit</button>
+            </form>
+        </div>
+    </main>
+    
+    
+</body>
+</html>
