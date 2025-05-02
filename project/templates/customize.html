@@ -6,45 +6,57 @@
     <title>customize</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body class="flex column">
-    <header>
+<body class="bg-primary flex column">
+    <header class="bg-secondary">
         <div class="wrapper">
-            <h2>Customize your sites apearence!</h2>
+            <hgroup class="flex column start">
+                <img src="{{ url_for('static', filename='web-gen/logo.png')}}" alt="logo" id="logo">
+            </hgroup>
         </div>
     </header>
 
-    <main class="flex fill-space" id="main">
-
-        <div class="menu fill-space">
-            <form class="flex column" method="POST">
-                <label>Main colour</label>
-                <input type="color" name="--bg-acc-clr" value="{{ colors['--bg-acc-clr'] }}">
-                <label>Secondary colour</label>
-                <input type="color" name="--bg-clr" value="{{ colors['--bg-clr'] }}">
-                <label>Accent colour</label>
-                <input type="color" name="--clr-acc" value="{{ colors['--clr-acc'] }}">
-                <button type="submit">Apply</button>
-                <button type="submit" name="reset">Reset</button>
-            </form>
-        </div>
-
-        <div id="divider"></div>
-        <div class="fill-space">
-            <iframe class="preview-page" src="{{ url_for('iframe_page', filename='index.html') }}"></iframe>
+    <main class="fill-space">
+        <div class="wrapper flex" id="weird-wrapper">
+            <div class="flex fill-space" id="split-container">
+                <div class="menu">
+                    <section>
+                        <h3>Colors</h3>
+                        <form class="flex column" method="POST">
+                            <div class="form-item center flex spread">
+                                <label>Main colour</label>
+                                <input class="color-input" type="color" name="--bg-acc-clr" value="{{ colors['--bg-acc-clr'] }}">
+                            </div>
+                            <div class="form-item center flex spread">
+                                <label>Secondary colour</label>
+                                <input class="color-input" type="color" name="--bg-clr" value="{{ colors['--bg-clr'] }}">
+                            </div>
+                            <div class="form-item center flex spread">
+                                <label>Accent colour</label>
+                                <input class="color-input" type="color" name="--clr-acc" value="{{ colors['--clr-acc'] }}">
+                            </div>
+                            <div class="center flex spread">
+                                <button type="submit">Apply</button>
+                                <button type="submit" name="reset">Reset</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            
+                <div id="divider"></div>
+                <div class="fill-space">
+                    <iframe class="preview-page" src="{{ url_for('iframe_page', filename='index.html') }}"></iframe>
+                </div>
+            </div>
         </div>
     </main>
 
-    <footer>
-        <h1>THIS IS A FOOTER</h1>
+    <footer class="bg-secondary">
+        <div class="wrapper flex center">
+            <span>&copy;Jakub Chovanec 2024</span>
+        </div>
     </footer>
-
 
     <script src="{{ url_for('static', filename='split.js') }}"></script>
     
-    
-    
-    
-    
-
 </body>
 </html>

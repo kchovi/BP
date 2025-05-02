@@ -1,5 +1,5 @@
 const divider = document.getElementById("divider");
-const container = document.getElementById("main")
+const container = document.getElementById("split-container")
 const leftPanel = document.querySelector(".menu");
 
 let isResizing = false;

@@ -1,3 +1,9 @@
+:root {
+    /* --main-color: #ff9301; */
+  --main-color: ;
+  --bg-primary: #f7f7ff;
+  --bg-secondary: #eeeeee;
+}
 
 body, html {
     padding: 0;
@@ -8,23 +14,53 @@ body, html {
 }
 
 @layer containers {
+    .wrapper {
+        max-width: 1040px;
+        margin: auto;
+        padding-inline: 3vw;
+        min-height: 3em;
+    }
+
     .flex {display: flex;}
     .column {flex-direction: column;}
-    .fill-space{flex: 1;}
-    .menu {flex: 0 0 50%; }
-    
-    
-    .preview-page {
-        width: calc(100% / 0.75);
-        height: calc(100% / 0.75);
-        transform: scale(0.75);
-        transform-origin: 0 0;
-        border: none;
+    .start {justify-content: start;}
+    .center {
+        justify-content: center;
+        align-items: center;
     }
+    .fill-space{flex: 1;}
+    .spread {justify-content: space-between;}
+    
      
 }
 
 @layer misc {
+    
+    form {max-width: max-content;}
+
+    #logo {
+        height: 50px;
+        width: 250px;
+        margin-block: 0.3em;
+    }
+
+    label, input {margin-block: 0.1em;}
+    button {margin-block: 0.3em;}
+
+    .form-item {
+        padding: 0.3em;
+        margin-block: 0.3em;
+        border: 1px solid #3333336b;
+        border-radius: 0.5em;
+        background-color: var(--bg-secondary);
+    }
+
+
+}
+
+
+
+@layer customizer {
     #divider {
         width: 5px;
         cursor: ew-resize;
@@ -32,5 +68,34 @@ body, html {
         position: relative;
     }
 
-    form {max-width: max-content;}
+    #split-container {height: 100%; }
+
+    .preview-page {
+        width: calc(100% / 0.60);
+        height: calc(100% / 0.60);
+        transform: scale(0.60);
+        transform-origin: 0 0;
+        border: none;
+    }
+
+    .menu {
+        flex: 0 0 33%;
+        min-width: 33%;
+    }
+
+    #weird-wrapper {height: 100%;}
+
+    .color-input {
+        margin-left: 0.5em;
+        border: 1px solid #3333336b;
+        border-radius: 0.3em;
+        padding: 0;
+    }
+}
+
+
+@layer utils {
+    .bg-primary { background-color: var(--bg-primary);}
+    .bg-secondary {background-color: var(--bg-secondary);}
+    .main-clr {background-color: var(--main-color);}
 }
