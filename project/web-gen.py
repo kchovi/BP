@@ -40,17 +40,24 @@ def generate_google_map_embed(address):
 # main customize site
 @app.route('/customize')
 def customize():
-    # user_colors = session.get('colors', stock_colors.copy())
-    user_colors = stock_colors.copy()
+    user_colors = session.get('colors', stock_colors.copy())
     return render_template("customize.html", colors=user_colors)
 
 
-# default colors for the iframe (fix the css variable names !!!)
+# default colors for the iframe 
 stock_colors = {
     "--main-clr": "#ffeffb",
     "--secondary-clr": "#fffafa",
     "--acc-clr": "#f598b4"
 }
+
+colors = {
+    "--main-clr": "#ffeffb",
+    "--secondary-clr": "#fffafa",
+    "--acc-clr": "#f598b4"
+}
+
+
 
 
 # for the user_defined_colors form

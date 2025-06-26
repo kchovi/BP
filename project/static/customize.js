@@ -54,7 +54,7 @@ tabButtons.forEach((btn) => {
       }
     });
   });
-});
+});;
 
 // color stuff
 
@@ -64,14 +64,18 @@ const main_clr = document.querySelector(`input[name="--main-clr"]`);
 const secondary_clr = document.querySelector(`input[name="--secondary-clr"]`);
 const acc_clr = document.querySelector(`input[name="--acc-clr"]`);
 
-
 function update_colors() {
-  const iframeDoc = iframe.contentDocument;
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+  if (!iframeDoc) return;
+
   iframeDoc.documentElement.style.setProperty('--main-clr', main_clr.value);
   iframeDoc.documentElement.style.setProperty('--secondary-clr', secondary_clr.value);
   iframeDoc.documentElement.style.setProperty('--acc-clr', acc_clr.value);
-
 }
+
+iframe.addEventListener("load", () => {
+  update_colors();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("colorForm");

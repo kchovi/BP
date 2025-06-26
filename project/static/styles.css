@@ -166,7 +166,7 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
     }
     
     .tab-panel.active {
-        display: block;
+        display: flex;
     }
     
   
@@ -184,12 +184,12 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
 }
 
 
-@media (max-width: 959px) and (min-width: 560px) {
+@media (max-width: 959px) and (min-width: 700px) {
   
      
 }
   
-@media (max-width: 559px) and (min-width: 360px) {
+@media (max-width: 700px) and (min-width: 360px) {
    .menu , #divider {display: none;}
     
 }
