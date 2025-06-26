@@ -48,7 +48,10 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
     }
 
     label, input {margin-block: 0.1em;}
-    button {margin-block: 0.3em;}
+    button {
+        margin-block: 0.3em;
+        max-width: fit-content;
+    }
 
     .form-item {
         padding: 0.3em;
@@ -103,13 +106,13 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
 
     #sidebar {
         position: absolute;
-        width: 30vw;
+        /* width: fit-content; */
         height: 100%;
         background-color: var(--bg-primary);
         box-shadow:0 10px 8px rgba(0, 0, 0, 0.2);
         transform: translateX(-100%);
         transition: transform 0.3s ease;
-        /* padding: 20px; */
+        
         z-index: 1000;
     }
     
@@ -167,6 +170,7 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
     
     .tab-panel.active {
         display: flex;
+        padding-left: 1em;
     }
     
   

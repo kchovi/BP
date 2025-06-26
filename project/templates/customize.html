@@ -6,17 +6,47 @@
                 <div id="toggleBtn"><span>&#10095;</span></div>
                  <!-- tab btns -->
                 <div class="tab-buttons flex">
-                    <button class="tab-btn active" data-tab="palette">Palette</button>
-                    <button class="tab-btn" data-tab="predefined">Presets</button>
+                    <button class="tab-btn active" data-tab="info">Info</button>
+                    <button class="tab-btn" data-tab="palette">Palette</button>
                     <button class="tab-btn" data-tab="">Presets</button>
                     <button class="tab-btn" data-tab="">Presets</button>
                 </div>
                 
                 <!-- tabs -->
                 <div class="tab-content">
-                    <section class="tab-panel active column center" id="palette">
+
+                    <section class="tab-panel active column" id="info">
+                        <h3>Please fill out your info :)</h3>
+                        <form class="flex column" method="POST" id="info_form">
+                            <div class="form-item flex column spread">
+                                <label>Name of your site: </Label>
+                                <input type="text" name="site-name">
+                            </div>
+                            <div class="form-item flex column spread">
+                                <label>Your Email: </label>
+                                <input type="email" name="email">
+                            </div>
+                            <div class="form-item flex column spread">
+                                <label>Facebook: </label>
+                                <input type="url/text" name="fb">
+                            </div>
+                            <div class="form-item flex column spread">
+                                <label>Mobile numer: </label>
+                                <input type="tel" name="tel">
+                            </div>
+                            <div class="form-item flex column spread">
+                                <label>Your bussines´s address: </label>
+                                <input type="text" name="addr">
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                        <button id="info_reset">Reset</button>
+                    </section>
+
+
+                    <section class="tab-panel column" id="palette">
                         <h3>Choose a color pallete</h3>
-                        <form class="flex column" method="POST" id="colorForm">
+                        <form class="flex column" method="POST" id="color_form">
                             <div class="form-item center flex spread">
                                 <label>Main colour</label>
                                 <input class="color-input" type="color" name="--main-clr" value="{{ colors['--main-clr'] }}">
@@ -37,7 +67,7 @@
                         
                     </section>
                 
-                    <section class="tab-panel" id="predefined">
+                    <!-- <section class="tab-panel" id="predefined"> -->
                     <!-- Predefined color pallets -->
                     <!-- <section>
                         <h3>Predefined color pallets</h3>
@@ -57,7 +87,7 @@
                             <div class="color"></div>
                         </div>
                     </section> -->
-                    </section>
+                    <!-- </section> -->
                 </div>
   
                 

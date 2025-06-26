@@ -20,7 +20,7 @@
         <div class="wrapper flex header-in">
             <hgroup>
                 <img src="{{ url_for('static', filename='pages/podklady/logo-placeholder.png') }}" alt="logo"> 
-                <h1 class="heading">{{ info["site-name"]}}</h1>
+                <h1 class="heading">{{ user_info["site-name"]}}</h1>
             </hgroup>
 
             <ul class="nav-bar">
@@ -116,21 +116,21 @@
                     <div class="bg-color-secondary">
                         <ul class="no-padding">
                             <li class="custom-bullet" id="fb">
-                                <p class="bold"><a href="{{ info["fb-link"] }}">{{ info["fb"] }}</a></p>
+                                <p class="bold"><a href="{{ user_info["fb-link"] }}">{{ user_info["fb"] }}</a></p>
                             </li>
                             <li class="custom-bullet" id="tel">
-                                <p class="bold">{{ info["tel"] }} </p>
+                                <p class="bold">{{ user_info["tel"] }} </p>
                             </li>
                             <li class="custom-bullet" id="email">
-                                <p class="bold">{{ info["email"] }}</p>
+                                <p class="bold">{{ user_info["email"] }}</p>
                             </li>
                            
                             <li class="custom-bullet" id="map">
-                                <p class="bold">{{ info["addr"] }}</p>
+                                <p class="bold">{{ user_info["addr"] }}</p>
                             </li>
                         </ul>
                     </div>
-                    <iframe class="map corner-1" src="{{ info["map"] }}"  loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe class="map corner-1" src="{{ user_info["map"] }}"  loading="fast" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
             </div>

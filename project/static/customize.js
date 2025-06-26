@@ -56,10 +56,55 @@ tabButtons.forEach((btn) => {
   });
 });;
 
-// color stuff
+//info
 
 const iframe = document.querySelector(".preview-page");
 
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("info_form");
+
+  form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      const response = await fetch("/site_info", {
+          method: "POST",
+          body: formData
+      });
+
+      if (response.ok) {
+        iframe.contentWindow.location.reload();
+        iframe.contentWindow.document.querySelector(".map").contentWindow.document.reload()
+      }
+      else {
+        console.error("Failed to update info.");
+      } 
+  });
+});
+
+
+const info_reset_btn = document.getElementById("info_reset");
+
+info_reset_btn.addEventListener("click", async () => {
+
+  const response = await fetch("/site_info", {
+    method: "POST",
+    body: "RESET"
+  });
+
+  if (response.ok) {
+    iframe.contentWindow.location.reload();
+  }
+  else {
+    console.error("Failed to reset info.");
+  } 
+  
+});
+
+
+
+// color stuff
 const main_clr = document.querySelector(`input[name="--main-clr"]`);
 const secondary_clr = document.querySelector(`input[name="--secondary-clr"]`);
 const acc_clr = document.querySelector(`input[name="--acc-clr"]`);
@@ -78,7 +123,7 @@ iframe.addEventListener("load", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("colorForm");
+  const form = document.getElementById("color_form");
 
   form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -100,9 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-const reset_btn = document.getElementById("color_reset");
+const color_reset_btn = document.getElementById("color_reset");
 
-reset_btn.addEventListener("click", async () => {
+color_reset_btn.addEventListener("click", async () => {
 
   main_clr.value = "#ffeffb";
   secondary_clr.value = "#fffafa";
@@ -115,10 +160,8 @@ reset_btn.addEventListener("click", async () => {
   });
 
   if (!response.ok) {
-    console.error("Failed to update colors.");
+    console.error("Failed to reset colors.");
   }
-
-  
   
 });
 
