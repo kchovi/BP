@@ -2,9 +2,16 @@
 <html lang="cs">
 <head>
     <title>Váš Web</title>
-    <link rel="stylesheet" href="{{ url_for('dynamic_css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/pages/style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
+
+    <style>
+        .custom-bullet#map:before {background-image: url({{ url_for('static', filename='pages/podklady/map-marker-alt-solid.svg') }});}
+        .custom-bullet#email:before {background-image: url({{ url_for('static', filename='pages/podklady/envelope-regular.svg') }});}
+        .custom-bullet#tel:before {background-image: url({{ url_for('static', filename='pages/podklady/mobile-alt-solid.svg') }});}
+        .custom-bullet#fb:before {background-image: url({{ url_for('static', filename='pages/podklady/facebook-square-brands.svg') }});}
+    </style>
     
 </head>
 

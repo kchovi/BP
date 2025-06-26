@@ -58,17 +58,28 @@ tabButtons.forEach((btn) => {
 
 // color stuff
 
-function reset_iframe() {
-  const iframe = document.querySelector(".preview-page");
-  iframe.contentWindow.location.reload();
+const iframe = document.querySelector(".preview-page");
+
+const main_clr = document.querySelector(`input[name="--main-clr"]`);
+const secondary_clr = document.querySelector(`input[name="--secondary-clr"]`);
+const acc_clr = document.querySelector(`input[name="--acc-clr"]`);
+
+
+function update_colors() {
+  const iframeDoc = iframe.contentDocument;
+  iframeDoc.documentElement.style.setProperty('--main-clr', main_clr.value);
+  iframeDoc.documentElement.style.setProperty('--secondary-clr', secondary_clr.value);
+  iframeDoc.documentElement.style.setProperty('--acc-clr', acc_clr.value);
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("colorForm");
 
-
   form.addEventListener("submit", async (e) => {
       e.preventDefault();
+
+      update_colors();
 
       const formData = new FormData(form);
 
@@ -77,11 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
           body: formData
       });
 
-      if (response.ok) {
-          reset_iframe();
-      } else {
-          console.error("Failed to update colors.");
-      }
+      if (!response.ok) {
+        console.error("Failed to update colors.");
+      } 
+
   });
 });
 
@@ -90,19 +100,21 @@ const reset_btn = document.getElementById("color_reset");
 
 reset_btn.addEventListener("click", async () => {
 
+  main_clr.value = "#ffeffb";
+  secondary_clr.value = "#fffafa";
+  acc_clr.value = "#f598b4";
+  update_colors();
+
   const response = await fetch("/user_defined_colors", {
-      method: "POST",
-      body: "RESET"
+    method: "POST",
+    body: "RESET"
   });
 
-  if (response.ok) {
-    reset_iframe();
-    document.querySelector(`input[name="--clr-acc"]`).value = "#f598b4";
-    document.querySelector(`input[name="--bg-acc-clr"]`).value = "#ffeffb";
-    document.querySelector(`input[name="--bg-clr"]`).value = "#fffafa";
-  } else {
-    console.error("Failed to reset colors.");
+  if (!response.ok) {
+    console.error("Failed to update colors.");
   }
+
+  
   
 });
 

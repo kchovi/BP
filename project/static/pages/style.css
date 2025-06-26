@@ -1,7 +1,7 @@
 :root {
-  --bg-clr: {{ colors['--bg-clr'] }};
-  --bg-acc-clr: {{ colors['--bg-acc-clr'] }};
-  --clr-acc: {{ colors['--clr-acc'] }};
+  --main-clr: #ffeffb;
+  --secondary-clr: #fffafa;
+  --acc-clr: #f598b4;
 
 }
 
@@ -40,7 +40,7 @@
   .nav-item a:hover {
     position: relative;
     top: -5%;
-    text-decoration: underline var(--clr-acc) solid 3px;
+    text-decoration: underline var(--acc-clr) solid 3px;
     text-underline-offset: 12px;
   }
 
@@ -118,8 +118,7 @@
   .map {
     height: 100%;
     width: 100%;
-    border: 2px solid var(--bg-acc-clr);
-  }
+    border: 2px solid var(--acc-clr)}
 
   .with-accent {
     position: relative;
@@ -136,7 +135,7 @@
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
-    background-color: var(--clr-acc);
+    background-color: var(--acc-clr);
     opacity: 0.4;
     z-index: -1;
   }
@@ -152,7 +151,7 @@
     width: fit-content;
     height: fit-content;
     border-radius: 0.3em;
-    background-color: var(--clr-acc);
+    background-color: var(--acc-clr);
     padding: 0.5em;
     color: #0b0b15;
     font-weight: 600;
@@ -189,10 +188,7 @@
   .custom-bullet#email:before {left: -0.4em;}
   .custom-bullet#map:before {left: -0.1em}
   .custom-bullet#fb:before {left: -0.2em}
-  .custom-bullet#map:before {background-image: url({{ url_for('static', filename='pages/podklady/map-marker-alt-solid.svg') }});}
-  .custom-bullet#email:before {background-image: url({{ url_for('static', filename='pages/podklady/envelope-regular.svg') }});}
-  .custom-bullet#tel:before {background-image: url({{ url_for('static', filename='pages/podklady/mobile-alt-solid.svg') }});}
-  .custom-bullet#fb:before {background-image: url({{ url_for('static', filename='pages/podklady/facebook-square-brands.svg') }});}
+  
     
 }
 
@@ -223,8 +219,8 @@
 
 @layer utils {
 
-  .bg-color-primary {background: linear-gradient(90deg, var(--bg-acc-clr) 100%, var(--clr-acc) 0%);}
-  .bg-color-secondary {background-color: var(--bg-clr);}
+  .bg-color-primary {background: linear-gradient(90deg, var(--main-clr) 100%, var(--acc-clr) 0%);}
+  .bg-color-secondary {background-color: var(--secondary-clr);}
 
   .padding-y {padding-block: 2vw;}
   .padding-bottom-extra {padding-bottom: 6vw;}
@@ -269,7 +265,7 @@
   }
   
   .nav-bar li {
-    background-color: var(--clr-acc);
+    background-color: var(--acc-clr);
     border-radius: 0.3em;
     height: max-content;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

@@ -47,9 +47,9 @@ def customize():
 
 # default colors for the iframe (fix the css variable names !!!)
 stock_colors = {
-    "--bg-clr": "#fffafa",
-    "--bg-acc-clr": "#ffeffb",
-    "--clr-acc": "#f598b4"
+    "--main-clr": "#ffeffb",
+    "--secondary-clr": "#fffafa",
+    "--acc-clr": "#f598b4"
 }
 
 
@@ -61,9 +61,9 @@ def user_defined_colors():
         return "Reset Content", 205
     else:
         colors = session.get('colors')
-        colors["--bg-clr"] = request.form.get("--bg-clr")
-        colors["--bg-acc-clr"] = request.form.get("--bg-acc-clr")
-        colors["--clr-acc"] = request.form.get("--clr-acc")
+        colors["--main-clr"] = request.form.get("--main-clr")
+        colors["--secondary-clr"] = request.form.get("--secondary-clr")
+        colors["--acc-clr"] = request.form.get("--acc-clr")
         session['colors'] = colors
     return "OK", 200
 
@@ -80,19 +80,6 @@ def iframe_page(filename):
 
     return send_from_directory("/pages/", filename)
 
-
-# dynamic css for the iframe page/s, needs the headers cuz cloudflare was caching it and it stopped working
-@app.route("/pages/style.css")
-def dynamic_css():
-    user_colors = session.get('colors', stock_colors)
-    headers = {
-        'Content-Type': 'text/css',
-        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-    }
-    return render_template("pages/style.css", colors=user_colors), 200, headers
-# the 200 response propably unnecesary, gonna keept it anyway
 
 
 if __name__ == '__main__':
