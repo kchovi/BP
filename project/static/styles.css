@@ -1,24 +1,27 @@
 :root {
     /* --main-color: #ff9301; */
   --main-color: ;
-  --bg-primary: #f7f7ff;
-  --bg-secondary: #eeeeee;
+  --bg-primary: #fff;
+  --bg-secondary: #F5F5F5;
 }
+
+html {font-family: 'Segoe UI', sans-serif;}
 
 body, html {
     padding: 0;
     margin: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
     overflow: hidden;
 }
+
+header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
 
 @layer containers {
     .wrapper {
         max-width: 1040px;
         margin: auto;
         padding-inline: 3vw;
-        min-height: 3em;
+        /* min-height: 3em; */
     }
 
     .flex {display: flex;}
@@ -39,8 +42,8 @@ body, html {
     form {max-width: max-content;}
 
     #logo {
-        height: 50px;
-        width: 250px;
+        height: 1.75em;
+        width: 8.75em;
         margin-block: 0.3em;
     }
 
@@ -50,9 +53,10 @@ body, html {
     .form-item {
         padding: 0.3em;
         margin-block: 0.3em;
-        border: 1px solid #3333336b;
+        border: 1px solid #67676769;
         border-radius: 0.5em;
         background-color: var(--bg-secondary);
+        box-shadow:3px 3px 3px rgba(0, 0, 0, 0.2);
     }
 
 
@@ -61,10 +65,13 @@ body, html {
 
 
 @layer customizer {
+
+    main {position: relative;}
+
     #divider {
-        width: 5px;
+        width: 3px;
         cursor: ew-resize;
-        background-color: #333;
+        background-color: rgba(0, 0, 0, 0.2);
         position: relative;
     }
 
@@ -78,10 +85,7 @@ body, html {
         border: none;
     }
 
-    .menu {
-        flex: 0 0 33%;
-        min-width: 33%;
-    }
+    .menu {flex: 0 0 33%;}
 
     #weird-wrapper {height: 100%;}
 
@@ -91,11 +95,102 @@ body, html {
         border-radius: 0.3em;
         padding: 0;
     }
+
+    .color {
+        flex: 1;
+        
+    }
+
+    #sidebar {
+        position: absolute;
+        width: 30vw;
+        height: 100%;
+        background-color: var(--bg-primary);
+        box-shadow:0 10px 8px rgba(0, 0, 0, 0.2);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        /* padding: 20px; */
+        z-index: 1000;
+    }
+    
+  
+    #sidebar.active { transform: translateX(0);}
+  
+
+    #toggleBtn {
+        position: absolute;
+        top: 40vh;
+        right: -2em; /* sticks outside the sidebar */
+        background-color: var(--bg-primary);
+        border-radius: 0 6px 6px 0;
+        width: 2em;
+        height: 4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        
+    }
+  
+    #toggleBtn span {
+        font-size: 18px;
+        transition: transform 0.3s ease;
+    }
+  
+    #sidebar.active #toggleBtn span {transform: rotate(180deg);}
+
+    .tab-buttons {
+        margin-bottom: 1em;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    .tab-btn {
+        background-color: var(--bg-primary);
+        flex: 1;
+        margin: 0;
+        padding: 0.5em 1em;
+        /* border: 1px solid #ccc; */
+        border: none;
+        cursor: pointer;
+    }
+    
+    .tab-btn.active {
+        background-color: var(--bg-secondary);
+        font-weight: bold;
+    }
+    
+    .tab-panel {
+        display: none;
+    }
+    
+    .tab-panel.active {
+        display: block;
+    }
+    
+  
 }
+
+
 
 
 @layer utils {
     .bg-primary { background-color: var(--bg-primary);}
     .bg-secondary {background-color: var(--bg-secondary);}
     .main-clr {background-color: var(--main-color);}
+
+    .invisible {display: none;}
 }
+
+
+@media (max-width: 959px) and (min-width: 560px) {
+  
+     
+}
+  
+@media (max-width: 559px) and (min-width: 360px) {
+   .menu , #divider {display: none;}
+    
+}
+

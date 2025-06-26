@@ -1,27 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>customize</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body class="bg-primary flex column">
-    <header class="bg-secondary">
-        <div class="wrapper">
-            <hgroup class="flex column start">
-                <img src="{{ url_for('static', filename='web-gen/logo.png')}}" alt="logo" id="logo">
-            </hgroup>
-        </div>
-    </header>
-
-    <main class="fill-space">
-        <div class="wrapper flex" id="weird-wrapper">
-            <div class="flex fill-space" id="split-container">
-                <div class="menu">
-                    <section>
-                        <h3>Colors</h3>
-                        <form class="flex column" method="POST">
+{% extends "base.html" %}
+{% block title %} Customize {% endblock %}
+{% block index %}
+        
+            <div id="sidebar" class="active">
+                <div id="toggleBtn"><span>&#10095;</span></div>
+                 <!-- tab btns -->
+                <div class="tab-buttons flex">
+                    <button class="tab-btn active" data-tab="palette">Palette</button>
+                    <button class="tab-btn" data-tab="predefined">Presets</button>
+                    <button class="tab-btn" data-tab="">Presets</button>
+                    <button class="tab-btn" data-tab="">Presets</button>
+                </div>
+                
+                <!-- tabs -->
+                <div class="tab-content">
+                    <section class="tab-panel active" id="palette">
+                        <h3>Choose a color pallete</h3>
+                        <form class="flex column" method="POST" id="colorForm">
                             <div class="form-item center flex spread">
                                 <label>Main colour</label>
                                 <input class="color-input" type="color" name="--bg-acc-clr" value="{{ colors['--bg-acc-clr'] }}">
@@ -36,27 +31,56 @@
                             </div>
                             <div class="center flex spread">
                                 <button type="submit">Apply</button>
-                                <button type="submit" name="reset">Reset</button>
+                                <!-- <button type="reset">Reset</button> -->
+                                
                             </div>
                         </form>
+                        <button id="color_reset">Reset</button>
+                    </section>
+                
+                    <section class="tab-panel" id="predefined">
+                    <!-- Predefined color pallets -->
+                    <!-- <section>
+                        <h3>Predefined color pallets</h3>
+                        <div class="color-pallete">
+                            <div class="color"></div>
+                            <div class="color"></div>
+                            <div class="color"></div>
+                        </div>
+                        <div class="color-pallete">
+                            <div class="color"></div>
+                            <div class="color"></div>
+                            <div class="color"></div>
+                        </div>
+                        <div class="color-pallete">
+                            <div class="color"></div>
+                            <div class="color"></div>
+                            <div class="color"></div>
+                        </div>
+                    </section> -->
                     </section>
                 </div>
+  
+                
+            </div>
             
-                <div id="divider"></div>
-                <div class="fill-space">
-                    <iframe class="preview-page" src="{{ url_for('iframe_page', filename='index.html') }}"></iframe>
+              <!-- main stuff -->
+            <div class="wrapper flex" id="weird-wrapper">
+                <div class="flex fill-space">
+                    <div class="flex fill-space" id="split-container">
+                        <div class="menu"></div>
+                        <div id="divider"></div>
+                        <div class="fill-space">
+                            <iframe class="preview-page" src="{{ url_for('iframe_page', filename='index.html') }}"></iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <footer class="bg-secondary">
-        <div class="wrapper flex center">
-            <span>&copy;Jakub Chovanec 2024</span>
-        </div>
-    </footer>
+{% endblock %}
 
-    <script src="{{ url_for('static', filename='split.js') }}"></script>
+{% block script %}
+    <script src="{{ url_for('static', filename='customize.js') }}"></script>
+{% endblock %}
     
-</body>
-</html>
+

@@ -1,25 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ url_for('static', filename='web-gen/logo-small.png')}}" type="image/x-icon">
-    <title>customize</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body class="bg-primary flex column">
-    <header class="bg-secondary">
-        <div class="wrapper">
-            <hgroup class="flex column start">
-                <img src="{{ url_for('static', filename='web-gen/logo.png')}}" alt="logo" id="logo">
-            </hgroup>
-        </div>
-    </header>
-    <main class="fill-space">
+{% extends "base.html" %}
+{% block title %} WEB GEN {% endblock %}
+{% block index %}
         <section>
             <div class="wrapper">
                 <h2>Please fill out your info :)</h2>
-                <form class="flex column" method="POST">
+                <form class="flex column" method="POST" action="basic_info">
                     <div class="form-item flex column spread">
                         <label>Name of your site: </Label>
                         <input type="text" name="site-name">
@@ -30,7 +15,7 @@
                     </div>
                     <div class="form-item flex column spread">
                         <label>Facebook: </label>
-                        <input type="url" name="fb">
+                        <input type="url/text" name="fb">
                     </div>
                     <div class="form-item flex column spread">
                         <label>Mobile numer: </label>
@@ -45,13 +30,5 @@
                 </form>
             </div>
         </section>
-    </main>
+{% endblock %}
     
-    <footer class="bg-secondary">
-        <div class="wrapper flex center">
-            <span>&copy;Jakub Chovanec 2024</span>
-        </div>
-    </footer>
-    
-</body>
-</html>
