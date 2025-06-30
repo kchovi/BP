@@ -102,6 +102,30 @@ info_reset_btn.addEventListener("click", async () => {
   
 });
 
+//logo upload
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("logo_form");
+
+  form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      const response = await fetch("/logo_uploader", {
+          method: "POST",
+          body: formData
+      });
+
+      if (response.ok) {
+        iframe.contentWindow.location.reload();
+      }
+      else {
+        console.error("Failed to upload logo.");
+      } 
+  });
+});
+
 
 
 // color stuff
@@ -123,7 +147,7 @@ iframe.addEventListener("load", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("color_form");
+  const form = document.getElementById("custom_color_form");
 
   form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -143,6 +167,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const colorForms = document.querySelectorAll(".color_form");
+
+  colorForms.forEach((form) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // update_colors();
+
+      const formData = new FormData(form);
+
+      const response = await fetch("/user_defined_colors", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        const iframe = document.querySelector(".preview-page");
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+        iframeDoc.documentElement.style.setProperty('--main-clr', formData.get('--main-clr'));
+        iframeDoc.documentElement.style.setProperty('--secondary-clr', formData.get('--secondary-clr'));
+        iframeDoc.documentElement.style.setProperty('--acc-clr', formData.get('--acc-clr'));
+      } else {
+        console.error("Failed to update colors.");
+      }
+    });
+  });
+});
+
 
 
 const color_reset_btn = document.getElementById("color_reset");

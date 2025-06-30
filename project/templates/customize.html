@@ -13,7 +13,6 @@
                 </div>
                 
                 <!-- tabs -->
-                <div class="tab-content">
 
                     <section class="tab-panel active column" id="info">
                         <h3>Please fill out your info :)</h3>
@@ -41,12 +40,18 @@
                             <button type="submit">Submit</button>
                         </form>
                         <button id="info_reset">Reset</button>
+
+                        <h3>Upload your logo here</h3>
+                        <form class="flex column" action="/logo_uploader" method="POST" enctype="multipart/form-data" id="logo_form">
+                            <input type="file" name="logo">
+                            <button type="submit">Upload</button>
+                        </form>
                     </section>
 
 
                     <section class="tab-panel column" id="palette">
                         <h3>Choose a color pallete</h3>
-                        <form class="flex column" method="POST" id="color_form">
+                        <form class="flex column" method="POST" id="custom_color_form">
                             <div class="form-item center flex spread">
                                 <label>Main colour</label>
                                 <input class="color-input" type="color" name="--main-clr" value="{{ colors['--main-clr'] }}">
@@ -64,31 +69,26 @@
                             </div>
                         </form>
                         <button id="color_reset">Reset</button>
+                    
+                        <h3>Predefined pallets</h3> 
+
+                    <!-- add a jinja for loop for all the color pallets, store them on server for easy expansion -->
+                    {%- for palette in pallets -%}
+                        <form class="flex column color_form" method="POST">
+                            <div>
+                                <input class="color-input" type="color" name="--main-clr" value="{{ palette['--main-clr'] }}" >
+                                <input class="color-input" type="color" name="--secondary-clr" value="{{ palette['--secondary-clr'] }}" >
+                                <input class="color-input" type="color" name="--acc-clr" value="{{ palette['--acc-clr'] }}" >
+                            </div>
+                           
+                            <button type="submit">Apply</button>
+                        </form>
+                            
+                    {%- endfor -%}    
                         
                     </section>
                 
-                    <!-- <section class="tab-panel" id="predefined"> -->
-                    <!-- Predefined color pallets -->
-                    <!-- <section>
-                        <h3>Predefined color pallets</h3>
-                        <div class="color-pallete">
-                            <div class="color"></div>
-                            <div class="color"></div>
-                            <div class="color"></div>
-                        </div>
-                        <div class="color-pallete">
-                            <div class="color"></div>
-                            <div class="color"></div>
-                            <div class="color"></div>
-                        </div>
-                        <div class="color-pallete">
-                            <div class="color"></div>
-                            <div class="color"></div>
-                            <div class="color"></div>
-                        </div>
-                    </section> -->
-                    <!-- </section> -->
-                </div>
+                    
   
                 
             </div>
