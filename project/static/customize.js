@@ -56,9 +56,34 @@ tabButtons.forEach((btn) => {
   });
 });;
 
-//info
+//style
 
 const iframe = document.querySelector(".preview-page");
+
+document.querySelectorAll('input[name="style"]').forEach((input) => {
+    input.addEventListener('change', function () {
+        const selectedStyle = this.value;
+
+        fetch("/site_style", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `style=${encodeURIComponent(selectedStyle)}`
+        }).then(response => {
+            if (response.ok) {
+                // reload iframe with new style
+                const iframe = document.querySelector(".preview-page");
+                iframe.src = `/pages/style${selectedStyle}/index.html`;
+            }
+        });
+    });
+});
+
+
+//info
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("info_form");
@@ -104,6 +129,8 @@ info_reset_btn.addEventListener("click", async () => {
 
 //logo upload
 
+const logo_input = document.querySelector(`input[name="logo"]`);
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("logo_form");
 
@@ -127,6 +154,28 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+const logo_reset_btn = document.getElementById("logo_reset");
+
+logo_reset_btn.addEventListener("click", async () => {
+
+  
+
+  const response = await fetch("/logo_uploader", {
+    method: "POST",
+    body: "RESET"
+  });
+  
+
+  if (response.ok) {
+    iframe.contentWindow.location.reload();
+  }
+  else {
+    console.error("Failed to reset logo.");
+  } 
+  
+});
+
+
 
 // color stuff
 const main_clr = document.querySelector(`input[name="--main-clr"]`);
@@ -145,6 +194,8 @@ function update_colors() {
 iframe.addEventListener("load", () => {
   update_colors();
 });
+
+//custom color picker
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("custom_color_form");
@@ -168,6 +219,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+//predefined color palletes
+
 document.addEventListener("DOMContentLoaded", () => {
   const colorForms = document.querySelectorAll(".color_form");
 
@@ -175,30 +228,28 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // update_colors();
-
       const formData = new FormData(form);
+
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+      iframeDoc.documentElement.style.setProperty('--main-clr', formData.get('--main-clr'));
+      iframeDoc.documentElement.style.setProperty('--secondary-clr', formData.get('--secondary-clr'));
+      iframeDoc.documentElement.style.setProperty('--acc-clr', formData.get('--acc-clr'));
+
 
       const response = await fetch("/user_defined_colors", {
         method: "POST",
         body: formData
       });
 
-      if (response.ok) {
-        const iframe = document.querySelector(".preview-page");
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-        iframeDoc.documentElement.style.setProperty('--main-clr', formData.get('--main-clr'));
-        iframeDoc.documentElement.style.setProperty('--secondary-clr', formData.get('--secondary-clr'));
-        iframeDoc.documentElement.style.setProperty('--acc-clr', formData.get('--acc-clr'));
-      } else {
+      if (!response.ok) {
         console.error("Failed to update colors.");
-      }
+      } 
     });
   });
 });
 
-
+//rest button for both
 
 const color_reset_btn = document.getElementById("color_reset");
 

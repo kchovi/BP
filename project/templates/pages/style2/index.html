@@ -2,15 +2,15 @@
 <html lang="cs">
 <head>
     <title>Váš Web</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/pages/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pages/style2/style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
 
     <style>
-        .custom-bullet#map:before {background-image: url({{ url_for('static', filename='pages/podklady/map-marker-alt-solid.svg') }});}
-        .custom-bullet#email:before {background-image: url({{ url_for('static', filename='pages/podklady/envelope-regular.svg') }});}
-        .custom-bullet#tel:before {background-image: url({{ url_for('static', filename='pages/podklady/mobile-alt-solid.svg') }});}
-        .custom-bullet#fb:before {background-image: url({{ url_for('static', filename='pages/podklady/facebook-square-brands.svg') }});}
+        .custom-bullet#map:before {background-image: url({{ url_for('static', filename='pages/style2/podklady/map-marker-alt-solid.svg') }});}
+        .custom-bullet#email:before {background-image: url({{ url_for('static', filename='pages/style2/podklady/envelope-regular.svg') }});}
+        .custom-bullet#tel:before {background-image: url({{ url_for('static', filename='pages/style2/podklady/mobile-alt-solid.svg') }});}
+        .custom-bullet#fb:before {background-image: url({{ url_for('static', filename='pages/style2/podklady/facebook-square-brands.svg') }});}
     </style>
     
 </head>
@@ -20,11 +20,11 @@
         <div class="wrapper flex header-in">
             <hgroup>
                 <img src="{{logo_path}}" alt="logo"> 
-                <h1 class="heading">{{ user_info["site-name"]}}</h1>
+                <h1 class="heading">{{ user_info["site-name"]}}2</h1>
             </hgroup>
 
             <ul class="nav-bar">
-                <li class="nav-item"><a class="text" href="#services">Služby</a></li>
+                <!-- <li class="nav-item"><a class="text" href="#services">Služby</a></li> -->
                 <li class="nav-item"><a class="text" href="cenik.html">Ceník</a></li>
                 <li class="nav-item"><a class="text" href="gallery.html">Galerie</a></li>
                 <li class="nav-item"><a class="text" href="#contact">Kontakt</a></li>
@@ -62,7 +62,7 @@
                                 </p> 
                             </article>
                         </div>
-                        <img src="{{ url_for('static', filename='pages/podklady/555.png') }}" alt="img"> 
+                        <img src="{{ url_for('static', filename='pages/style2/podklady/555.png') }}" alt="img"> 
                     </div>
                     <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a></div>
                 </div>
@@ -80,7 +80,7 @@
                                 </p> 
                             </article>
                         </div>
-                        <img src="{{ url_for('static', filename='pages/podklady/555.png') }}" alt="img"> 
+                        <img src="{{ url_for('static', filename='pages/style2/podklady/555.png') }}" alt="img"> 
                     </div>
                 
                     <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a></div>

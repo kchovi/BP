@@ -8,8 +8,8 @@
                 <div class="tab-buttons flex">
                     <button class="tab-btn active" data-tab="info">Info</button>
                     <button class="tab-btn" data-tab="palette">Palette</button>
-                    <button class="tab-btn" data-tab="">Presets</button>
-                    <button class="tab-btn" data-tab="">Presets</button>
+                    <button class="tab-btn" data-tab="style">Style</button>
+                    <button class="tab-btn" data-tab="edit">Edit</button>
                 </div>
                 
                 <!-- tabs -->
@@ -37,15 +37,19 @@
                                 <label>Your bussines´s address: </label>
                                 <input type="text" name="addr">
                             </div>
-                            <button type="submit">Submit</button>
+                            <div class="flex spread">
+                                <button type="submit">Submit</button>
+                            </div>
+                            <button id="info_reset">Reset</button>
                         </form>
-                        <button id="info_reset">Reset</button>
+                       
 
                         <h3>Upload your logo here</h3>
                         <form class="flex column" action="/logo_uploader" method="POST" enctype="multipart/form-data" id="logo_form">
                             <input type="file" name="logo">
-                            <button type="submit">Upload</button>
+                                <button type="submit">Upload</button>
                         </form>
+                        <button id="logo_reset">Reset</button>
                     </section>
 
 
@@ -87,6 +91,21 @@
                     {%- endfor -%}    
                         
                     </section>
+
+                    <section class="tab-panel column" id="style">
+                        <h3>Choose your style</h3>
+                        <form class="flex column" id="style_form">
+                            <div class="flex spread">
+                                <input type="radio" name="style" value="1" checked="checked">
+                                <label for="style1">Style 1</label>
+                            </div>
+
+                             <div class="flex spread">
+                                <input type="radio" name="style" value="2">
+                                <label for="style2">Style 2</label>
+                            </div>
+                        </form>
+                    </section>
                 
                     
   
@@ -100,7 +119,8 @@
                         <div class="menu"></div>
                         <div id="divider"></div>
                         <div class="fill-space">
-                            <iframe class="preview-page" src="{{ url_for('iframe_page', filename='index.html') }}"></iframe>
+                           <iframe class="preview-page" src="{{ url_for('iframe_page', filename='style' ~ session.get('style', '1') ~ '/index.html') }}"></iframe>
+
                         </div>
                     </div>
                 </div>

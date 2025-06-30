@@ -24,17 +24,17 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
         /* min-height: 3em; */
     }
 
-    .flex {display: flex;}
-    .column {flex-direction: column;}
-    .start {justify-content: start;}
     .center {
         justify-content: center;
         align-items: center;
     }
+
+    .flex {display: flex;}
+    .column {flex-direction: column;}
+    .start {justify-content: start;}
     .fill-space{flex: 1;}
     .spread {justify-content: space-between;}
-    
-     
+
 }
 
 @layer misc {
@@ -61,7 +61,6 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
         background-color: var(--bg-secondary);
         box-shadow:3px 3px 3px rgba(0, 0, 0, 0.2);
     }
-
 
 }
 
@@ -137,21 +136,23 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
         
     }
   
-    #toggleBtn span {overflow: hidden;
+    #toggleBtn span {
+        position: relative;
+        top: -3px;
         font-size: 18px;
         transition: transform 0.3s ease;
     }
   
-    #sidebar.active #toggleBtn span {transform: rotate(180deg);}
+    #sidebar.active #toggleBtn span {
+        transform: rotate(180deg);
+        top: 2px;
+    }
 
     .tab-buttons {
         border-bottom: 1px solid #ccc;
     }
 
-    .tab-content {
-        
 
-    }
     
     .tab-btn {
         background-color: var(--bg-primary);
@@ -191,7 +192,6 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
     .bg-primary { background-color: var(--bg-primary);}
     .bg-secondary {background-color: var(--bg-secondary);}
     .main-clr {background-color: var(--main-color);}
-
     .invisible {display: none;}
 }
 
