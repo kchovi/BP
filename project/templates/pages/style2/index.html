@@ -1,150 +1,336 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="zxx">
+
 <head>
-    <title>Váš Web</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='pages/style2/style.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
     <meta charset="utf-8">
-
-    <style>
-        .custom-bullet#map:before {background-image: url({{ url_for('static', filename='pages/style2/podklady/map-marker-alt-solid.svg') }});}
-        .custom-bullet#email:before {background-image: url({{ url_for('static', filename='pages/style2/podklady/envelope-regular.svg') }});}
-        .custom-bullet#tel:before {background-image: url({{ url_for('static', filename='pages/style2/podklady/mobile-alt-solid.svg') }});}
-        .custom-bullet#fb:before {background-image: url({{ url_for('static', filename='pages/style2/podklady/facebook-square-brands.svg') }});}
-    </style>
-    
+    <link rel="stylesheet" href="{{url_for('static', filename='pages/style2/style.css') }}">
+    <title>Web Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
-
-<body class="bg-color-secondary">
-    <header class="bg-color-primary">
-        <div class="wrapper flex header-in">
-            <hgroup>
-                <img src="{{logo_path}}" alt="logo"> 
-                <h1 class="heading">{{ user_info["site-name"]}}2</h1>
-            </hgroup>
-
-            <ul class="nav-bar">
-                <!-- <li class="nav-item"><a class="text" href="#services">Služby</a></li> -->
-                <li class="nav-item"><a class="text" href="cenik.html">Ceník</a></li>
-                <li class="nav-item"><a class="text" href="gallery.html">Galerie</a></li>
-                <li class="nav-item"><a class="text" href="#contact">Kontakt</a></li>
-                <li class="nav-item"><a class="text" href="">Objednat se</a></li>
-            </ul>
+<body class="no-margin"> 
+    <header class="bg-secondary">
+        
+        <div class="wrapper flex align-bottom">
+            <div class="header-left">
+                <hgroup>
+                    <p>Hello, my name is<p>
+                    <h1 class="heading">Jane Doe</h1>
+                    <p class="sub heading clr-orange">Full-Stack Developer</p>
+                </hgroup>
+                <span class="text-normal"> 
+                    I design and develop services for customers of all sizes, specializing in creating<br>
+                    stylish, modern websites, web services and online stores
+                </span>
+                <nav>
+                    <ul class="main-nav flex no-padding">
+                        <li class="nav-item"><a href="#biography" class="text-normal">Biography</a></li>
+                        <li class="nav-item"><a href="#whatdoido" class="text-normal">What do I do?</a></li>
+                        <li class="nav-item"><a href="#awards" class="text-normal">Awards</a></li>
+                        <li class="nav-item"><a href="#experience" class="text-normal">Experience</a></li>
+                        <li class="nav-item"><a href="#myportfolio" class="text-normal">My Portfolio</a></li>
+                        <li class="nav-item"><a href="#contact" class="text-normal">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="flex center">
+                <img alt="avatar" src="{{logo_path}}">
+            </div>
         </div>
+
+        <svg class="header-bg-shape">
+            <circle cx="80%" cy="25%" r="90%"></circle>
+        </svg>
+
     </header>
 
-    <main>
-        <section id="about">
-            <div class="wrapper padding-y bg-color-secondary">
-                <h2 class="heading with-accent">O mně</h2>
-                <p class="text box-margin">
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin mattis lacinia justo. 
-                    Duis risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
-                    per inceptos hymenaeos. Etiam quis quam. Aliquam in lorem sit amet leo accumsan lacinia. 
-                    Donec vitae arcu. Nunc dapibus tortor vel mi dapibus sollicitudin.  
-                </p>
-            </div>
-        </section>
+    <main class="bg-primary">
 
-        <section id="services" class="bg-color-primary">
-            <div class="wrapper padding-y">
-                <h2 class="heading with-accent">Služby</h2>
-                <div class="flex services">
-                    <div class="flex article-services corner-2 box-shadow">
-                        <div class="article bg-color-secondary">
-                            <article class="box-margin">
-                                <h3 class="heading">Služba-1</h3>
-                                <p class="text">
-                                    Integer vulputate sem a nibh rutrum consequat. 
-                                    Nullam justo enim, consectetuer nec, ullamcorper ac, 
-                                    vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, 
-                                    rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.
-                                </p> 
-                            </article>
-                        </div>
-                        <img src="{{ url_for('static', filename='pages/style2/podklady/555.png') }}" alt="img"> 
-                    </div>
-                    <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a></div>
-                </div>
-    
-                <div class="flex services">
-                    <div class="flex article-services reverse corner-2 box-shadow">
-                        <div class="article bg-color-secondary">
-                            <article class="box-margin">
-                                <h3 class="heading">Služba-2</h3>
-                                <p class="text">
-                                    Integer vulputate sem a nibh rutrum consequat. 
-                                    Nullam justo enim, consectetuer nec, ullamcorper ac, 
-                                    vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, 
-                                    rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.
-                                </p> 
-                            </article>
-                        </div>
-                        <img src="{{ url_for('static', filename='pages/style2/podklady/555.png') }}" alt="img"> 
-                    </div>
-                
-                    <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a></div>
-                </div>
-            </div>
-        </section>
-    
-                
-        
-        <section id="recenze" class="padding-y bg-color-secondary">
+        <div id="biography" class="padding-sides-x bg-primary">
             <div class="wrapper">
-                <h2 class="heading with-accent">Napište mi recenzi</h2>
-                <div class="flex services">
-                    <div class="flex article-services corner-1">
-                        <div class="article bg-color-secondary">
-                            <section class="box-margin">
-                                <p class="text">
-                                    Napsáním recenze mě můžete podpořit v růstu a na základě vašeho feedbacku mi pomůžete zlepšovat péči o zákazníky.
-                                </p> 
-                            </section>
+                <div class="bio flex center">
+                    <div class="flex bio-avatar">
+                        <div class="flex column">
+                            <div class="avatar2 bg-orange flex center">
+                                <img  alt="avatar" src="{{logo_path}}">
+                            </div>
+                            
+                            <hgroup class="hgroup-bio">
+                                <h2 class="sub heading">Jane Doe</h2>
+                                <p class="text-orange text-normal clr-orange">Full-Stack Developer</p>
+                            </hgroup>
                         </div>
-                        <div class="flex center img-services"><a class="button box-margin box-shadow" href="">Napsat Recenzi</a></div>
                     </div>
-                </div> 
+                    <article class="bio-article">
+                        <h2 class="with-accent heading">Biography</h2>
+                        <p class="text-normal">
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus.
+                            
+                        </p>
+                        <p class="text-normal">
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus.
+                            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+                            sed quia consequuntur. 
+                        </p>
+                        <p class="text-normal">
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus.
+                            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut. 
+                        </p>
+                    </article> 
+                </div>  
+                <div id="squigly-line"></div>
             </div>
-        </section>
+        </div>
 
-
-        <section id="contact" class="padding-y bg-color-secondary">
+        <section id="whatdoido" class="padding-sides-x bg-primary">
             <div class="wrapper">
-                <h2 class="heading with-accent">Kontakt</h2>
-                <div class="grid-contact border">
-                    <div class="bg-color-secondary">
-                        <ul class="no-padding">
-                            <li class="custom-bullet" id="fb">
-                                <p class="bold"><a href="{{ user_info["fb-link"] }}">{{ user_info["fb"] }}</a></p>
-                            </li>
-                            <li class="custom-bullet" id="tel">
-                                <p class="bold">{{ user_info["tel"] }} </p>
-                            </li>
-                            <li class="custom-bullet" id="email">
-                                <p class="bold">{{ user_info["email"] }}</p>
-                            </li>
-                           
-                            <li class="custom-bullet" id="map">
-                                <p class="bold">{{ user_info["addr"] }}</p>
-                            </li>
-                        </ul>
+                <h2 class="with-accent heading">What do I do?</h2>
+                <div class="flex whatdoido">
+                    <div class="flex column item-whatdoido padding-box bg-secondary border-style">
+                        <img alt="pencil" src="{{url_for('static', filename='pages/style2/podklady/pencil-alt-solid.svg')}}" height="60">
+                        <article class="text-normal">
+                            <h3 class="heading">Web Design</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris dolor felis, sagittis at, luctus sed,
+                                aliquam non, tellus.
+                            </p>
+                        </article>       
                     </div>
-                    <iframe class="map corner-1" src="{{ user_info["map"] }}"  loading="fast" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <div class="flex column item-whatdoido padding-box bg-secondary border-style">
+                        <img alt="desktop" src="{{url_for('static', filename='pages/style2/podklady/desktop-solid.svg')}}" height="60">
+                        <article class="text-normal">
+                            <h3 class="heading">Web Development</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris dolor felis, sagittis at, luctus sed,
+                                aliquam non, tellus.
+                            </p>
+                        </article>       
+                    </div>
+                    <div class="flex column item-whatdoido padding-box bg-secondary border-style">
+                        <img alt="bullseye" src="{{url_for('static', filename='pages/style2/podklady/bullseye-solid.svg')}}" height="60">
+                        <article class="text-normal">
+                            <h3 class="heading">Seo Marketing</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris dolor felis, sagittis at, luctus sed,
+                                aliquam non, tellus.
+                            </p>
+                        </article>       
+                    </div>
                 </div>
+            </div>
+            
+        </section>
+        
+        <section id="awards" class="padding-sides-x bg-primary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">Awards</h2>
+                <div class="awards flex">
+                    <div class="flex column center item-awards padding-box bg-secondary border-style">
+                        <img  alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}" height="50">
+                        <span class="clr-black">Creative Designer</span>
+                    </div>
+                    <div class="flex column center item-awards padding-box bg-secondary border-style">
+                        <img  alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}" height="50">
+                        <span class="clr-black">Yearly Best Performer</span>
+                    </div>
+                    <div class="flex column center item-awards padding-box bg-secondary border-style">
+                        <img  alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}" height="50">
+                        <span class="clr-black">Best Learner Award</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+        
+        <section id="experience" class="padding-sides-x bg-secondary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">Experience</h2>
+                <div class="flex column">
+                    <div class="flex item-experience bg-primary border-style padding-box">
+                        <div class="flex exp-left column dv-line">
+                            <p class="no-margin">Feb 2021 - Present</p>
+                            <p class="padding-box-sm exp-box no-margin border-box bg-orange clr-primary">Full Time</p>
+                        </div>
+                        <article>
+                            <h3 class="heading">Google LLC - Sr. Front-end Engineer</h3>
+                            <p class="text-normal">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam neque.
+                                Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio,
+                                vitae placerat pede sem sit amet enim. Vestibulum fermentum tortor id mi. 
+                            </p>
+                        </article>
+                    </div>
+
+                    <div class="flex item-experience bg-primary border-style padding-box">
+                        <div class="flex exp-left column dv-line">
+                            <p class="no-margin">Mar 2020 - Present</p>
+                            <p class="padding-box-sm exp-box no-margin border-box bg-gray clr-primary">Full Time</p>
+                        </div>
+                        <article>
+                            <h3 class="heading">Ridian IT - Visual Designer</h3>
+                            <p class="text-normal">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam neque.
+                                Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio,
+                                vitae placerat pede sem sit amet enim. Vestibulum fermentum tortor id mi. 
+                            </p>
+                        </article>
+                    </div>
+
+                    <div class="flex item-experience bg-primary border-style padding-box">
+                        <div class="flex exp-left column dv-line">
+                            <p class="no-margin">July 2019 - Present</p>
+                            <p class="padding-box-sm no-margin border-box bg-orange clr-primary">Full Time</p>
+                        </div>
+                        <article>
+                            <h3 class="heading">IB Themes - Animation Artist</h3>
+                            <p class="text-normal">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam neque.
+                                Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio,
+                                vitae placerat pede sem sit amet enim. Vestibulum fermentum tortor id mi. 
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        
+        </section>
+
+        <section id="myportfolio" class="padding-sides-x bg-secondary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">My Portofolio</h2>
+                <div class="grid myportfolio-grid">
+
+                    <article class="text-normal">
+                        <img alt="dummy" src="{{url_for('static', filename='pages/style2/podklady/555.png')}}">
+                        <h3 class="heading">Lorem Ipsum</h3>
+                        <time datetime="2024-02-27">27/02/2024</time>
+                        <p>
+                            Pellentesque pretium lectus id turpis sed nisl,<br>
+                            Nulla non lectus praesent sed nisl molestie.<br>
+                            Nam quis nulla. Praesent id justo.
+                        </p>
+                    </article>
+
+                    <article class="text-normal">
+                        <img alt="dummy" src="{{url_for('static', filename='pages/style2/podklady/555.png')}}">
+                        <h3 class="heading">Lorem Ipsum</h3>
+                        <time datetime="2024-02-27">27/02/2024</time>
+                        <p>
+                            Pellentesque pretium lectus id turpis sed nisl,<br>
+                            Nulla non lectus praesent sed nisl molestie.<br>
+                            Nam quis nulla. Praesent id justo.
+                        </p>
+                    </article>
+
+                    <article class="text-normal">
+                        <img alt="dummy" src="{{url_for('static', filename='pages/style2/podklady/555.png')}}">
+                        <h3 class="heading">Lorem Ipsum</h3>
+                        <time datetime="2024-02-27">27/02/2024</time>
+                        <p>
+                            Pellentesque pretium lectus id turpis sed nisl,<br>
+                            Nulla non lectus praesent sed nisl molestie.<br>
+                            Nam quis nulla. Praesent id justo.
+                        </p>
+                    </article>
+
+                    <article class="text-normal">
+                        <img alt="dummy" src="{{url_for('static', filename='pages/style2/podklady/555.png')}}">
+                        <h3 class="heading">Lorem Ipsum</h3>
+                        <time datetime="2024-02-27">27/02/2024</time>
+                        <p>
+                            Pellentesque pretium lectus id turpis sed nisl,<br>
+                            Nulla non lectus praesent sed nisl molestie.<br>
+                            Nam quis nulla. Praesent id justo.
+                        </p>
+                    </article>
+
+                    <article class="text-normal">
+                        <img alt="dummy" src="{{url_for('static', filename='pages/style2/podklady/555.png')}}">
+                        <h3 class="heading">Lorem Ipsum</h3>
+                        <time datetime="2024-02-27">27/02/2024</time>
+                        <p>
+                            Pellentesque pretium lectus id turpis sed nisl,<br>
+                            Nulla non lectus praesent sed nisl molestie.<br>
+                            Nam quis nulla. Praesent id justo.
+                        </p>
+                    </article>
+
+                    <article class="text-normal">
+                        <img alt="dummy" src="{{url_for('static', filename='pages/style2/podklady/555.png')}}">
+                        <h3 class="heading">Lorem Ipsum</h3>
+                        <time datetime="2024-02-27">27/02/2024</time>
+                        <p>
+                            Pellentesque pretium lectus id turpis sed nisl,<br>
+                            Nulla non lectus praesent sed nisl molestie.<br>
+                            Nam quis nulla. Praesent id justo.
+                        </p>
+                    </article>
+                        
+                </div>
+            </div>
+            
+        </section>
+    
+        <section id="contact" class="padding-sides-x bg-primary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">Contact</h2>
+                <div class="flex contact-flex padding-sides-x">
+                    <div class="flex column contact-item">
+                        <section>
+                            <h3 class="heading">What's your story? Get in touch</h3>
+                            <p class="text-normal">
+                                Always available for freelancing if the right project comes along. Feel free to contact me.
+                            </p>
+                            <ul class="no-padding">
+                                <li class="custom-bullet" id="map">
+                                    <p class="bold">17. listopadu 1192/12, 77900 Olomouc, Česko</p>
+                                </li>
+                                <li class="custom-bullet" id="email">
+                                    <p class="bold">support@domain</p>
+                                </li>
+                                <li class="custom-bullet" id="tel">
+                                    <p class="bold">999-999-999</p>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="contact-item padding-sides-x">
+                        <h3 class="heading">Say something</h3>
+                        <form class="flex column">
+                            <div class="flex contact-left">
+                                <input type="text" placeholder="Full name" class="box-1 padding-box">
+                                <input type="email" placeholder="Email address" class="box-1 padding-box">
+                            </div>
+                            <input type="text" placeholder="Subject" class="box-2 padding-box">
+                            <textarea placeholder="Type comment" class="box-3 padding-box"></textarea>
+                            <input type="submit" value="Send Message"  class="btn padding-box bold border-box bg-black clr-primary">
+                        </form>
+                    </div>
+                </div>
+                <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d646.5705886492982!2d17.26295141424025!3d49.592424635293824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124e891c838ba7%3A0x3f83dd6b49355c82!2sP%C5%99%C3%ADrodov%C4%9Bdeck%C3%A1%20fakulta%20Univerzity%20Palack%C3%A9ho%20v%20Olomouci!5e0!3m2!1scs!2scz!4v1713225722402!5m2!1scs!2scz" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
             </div>
         </section>
 
+    </main>  
 
-
-        
-    </main>
-
-    <footer class="bg-color-primary">
-        <div class="wrapper flex center">
-            <span>&copy;Jakub Chovanec 2024</span>
+    <footer class="bg-secondary">
+        <div class="wrapper">
+            <div class="flex center footer-content">
+                <div class="flex">
+                    <a class="flex center" href="https://twitter.com/?lang=cs"><img  alt="twitter"  src="{{url_for('static', filename='pages/style2/podklady/twitter-square-brands.svg')}}" height="35"></a>
+                    <a class="flex center" href="https://www.facebook.com/"><img  alt="facebook"  src="{{url_for('static', filename='pages/style2/podklady/facebook-square-brands.svg')}}" height="35"></a>
+                </div>
+                <span>&copy; Jakub Chovanec 2024</span>
+            </div>
         </div>
     </footer>
+
 </body>
+
+
+
 

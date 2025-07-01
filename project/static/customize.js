@@ -72,8 +72,6 @@ document.querySelectorAll('input[name="style"]').forEach((input) => {
             body: `style=${encodeURIComponent(selectedStyle)}`
         }).then(response => {
             if (response.ok) {
-                // reload iframe with new style
-                const iframe = document.querySelector(".preview-page");
                 iframe.src = `/pages/style${selectedStyle}/index.html`;
             }
         });
@@ -168,6 +166,8 @@ logo_reset_btn.addEventListener("click", async () => {
 
   if (response.ok) {
     iframe.contentWindow.location.reload();
+    document.querySelector(`input[name="logo"]`).value= null;
+
   }
   else {
     console.error("Failed to reset logo.");
@@ -255,8 +255,8 @@ const color_reset_btn = document.getElementById("color_reset");
 
 color_reset_btn.addEventListener("click", async () => {
 
-  main_clr.value = "#ffeffb";
-  secondary_clr.value = "#fffafa";
+  main_clr.value = "#f7f7ff";
+  secondary_clr.value = "#eeeeee";
   acc_clr.value = "#f598b4";
   update_colors();
 

@@ -1,6 +1,6 @@
 :root {
-  --main-clr: #ffeffb;
-  --secondary-clr: #fffafa;
+  --main-clr: #f7f7ff;
+  --secondary-clr: #eeeeee;
   --acc-clr: #f598b4;
 
 }
@@ -53,6 +53,7 @@
     margin: auto;
     padding-inline: 3vw;
     min-height: 3em;
+    height: 100%;
   }
 
   .grid-contact {
@@ -115,6 +116,8 @@
 
 @layer misc {
 
+  .main_logo {height: 80px;}
+
   .map {
     height: 100%;
     width: 100%;
@@ -154,7 +157,7 @@
     background-color: var(--acc-clr);
     padding: 0.5em;
     color: #0b0b15;
-    font-weight: 600;
+    font-weight: 400;
     text-decoration: none;
     text-align: center;
   }
@@ -239,6 +242,8 @@
 
 @media (max-width: 959px) and (min-width: 560px) {
   
+  html {font-size: 90%;}
+
   .article-services {flex-direction: column;}
 
   .grid-contact {display: inline;}
@@ -247,7 +252,7 @@
 
 @media (max-width: 559px) and (min-width: 360px) {
   
-  html {font-size: 90%;}
+  html {font-size: 80%;}
 
   .header-in {
     flex-direction: column;
@@ -279,7 +284,7 @@
     color: #0b0b15;
     text-decoration: none;
     margin: 0;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .nav-bar a:hover {top: 0;}

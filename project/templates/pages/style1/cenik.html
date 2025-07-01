@@ -6,14 +6,14 @@
     <meta name="author" content="Jakub Chovanec">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/pages/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pages/style1/style.css') }}">
 </head>
 
 <body>
     <header class="bg-color-primary">
         <div class="wrapper flex header-subpg">
             <hgroup>
-                <img src="{{ url_for('static', filename='pages/podklady/logo-placeholder.png') }}" alt="logo"> 
+                <img src="{{ logo_path }}" alt="logo" class="main_logo"> 
                 <h1 class="heading">Ceník</h1>
             </hgroup>
 

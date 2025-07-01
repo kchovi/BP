@@ -69,14 +69,14 @@ default_info = {
 
 # default colors for the iframe
 default_colors = {
-    "--main-clr": "#ffeffb",
-    "--secondary-clr": "#fffafa",
+    "--main-clr": "#f7f7ff",
+    "--secondary-clr": "#eeeeee",
     "--acc-clr": "#f598b4"
 }
 
 colors = {
-    "--main-clr": "#ffeffb",
-    "--secondary-clr": "#fffafa",
+    "--main-clr": "#f7f7ff",
+    "--secondary-clr": "#eeeeee",
     "--acc-clr": "#f598b4"
 }
 
@@ -141,10 +141,10 @@ def logo_uploader():
     return "OK", 200
 
 
-logo_filename = "logo-placeholder.png"
+logo_filename = "logo-placeholder.svg"
 logo_path = f"{'/static/pages/uploads/logo/' + logo_filename}"
 
-default_logo_path = "/static/pages/uploads/logo/logo-placeholder.png"
+default_logo_path = "/static/pages/uploads/logo/logo-placeholder.svg"
 
 
 # stuff getter
@@ -157,7 +157,7 @@ def iframe_page(filename):
                                logo_path=session.get('logo_path', default_logo_path))
 
     if filename.endswith(".html"):
-        return render_template(f"pages/{filename}")
+        return render_template(f"pages/{filename}", logo_path=logo_path)
 
     return send_from_directory("/pages/", filename)
 
