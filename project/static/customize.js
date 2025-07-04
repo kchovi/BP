@@ -79,6 +79,101 @@ document.querySelectorAll('input[name="style"]').forEach((input) => {
 });
 
 
+
+// color stuff
+const main_clr = document.querySelector(`input[name="--main-clr"]`);
+const secondary_clr = document.querySelector(`input[name="--secondary-clr"]`);
+const acc_clr = document.querySelector(`input[name="--acc-clr"]`);
+
+function update_colors() {
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+  if (!iframeDoc) return;
+
+  iframeDoc.documentElement.style.setProperty('--main-clr', main_clr.value);
+  iframeDoc.documentElement.style.setProperty('--secondary-clr', secondary_clr.value);
+  iframeDoc.documentElement.style.setProperty('--acc-clr', acc_clr.value);
+}
+
+iframe.addEventListener("load", () => {
+  update_colors();
+});
+
+//custom color picker
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("custom_color_form");
+
+  form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      update_colors();
+
+      const formData = new FormData(form);
+
+      const response = await fetch("/user_defined_colors", {
+          method: "POST",
+          body: formData
+      });
+
+      if (!response.ok) {
+        console.error("Failed to update colors.");
+      } 
+
+  });
+});
+
+//predefined color palletes
+
+document.addEventListener("DOMContentLoaded", () => {
+  const colorForms = document.querySelectorAll(".color_form");
+
+  colorForms.forEach((form) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+      iframeDoc.documentElement.style.setProperty('--main-clr', formData.get('--main-clr'));
+      iframeDoc.documentElement.style.setProperty('--secondary-clr', formData.get('--secondary-clr'));
+      iframeDoc.documentElement.style.setProperty('--acc-clr', formData.get('--acc-clr'));
+
+
+      const response = await fetch("/user_defined_colors", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!response.ok) {
+        console.error("Failed to update colors.");
+      } 
+    });
+  });
+});
+
+//rest button for both
+
+const color_reset_btn = document.getElementById("color_reset");
+
+color_reset_btn.addEventListener("click", async () => {
+
+  main_clr.value = "#f7f7ff";
+  secondary_clr.value = "#eeeeee";
+  acc_clr.value = "#f598b4";
+  update_colors();
+
+  const response = await fetch("/user_defined_colors", {
+    method: "POST",
+    body: "RESET"
+  });
+
+  if (!response.ok) {
+    console.error("Failed to reset colors.");
+  }
+  
+});
+
 //info
 
 
@@ -175,104 +270,60 @@ logo_reset_btn.addEventListener("click", async () => {
   
 });
 
+// edit
+
+const editFields = document.querySelectorAll(".edit_field");
+const editBtns = document.querySelectorAll(".edit_button");
 
 
-// color stuff
-const main_clr = document.querySelector(`input[name="--main-clr"]`);
-const secondary_clr = document.querySelector(`input[name="--secondary-clr"]`);
-const acc_clr = document.querySelector(`input[name="--acc-clr"]`);
+editBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
 
-function update_colors() {
-  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-  if (!iframeDoc) return;
+    const container = btn.closest(".edit_container"); 
+    const editElements = container.querySelectorAll(".edit");
 
-  iframeDoc.documentElement.style.setProperty('--main-clr', main_clr.value);
-  iframeDoc.documentElement.style.setProperty('--secondary-clr', secondary_clr.value);
-  iframeDoc.documentElement.style.setProperty('--acc-clr', acc_clr.value);
-}
-
-iframe.addEventListener("load", () => {
-  update_colors();
-});
-
-//custom color picker
-
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("custom_color_form");
-
-  form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      update_colors();
-
-      const formData = new FormData(form);
-
-      const response = await fetch("/user_defined_colors", {
-          method: "POST",
-          body: formData
-      });
-
-      if (!response.ok) {
-        console.error("Failed to update colors.");
-      } 
-
-  });
-});
-
-//predefined color palletes
-
-document.addEventListener("DOMContentLoaded", () => {
-  const colorForms = document.querySelectorAll(".color_form");
-
-  colorForms.forEach((form) => {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(form);
-
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-      iframeDoc.documentElement.style.setProperty('--main-clr', formData.get('--main-clr'));
-      iframeDoc.documentElement.style.setProperty('--secondary-clr', formData.get('--secondary-clr'));
-      iframeDoc.documentElement.style.setProperty('--acc-clr', formData.get('--acc-clr'));
-
-
-      const response = await fetch("/user_defined_colors", {
-        method: "POST",
-        body: formData
-      });
-
-      if (!response.ok) {
-        console.error("Failed to update colors.");
-      } 
+    editElements.forEach((element) => {
+      element.classList.toggle("active");
     });
   });
 });
 
-//rest button for both
+const removeBtns = document.querySelectorAll(".edit_remove_button");
 
-const color_reset_btn = document.getElementById("color_reset");
+removeBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
 
-color_reset_btn.addEventListener("click", async () => {
-
-  main_clr.value = "#f7f7ff";
-  secondary_clr.value = "#eeeeee";
-  acc_clr.value = "#f598b4";
-  update_colors();
-
-  const response = await fetch("/user_defined_colors", {
-    method: "POST",
-    body: "RESET"
+    const container = btn.closest(".edit_container");
+    const containerId = container.getAttribute("id")
+    console.log(containerId)
+    
+    });
   });
 
-  if (!response.ok) {
-    console.error("Failed to reset colors.");
-  }
-  
-});
 
 
+// colorForms.forEach((form) => {
+//     form.addEventListener("submit", async (e) => {
+//       e.preventDefault();
+
+//       const formData = new FormData(form);
+
+//       const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+//       iframeDoc.documentElement.style.setProperty('--main-clr', formData.get('--main-clr'));
+//       iframeDoc.documentElement.style.setProperty('--secondary-clr', formData.get('--secondary-clr'));
+//       iframeDoc.documentElement.style.setProperty('--acc-clr', formData.get('--acc-clr'));
 
 
+//       const response = await fetch("/user_defined_colors", {
+//         method: "POST",
+//         body: formData
+//       });
 
-
+//       if (!response.ok) {
+//         console.error("Failed to update colors.");
+//       } 
+//     });
+//   });

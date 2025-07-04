@@ -5,94 +5,16 @@
             <div id="sidebar" class="active">
                 <div id="toggleBtn"><span>&#10095;</span></div>
                  <!-- tab btns -->
-                <div class="tab-buttons flex">
-                    <button class="tab-btn active" data-tab="info">Info</button>
+                <div class="tab-buttons flex spread">
+                    <button class="tab-btn active" data-tab="style">Style</button>
                     <button class="tab-btn" data-tab="palette">Palette</button>
-                    <button class="tab-btn" data-tab="style">Style</button>
+                    <button class="tab-btn" data-tab="info">Info</button>
                     <button class="tab-btn" data-tab="edit">Edit</button>
                 </div>
                 
                 <!-- tabs -->
 
-                    <section class="tab-panel active column" id="info">
-                        <h3>Please fill out your info :)</h3>
-                        <form class="flex column" method="POST" id="info_form">
-                            <div class="form-item flex column spread">
-                                <label>Name of your site: </Label>
-                                <input type="text" name="site-name">
-                            </div>
-                            <div class="form-item flex column spread">
-                                <label>Your Email: </label>
-                                <input type="email" name="email">
-                            </div>
-                            <div class="form-item flex column spread">
-                                <label>Facebook: </label>
-                                <input type="url/text" name="fb">
-                            </div>
-                            <div class="form-item flex column spread">
-                                <label>Mobile numer: </label>
-                                <input type="tel" name="tel">
-                            </div>
-                            <div class="form-item flex column spread">
-                                <label>Your bussines´s address: </label>
-                                <input type="text" name="addr">
-                            </div>
-                            <div class="flex spread">
-                                <button type="submit">Submit</button>
-                            </div>
-                            <button id="info_reset">Reset</button>
-                        </form>
-                       
-
-                        <h3>Upload your logo here</h3>
-                        <form class="flex column" action="/logo_uploader" method="POST" enctype="multipart/form-data" id="logo_form">
-                            <input type="file" name="logo">
-                                <button type="submit">Upload</button>
-                        </form>
-                        <button id="logo_reset">Reset</button>
-                    </section>
-
-
-                    <section class="tab-panel column" id="palette">
-                        <h3>Choose a color pallete</h3>
-                        <form class="flex column" method="POST" id="custom_color_form">
-                            <div class="form-item center flex spread">
-                                <label>Main colour</label>
-                                <input class="color-input" type="color" name="--main-clr" value="{{ colors['--main-clr'] }}">
-                            </div>
-                            <div class="form-item center flex spread">
-                                <label>Secondary colour</label>
-                                <input class="color-input" type="color" name="--secondary-clr" value="{{ colors['--secondary-clr'] }}">
-                            </div>
-                            <div class="form-item center flex spread">
-                                <label>Accent colour</label>
-                                <input class="color-input" type="color" name="--acc-clr" value="{{ colors['--acc-clr'] }}">
-                            </div>
-                            <div class="center flex spread">
-                                <button type="submit">Apply</button>
-                            </div>
-                        </form>
-                        <button id="color_reset">Reset</button>
-                    
-                        <h3>Predefined pallets</h3> 
-
-                    <!-- add a jinja for loop for all the color pallets, store them on server for easy expansion -->
-                    {%- for palette in pallets -%}
-                        <form class="flex column color_form" method="POST">
-                            <div>
-                                <input class="color-input" type="color" name="--main-clr" value="{{ palette['--main-clr'] }}" >
-                                <input class="color-input" type="color" name="--secondary-clr" value="{{ palette['--secondary-clr'] }}" >
-                                <input class="color-input" type="color" name="--acc-clr" value="{{ palette['--acc-clr'] }}" >
-                            </div>
-                           
-                            <button type="submit">Apply</button>
-                        </form>
-                            
-                    {%- endfor -%}    
-                        
-                    </section>
-
-                    <section class="tab-panel column" id="style">
+                <section class="tab-panel column active" id="style">
                         <h3>Choose your style</h3>
                         <form class="flex column" id="style_form">
                             <div class="flex spread">
@@ -105,11 +27,113 @@
                                 <label for="style2">Style 2</label>
                             </div>
                         </form>
-                    </section>
-                
+                </section>
+
+
+                <section class="tab-panel column" id="info">
+                    <h3>Please fill out your info :)</h3>
+                    <form class="flex column" method="POST" id="info_form">
+                        <div class="form-item flex column spread">
+                            <label>Name of your site: </Label>
+                            <input type="text" name="site-name">
+                        </div>
+                        <div class="form-item flex column spread">
+                            <label>Your Email: </label>
+                            <input type="email" name="email">
+                        </div>
+                        <div class="form-item flex column spread">
+                            <label>Facebook: </label>
+                            <input type="url/text" name="fb">
+                        </div>
+                        <div class="form-item flex column spread">
+                            <label>Mobile numer: </label>
+                            <input type="tel" name="tel">
+                        </div>
+                        <div class="form-item flex column spread">
+                            <label>Your bussines´s address: </label>
+                            <input type="text" name="addr">
+                        </div>
+                        <div class="flex spread">
+                            <button type="submit">Submit</button>
+                        </div>
+                        <button id="info_reset">Reset</button>
+                    </form>
                     
-  
+
+                    <h3>Upload your logo here</h3>
+                    <form class="flex column" action="/logo_uploader" method="POST" enctype="multipart/form-data" id="logo_form">
+                        <input type="file" name="logo">
+                            <button type="submit">Upload</button>
+                    </form>
+                    <button id="logo_reset">Reset</button>
+                </section>
+
+
+                <section class="tab-panel column" id="palette">
+                    <h3>Choose a color pallete</h3>
+                    <form class="flex column" method="POST" id="custom_color_form">
+                        <div class="form-item center flex spread">
+                            <label>Main colour</label>
+                            <input class="color-input" type="color" name="--main-clr" value="{{ colors['--main-clr'] }}">
+                        </div>
+                        <div class="form-item center flex spread">
+                            <label>Secondary colour</label>
+                            <input class="color-input" type="color" name="--secondary-clr" value="{{ colors['--secondary-clr'] }}">
+                        </div>
+                        <div class="form-item center flex spread">
+                            <label>Accent colour</label>
+                            <input class="color-input" type="color" name="--acc-clr" value="{{ colors['--acc-clr'] }}">
+                        </div>
+                        <div class="center flex spread">
+                            <button type="submit">Apply</button>
+                        </div>
+                    </form>
+                    <button id="color_reset">Reset</button>
                 
+                    <h3>Predefined pallets</h3> 
+
+                <!-- add a jinja for loop for all the color pallets, store them on server for easy expansion -->
+                {%- for palette in pallets -%}
+                    <form class="flex column color_form" method="POST">
+                        <div>
+                            <input class="color-input" type="color" name="--main-clr" value="{{ palette['--main-clr'] }}" >
+                            <input class="color-input" type="color" name="--secondary-clr" value="{{ palette['--secondary-clr'] }}" >
+                            <input class="color-input" type="color" name="--acc-clr" value="{{ palette['--acc-clr'] }}" >
+                        </div>
+                        
+                        <button type="submit">Apply</button>
+                    </form>
+                        
+                {%- endfor -%}    
+                    
+                </section>
+                
+                <section class="tab-panel column" id="edit">
+                    <h3>edit element of the site</h3>
+                    <form class="flex column" id="edit_form">
+                        <div class="edit_container" id="about_me">
+                            <div class="flex">
+                                <label>About me</label>
+                                <button class="edit_button">Edit</button>
+                                <button class="edit_remove_button">Remove</button>
+                            </div>
+                            <textarea name="about_me" class="edit edit_field"></textarea>
+                            <!-- <input type="submit" value="Save" class="edit"> -->
+                        </div>
+                        
+                        <div class="edit_container" id="service1">
+                            <div class="flex">
+                                <label>Service 1</label>
+                                <button class="edit_button">Edit</button>
+                                <button class="edit_remove_button">Remove</button>
+                            </div>
+                            <textarea name="about_me" class="edit edit_field"></textarea>
+                            <!-- <input type="submit" value="Save" class="edit"> -->
+                        </div>
+                    </form>
+                    
+                </section>
+                    
             </div>
             
               <!-- main stuff -->

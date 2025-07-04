@@ -30,6 +30,59 @@ def site_style():
     return "OK", 200
 
 
+
+# for the user_defined_colors form
+@app.route("/user_defined_colors", methods=["POST"])
+def user_defined_colors():
+    if request.data == b'RESET':
+        session['colors'] = default_colors.copy()
+        return "Reset Content", 205
+    else:
+        colors = session.get('colors', default_colors.copy())
+
+        colors["--main-clr"] = request.form.get("--main-clr")
+        colors["--secondary-clr"] = request.form.get("--secondary-clr")
+        colors["--acc-clr"] = request.form.get("--acc-clr")
+        session['colors'] = colors
+    return "OK", 200
+
+# default colors for the iframe
+default_colors = {
+    "--main-clr": "#f7f7ff",
+    "--secondary-clr": "#eeeeee",
+    "--acc-clr": "#f598b4"
+}
+
+colors = {
+    "--main-clr": "#f7f7ff",
+    "--secondary-clr": "#eeeeee",
+    "--acc-clr": "#f598b4"
+}
+
+
+pallets = [
+    {
+        "--main-clr": "#037171",
+        "--secondary-clr": "#00B9AE",
+        "--acc-clr": "#03312E"
+    },
+    {
+        "--main-clr": "#A1CCA5",
+        "--secondary-clr": "#8FB996",
+        "--acc-clr": "#709775"
+    },
+    {
+        "--main-clr": "#5F4BB6",
+        "--secondary-clr": "#86A5D9",
+        "--acc-clr": "#202A25"
+    },
+    {
+        "--main-clr": "#274029",
+        "--secondary-clr": "#315C2B",
+        "--acc-clr": "#181F1C"
+    },
+]
+
 def generate_google_map_embed(address):
     encoded_address = urllib.parse.quote_plus(address)
     embed_url = f"https://maps.google.com/maps?&q={encoded_address}&output=embed"
@@ -65,60 +118,6 @@ default_info = {
     "addr": "17. listopadu 1192/12, 77900 Olomouc, Česko",
     "map": "https://www.google.com/maps?q=17.%20listopadu%201192/12%2C%2077900%20Olomouc%2C%20%C4%8Cesko&output=embed",
 }
-
-
-# default colors for the iframe
-default_colors = {
-    "--main-clr": "#f7f7ff",
-    "--secondary-clr": "#eeeeee",
-    "--acc-clr": "#f598b4"
-}
-
-colors = {
-    "--main-clr": "#f7f7ff",
-    "--secondary-clr": "#eeeeee",
-    "--acc-clr": "#f598b4"
-}
-
-
-# for the user_defined_colors form
-@app.route("/user_defined_colors", methods=["POST"])
-def user_defined_colors():
-    if request.data == b'RESET':
-        session['colors'] = default_colors.copy()
-        return "Reset Content", 205
-    else:
-        colors = session.get('colors', default_colors.copy())
-
-        colors["--main-clr"] = request.form.get("--main-clr")
-        colors["--secondary-clr"] = request.form.get("--secondary-clr")
-        colors["--acc-clr"] = request.form.get("--acc-clr")
-        session['colors'] = colors
-    return "OK", 200
-
-
-pallets = [
-    {
-        "--main-clr": "#037171",
-        "--secondary-clr": "#00B9AE",
-        "--acc-clr": "#03312E"
-    },
-    {
-        "--main-clr": "#A1CCA5",
-        "--secondary-clr": "#8FB996",
-        "--acc-clr": "#709775"
-    },
-    {
-        "--main-clr": "#5F4BB6",
-        "--secondary-clr": "#86A5D9",
-        "--acc-clr": "#202A25"
-    },
-    {
-        "--main-clr": "#274029",
-        "--secondary-clr": "#315C2B",
-        "--acc-clr": "#181F1C"
-    },
-]
 
 
 @app.route("/logo_uploader", methods=["POST"])
