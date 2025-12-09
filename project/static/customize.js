@@ -204,7 +204,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const info_reset_btn = document.getElementById("info_reset");
 
-info_reset_btn.addEventListener("click", async () => {
+info_reset_btn.addEventListener("click", async (e) => {
+  e.preventDefault();
 
   const response = await fetch("/site_info", {
     method: "POST",
@@ -249,8 +250,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const logo_reset_btn = document.getElementById("logo_reset");
 
-logo_reset_btn.addEventListener("click", async () => {
-
+logo_reset_btn.addEventListener("click", async (e) => {
+  e.preventDefault();
   
 
   const response = await fetch("/logo_uploader", {
@@ -272,7 +273,7 @@ logo_reset_btn.addEventListener("click", async () => {
 
 // edit
 
-const editFields = document.querySelectorAll(".edit_field");
+// const editFields = document.querySelectorAll(".edit_field");
 const editBtns = document.querySelectorAll(".edit_button");
 
 
@@ -284,7 +285,7 @@ editBtns.forEach((btn) => {
     const editElements = container.querySelectorAll(".edit");
 
     editElements.forEach((element) => {
-      element.classList.toggle("active");
+      element.classList.toggle("invisible");
     });
   });
 });
@@ -298,32 +299,51 @@ removeBtns.forEach((btn) => {
     const container = btn.closest(".edit_container");
     const containerId = container.getAttribute("id")
     console.log(containerId)
+
+    iframe.contentWindow.document.getElementById(containerId).classList.toggle("invisible")
     
     });
   });
 
 
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("edit_form");
 
-// colorForms.forEach((form) => {
-//     form.addEventListener("submit", async (e) => {
-//       e.preventDefault();
+  form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-//       const formData = new FormData(form);
+      const formData = new FormData(form);
 
-//       const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+      const response = await fetch("/site_content", {
+          method: "POST",
+          body: formData
+      });
 
-//       iframeDoc.documentElement.style.setProperty('--main-clr', formData.get('--main-clr'));
-//       iframeDoc.documentElement.style.setProperty('--secondary-clr', formData.get('--secondary-clr'));
-//       iframeDoc.documentElement.style.setProperty('--acc-clr', formData.get('--acc-clr'));
+      if (response.ok) {
+        iframe.contentWindow.location.reload();
+      }
+      else {
+        console.error("Failed to update content.");
+      } 
+  });
+});
 
 
-//       const response = await fetch("/user_defined_colors", {
-//         method: "POST",
-//         body: formData
-//       });
+const content_reset_btn = document.getElementById("content_reset");
 
-//       if (!response.ok) {
-//         console.error("Failed to update colors.");
-//       } 
-//     });
-//   });
+content_reset_btn.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const response = await fetch("/site_content", {
+    method: "POST",
+    body: "RESET"
+  });
+
+  if (response.ok) {
+    iframe.contentWindow.location.reload();
+  }
+  else {
+    console.error("Failed to reset content.");
+  } 
+  
+});

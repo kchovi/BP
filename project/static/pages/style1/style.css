@@ -236,6 +236,7 @@
   .corner-1 {border-radius: 0.5em;}
   .corner-2 {border-radius: 0.3em;}
 
+  .invisible {display: none;}
 }
 
 

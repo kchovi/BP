@@ -182,13 +182,13 @@ header {border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;}
         overflow-y: scroll;
     }
     
-    .edit {
+    /* .edit {
         display: none;
-    }
+    } */
 
-    .edit.active {
+    /* .edit.active {
         display: block;
-    }
+    } */
   
 }
 

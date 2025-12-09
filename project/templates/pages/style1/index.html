@@ -7,10 +7,10 @@
     <meta charset="utf-8">
 
     <style>
-        .custom-bullet#map:before {background-image: url({{ url_for('static', filename='pages/style1/podklady/map-marker-alt-solid.svg') }});}
-        .custom-bullet#email:before {background-image: url({{ url_for('static', filename='pages/style1/podklady/envelope-regular.svg') }});}
-        .custom-bullet#tel:before {background-image: url({{ url_for('static', filename='pages/style1/podklady/mobile-alt-solid.svg') }});}
-        .custom-bullet#fb:before {background-image: url({{ url_for('static', filename='pages/style1/podklady/facebook-square-brands.svg') }});}
+        .custom-bullet#map:before {background-image: url({{ url_for('static', filename='pages/common/map-marker-alt-solid.svg') }});}
+        .custom-bullet#email:before {background-image: url({{ url_for('static', filename='pages/common/envelope-regular.svg') }});}
+        .custom-bullet#tel:before {background-image: url({{ url_for('static', filename='pages/common/mobile-alt-solid.svg') }});}
+        .custom-bullet#fb:before {background-image: url({{ url_for('static', filename='pages/common/facebook-square-brands.svg') }});}
     </style>
     
 </head>
@@ -38,10 +38,7 @@
             <div class="wrapper padding-y bg-color-secondary">
                 <h2 class="heading with-accent">O mně</h2>
                 <p class="text box-margin">
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin mattis lacinia justo. 
-                    Duis risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, 
-                    per inceptos hymenaeos. Etiam quis quam. Aliquam in lorem sit amet leo accumsan lacinia. 
-                    Donec vitae arcu. Nunc dapibus tortor vel mi dapibus sollicitudin.  
+                    {{ content['about_me'] }}
                 </p>
             </div>
         </section>
@@ -49,42 +46,27 @@
         <section id="services" class="bg-color-primary">
             <div class="wrapper padding-y">
                 <h2 class="heading with-accent">Služby</h2>
-                <div class="flex services">
-                    <div class="flex article-services corner-2 box-shadow" id="service1">
+                {% set reverse = "reverse" %}
+                {%- for service in content['services'] -%}
+                {%- if loop.index % 2 == 1 -%}
+                    {%- set reverse = "" -%}
+                {%- endif -%}
+                <div class="flex services" id="service{{ loop.index }}">
+                    <div class="flex article-services {{ reverse }} corner-2 box-shadow">
                         <div class="article bg-color-secondary">
                             <article class="box-margin">
-                                <h3 class="heading">Služba-1</h3>
+                                <h3 class="heading">{{ service['name'] }}</h3>
                                 <p class="text">
-                                    Integer vulputate sem a nibh rutrum consequat. 
-                                    Nullam justo enim, consectetuer nec, ullamcorper ac, 
-                                    vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, 
-                                    rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.
+                                    {{ service['text'] }}
                                 </p> 
                             </article>
                         </div>
-                        <img src="{{ url_for('static', filename='pages/style1/podklady/555.png') }}" alt="img"> 
+                        <img src="{{ service['img'] }}" alt="img"> 
                     </div>
                     <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a></div>
                 </div>
-    
-                <div class="flex services">
-                    <div class="flex article-services reverse corner-2 box-shadow">
-                        <div class="article bg-color-secondary">
-                            <article class="box-margin">
-                                <h3 class="heading">Služba-2</h3>
-                                <p class="text">
-                                    Integer vulputate sem a nibh rutrum consequat. 
-                                    Nullam justo enim, consectetuer nec, ullamcorper ac, 
-                                    vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, 
-                                    rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.
-                                </p> 
-                            </article>
-                        </div>
-                        <img src="{{ url_for('static', filename='pages/style1/podklady/555.png') }}" alt="img"> 
-                    </div>
-                
-                    <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a></div>
-                </div>
+                {%- endfor -%}
+
             </div>
         </section>
     
