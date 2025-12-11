@@ -1,0 +1,12 @@
+# implementovat mapy.com misto google mapy
+https://developer.mapy.com/rest-api-mapy-cz/
+
+
+# najit nejaky minimalni css framework
+
+# hlavni stranka by mela vypadat stejne jako "cutomize" tzn bude mit postrani listu ale doprostred neco jineho
+
+# preorganizovat zalozky // udelat vice zalozek // vymyslet lepsi celkovou organizaci a workflow
+
+# automaticke nahrani na server 
+
