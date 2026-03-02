@@ -1,0 +1,175 @@
+{% include 'common/head.jinja' %}
+
+<body class="flex">
+    <div id="sidebar" class="active">
+        <div id="toggleBtn"><span>&#10095;</span></div>
+        <!-- tab btns -->
+        <div class="tab-buttons flex spread">
+            <button class="tab-btn active" data-tab="style">Style</button>
+            <button class="tab-btn" data-tab="palette">Palette</button>
+            <button class="tab-btn" data-tab="info">Info</button>
+            <button class="tab-btn" data-tab="edit">Edit</button>
+        </div>
+
+        <!-- tabs -->
+
+        <section class="tab-panel column active" id="style">
+            <h3>Choose your style</h3>
+            <form class="flex column" id="style_form">
+                <div class="flex spread">
+                    <label for="style1">Style 1</label>
+                    <input type="radio" name="style" value="1" checked="checked">
+                </div>
+
+                <div class="flex spread">
+                    <label for="style2">Style 2</label>
+                    <input type="radio" name="style" value="2">
+                </div>
+            </form>
+        </section>
+
+
+        <section class="tab-panel column" id="palette">
+            <h3>Choose a color pallete</h3>
+            <form class="flex column" method="POST" id="custom_color_form">
+                <div class="form-item center flex spread">
+                    <label>Main colour</label>
+                    <input class="color-input" type="color" name="--main-clr" value="{{ colors['--main-clr'] }}">
+                </div>
+                <div class="form-item center flex spread">
+                    <label>Secondary colour</label>
+                    <input class="color-input" type="color" name="--secondary-clr"
+                        value="{{ colors['--secondary-clr'] }}">
+                </div>
+                <div class="form-item center flex spread">
+                    <label>Accent colour</label>
+                    <input class="color-input" type="color" name="--acc-clr" value="{{ colors['--acc-clr'] }}">
+                </div>
+                <div class="center flex spread">
+                    <button type="submit">Apply</button>
+                </div>
+            </form>
+            <button id="color_reset">Reset</button>
+
+            <h3>Predefined pallets</h3>
+
+
+            {%- for palette in pallets -%}
+            <form class="flex column color_form" method="POST">
+                <div class="flex spread form-item">
+                    <input class="color-input" type="color" name="--main-clr" value="{{ palette['--main-clr'] }}">
+                    <input class="color-input" type="color" name="--secondary-clr"
+                        value="{{ palette['--secondary-clr'] }}">
+                    <input class="color-input" type="color" name="--acc-clr" value="{{ palette['--acc-clr'] }}">
+                </div>
+
+                <button type="submit">Apply</button>
+            </form>
+
+            {%- endfor -%}
+
+        </section>
+
+        <section class="tab-panel column" id="info">
+            <h3>Please fill out your info :)</h3>
+            <form class="flex column" method="POST" id="info_form">
+                <fieldset class="form-item">
+                    <legend>Name of your site</legend>
+                    <input type="text" name="site-name">
+                </fieldset>
+                <fieldset class="form-item">
+                    <legend>Your Email</legend>
+                    <input type="email" name="email">
+                </fieldset>
+                <fieldset class="form-item">
+                    <legend>Facebook</legend>
+                    <input type="url/text" name="fb">
+                </fieldset>
+                <fieldset class="form-item">
+                    <legend>Mobile numer</legend>
+                    <input type="tel" name="tel">
+                </fieldset>
+                <fieldset class="form-item">
+                    <legend>Your bussines´s address</legend>
+                    <input type="text" name="addr">
+                </fieldset>
+
+                <div class="flex spread">
+                    <button type="submit">Submit</button>
+                </div>
+                <button id="info_reset">Reset</button>
+            </form>
+
+
+            <h3>Upload your logo here</h3>
+            <form class="flex column" action="/logo_uploader" method="POST" enctype="multipart/form-data"
+                id="logo_form">
+                <input class="button" type="file" name="logo">
+            </form>
+            <button id="logo_reset">Reset</button>
+        </section>
+
+        <section class="tab-panel column" id="edit">
+            <h3>edit element of the site</h3>
+            <div class="flex column" id="edit_forms">
+                <form id="about_me_edit_form">
+                    <fieldset class="edit_container">
+                        <legend>About me</legend>
+                        <button class="edit_button">Edit</button>
+                        <button class="edit_remove_button">Remove</button>
+                        <button class="edit_section_reset_button">Reset</button>
+
+                        <div class="flex column edit invisible">
+                            <textarea name="about_me" class="edit_field" id="about_me_edit_field"></textarea>
+                            <button type="submit" class="button">Update</button>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+                <!-- potrbuji dodelat to same co u "about me" u vsech dalsich (tzn okamzite prepisovani a update az pak)-->
+
+                {%- for service in content['services'] -%}
+                <fieldset class="edit_container" id="service {{ loop.index }}">
+                    <legend>Service {{ loop.index }}</legend>
+                    <button class="edit_button">Edit</button>
+                    <button class="edit_remove_button">Remove</button>
+
+
+                    <div class="flex column edit invisible">
+                        <form class="flex column">
+                            <input type="text" name="{{ loop.index }} name" value="{{ service['name'] }}">
+                            <textarea name="{{ loop.index }} text" class="edit_field">{{ service['text'] }}</textarea>
+                        </form>
+
+                        <h4>Upload img for service</h4>
+                        <input type="file" name="service{{ loop.index }}_img">
+                        <div class="flex spread">
+                            <button type="submit">Upload</button>
+                            <button type="button" class="img_reset">Reset</button>
+                        </div>
+
+                    </div>
+                </fieldset>
+                {%- endfor -%}
+
+                <input type="submit" value="Save">
+                <button id="content_reset">Reset</button>
+
+
+                </form>
+
+        </section>
+
+    </div>
+
+
+    <div class="preview-wrapper">
+        <iframe class="preview-page"
+        src="{{ url_for('iframe_page', filename='style' ~ session.get('style', '1') ~ '/index.html') }}"></iframe>
+    </div>
+    
+
+
+    <script src="../static/customize.js"></script>
+</body>

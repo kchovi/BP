@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <title>Váš Web</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pages/style1/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+
+   {% include 'pages/common/style.jinja' %}
+
+</head>
+
+<body class="bg-color-secondary">
+    <header class="bg-color-primary">
+        <div class="wrapper flex header-in">
+            <hgroup>
+
+
+
+
+
+
+
+                
+                <img src="{{logo_path}}" alt="logo" class="main_logo">
+                <h1 class="heading">{{ user_info["site-name"]}}</h1>
+            </hgroup>
+
+            <ul class="nav-bar">
+                <!-- <li class="nav-item"><a class="text" href="#services">Služby</a></li> -->
+                <li class="nav-item"><a class="text" href="cenik.html">Ceník</a></li>
+                <li class="nav-item"><a class="text" href="gallery.html">Galerie</a></li>
+                <li class="nav-item"><a class="text" href="#contact">Kontakt</a></li>
+                <li class="nav-item"><a class="text" href="">Objednat se</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <section id="about_me">
+            <div class="wrapper padding-y bg-color-secondary">
+                <h2 class="heading with-accent">O mně</h2>
+                <p class="text box-margin">
+                    {{ content['about_me'] }}
+                </p>
+            </div>
+        </section>
+
+        <section id="services" class="bg-color-primary">
+            <div class="wrapper padding-y">
+                <h2 class="heading with-accent">Služby</h2>
+                {% set reverse = "reverse" %}
+                {%- for service in content['services'] -%}
+                {%- if loop.index % 2 == 1 -%}
+                {%- set reverse = "" -%}
+                {%- endif -%}
+                <div class="flex services" id="service{{ loop.index }}">
+                    <div class="flex article-services {{ reverse }} corner-2 box-shadow">
+                        <div class="article bg-color-secondary">
+                            <article class="box-margin">
+                                <h3 class="heading">{{ service['name'] }}</h3>
+                                <p class="text">
+                                    {{ service['text'] }}
+                                </p>
+                            </article>
+                        </div>
+                        <img src="{{ service['img'] }}" alt="img">
+                    </div>
+                    <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a>
+                    </div>
+                </div>
+                {%- endfor -%}
+
+            </div>
+        </section>
+
+
+
+        <section id="recenze" class="padding-y bg-color-secondary">
+            <div class="wrapper">
+                <h2 class="heading with-accent">Napište mi recenzi</h2>
+                <div class="flex services">
+                    <div class="flex article-services corner-1">
+                        <div class="article bg-color-secondary">
+                            <section class="box-margin">
+                                <p class="text">
+                                    Napsáním recenze mě můžete podpořit v růstu a na základě vašeho feedbacku mi
+                                    pomůžete zlepšovat péči o zákazníky.
+                                </p>
+                            </section>
+                        </div>
+                        <div class="flex center img-services"><a class="button box-margin box-shadow" href="">Napsat
+                                Recenzi</a></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="contact" class="padding-y bg-color-secondary">
+            <div class="wrapper">
+                <h2 class="heading with-accent">Kontakt</h2>
+                <div class="grid-contact border">
+                    <div class="bg-color-secondary">
+                        {% include 'pages/common/contact-icons.jinja' %}
+                    </div>
+                        {% include 'pages/common/map.jinja' %}
+                </div>
+
+            </div>
+        </section>
+
+
+
+
+    </main>
+
+    <footer class="bg-color-primary">
+        <div class="wrapper flex center">
+            <span>&copy;Jakub Chovanec 2024</span>
+        </div>
+    </footer>
+</body>

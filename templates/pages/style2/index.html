@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{url_for('static', filename='pages/style2/style.css') }}">
+    <title>Web Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    {% include 'pages/common/style.jinja' %}
+
+</head>
+
+<body class="no-margin">
+    <header class="bg-secondary">
+
+        <div class="wrapper flex align-bottom">
+            <div class="header-left">
+                <hgroup>
+                    <p>Hello, my name is
+                    <p>
+                    <h1 class="heading">Jane Doe</h1>
+                    <p class="sub heading clr-orange">Full-Stack Developer</p>
+                </hgroup>
+                <span class="text-normal">
+                    I design and develop services for customers of all sizes, specializing in creating<br>
+                    stylish, modern websites, web services and online stores
+                </span>
+                <nav>
+                    <ul class="main-nav flex no-padding">
+                        <li class="nav-item"><a href="#biography" class="text-normal">Biography</a></li>
+                        <li class="nav-item"><a href="#whatdoido" class="text-normal">What do I do?</a></li>
+                        <li class="nav-item"><a href="#awards" class="text-normal">Awards</a></li>
+                        <li class="nav-item"><a href="#experience" class="text-normal">Experience</a></li>
+                        <li class="nav-item"><a href="#myportfolio" class="text-normal">My Portfolio</a></li>
+                        <li class="nav-item"><a href="#contact" class="text-normal">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="flex center">
+                <img alt="avatar" src="{{logo_path}}">
+            </div>
+        </div>
+
+        <svg class="header-bg-shape">
+            <circle cx="80%" cy="25%" r="90%"></circle>
+        </svg>
+
+    </header>
+
+    <main class="bg-primary">
+
+        <div id="biography" class="padding-sides-x bg-primary">
+            <div class="wrapper">
+                <div class="bio flex center">
+                    <div class="flex bio-avatar">
+                        <div class="flex column">
+                            <div class="avatar2 bg-orange flex center">
+                                <img alt="avatar" src="{{logo_path}}">
+                            </div>
+
+                            <hgroup class="hgroup-bio">
+                                <h2 class="sub heading">Jane Doe</h2>
+                                <p class="text-orange text-normal clr-orange">Full-Stack Developer</p>
+                            </hgroup>
+                        </div>
+                    </div>
+                    <article class="bio-article">
+                        <h2 class="with-accent heading">Biography</h2>
+                        <p class="text-normal">
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus.
+
+                        </p>
+                        <p class="text-normal">
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus.
+                            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+                            sed quia consequuntur.
+                        </p>
+                        <p class="text-normal">
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus.
+                            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut.
+                        </p>
+                    </article>
+                </div>
+                <div id="squigly-line"></div>
+            </div>
+        </div>
+
+        <section id="whatdoido" class="padding-sides-x bg-primary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">What do I do?</h2>
+                <div class="flex whatdoido">
+                    <div class="flex column item-whatdoido padding-box bg-secondary border-style">
+                        <img alt="pencil"
+                            src="{{url_for('static', filename='pages/style2/podklady/pencil-alt-solid.svg')}}"
+                            height="60">
+                        <article class="text-normal">
+                            <h3 class="heading">Web Design</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris dolor felis, sagittis
+                                at, luctus sed,
+                                aliquam non, tellus.
+                            </p>
+                        </article>
+                    </div>
+                    <div class="flex column item-whatdoido padding-box bg-secondary border-style">
+                        <img alt="desktop"
+                            src="{{url_for('static', filename='pages/style2/podklady/desktop-solid.svg')}}" height="60">
+                        <article class="text-normal">
+                            <h3 class="heading">Web Development</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris dolor felis, sagittis
+                                at, luctus sed,
+                                aliquam non, tellus.
+                            </p>
+                        </article>
+                    </div>
+                    <div class="flex column item-whatdoido padding-box bg-secondary border-style">
+                        <img alt="bullseye"
+                            src="{{url_for('static', filename='pages/style2/podklady/bullseye-solid.svg')}}"
+                            height="60">
+                        <article class="text-normal">
+                            <h3 class="heading">Seo Marketing</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris dolor felis, sagittis
+                                at, luctus sed,
+                                aliquam non, tellus.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="awards" class="padding-sides-x bg-primary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">Awards</h2>
+                <div class="awards flex">
+                    <div class="flex column center item-awards padding-box bg-secondary border-style">
+                        <img alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}"
+                            height="50">
+                        <span class="clr-black">Creative Designer</span>
+                    </div>
+                    <div class="flex column center item-awards padding-box bg-secondary border-style">
+                        <img alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}"
+                            height="50">
+                        <span class="clr-black">Yearly Best Performer</span>
+                    </div>
+                    <div class="flex column center item-awards padding-box bg-secondary border-style">
+                        <img alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}"
+                            height="50">
+                        <span class="clr-black">Best Learner Award</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section id="experience" class="padding-sides-x bg-secondary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">Experience</h2>
+                <div class="flex column">
+
+                    <div class="flex item-experience bg-primary border-style padding-box">
+                        <div class="flex exp-left column dv-line">
+                            <p class="no-margin">Feb 2021 - Present</p>
+                            <p class="padding-box-sm exp-box no-margin border-box bg-orange clr-primary">Full Time</p>
+                        </div>
+                        <article>
+                            <h3 class="heading">Google LLC - Sr. Front-end Engineer</h3>
+                            <p class="text-normal">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam neque.
+                                Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio,
+                                vitae placerat pede sem sit amet enim. Vestibulum fermentum tortor id mi.
+                            </p>
+                        </article>
+                    </div>
+
+                    <div class="flex item-experience bg-primary border-style padding-box">
+                        <div class="flex exp-left column dv-line">
+                            <p class="no-margin">Mar 2020 - Present</p>
+                            <p class="padding-box-sm exp-box no-margin border-box bg-gray clr-primary">Full Time</p>
+                        </div>
+                        <article>
+                            <h3 class="heading">Ridian IT - Visual Designer</h3>
+                            <p class="text-normal">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam neque.
+                                Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio,
+                                vitae placerat pede sem sit amet enim. Vestibulum fermentum tortor id mi.
+                            </p>
+                        </article>
+                    </div>
+
+                    <div class="flex item-experience bg-primary border-style padding-box">
+                        <div class="flex exp-left column dv-line">
+                            <p class="no-margin">July 2019 - Present</p>
+                            <p class="padding-box-sm no-margin border-box bg-orange clr-primary">Full Time</p>
+                        </div>
+                        <article>
+                            <h3 class="heading">IB Themes - Animation Artist</h3>
+                            <p class="text-normal">
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam neque.
+                                Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio,
+                                vitae placerat pede sem sit amet enim. Vestibulum fermentum tortor id mi.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="myportfolio" class="padding-sides-x bg-secondary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">My Portofolio</h2>
+                <div class="grid myportfolio-grid">
+
+                    {% for i in range(6) %}
+                    <article class="text-normal">
+                        <img alt="dummy" src="{{ url_for('static', filename='pages/common/555.png') }}">
+                        <h3 class="heading">Lorem Ipsum</h3>
+                        <time datetime="2024-02-27">27/02/2024</time>
+                        <p>
+                            Pellentesque pretium lectus id turpis sed nisl,<br>
+                            Nulla non lectus praesent sed nisl molestie.<br>
+                            Nam quis nulla. Praesent id justo.
+                        </p>
+                    </article>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </section>
+
+        <section id="contact" class="padding-sides-x bg-primary">
+            <div class="wrapper">
+                <h2 class="with-accent heading">Contact</h2>
+                <div class="flex contact-flex padding-sides-x">
+                    <div class="flex column contact-item">
+                        <section>
+                            <h3 class="heading">What's your story? Get in touch</h3>
+                            <p class="text-normal">
+                                Always available for freelancing if the right project comes along. Feel free to contact
+                                me.
+                            </p>
+                            {% include 'pages/common/contact-icons.jinja' %}
+                        </section>
+                    </div>
+                    <div class="contact-item padding-sides-x">
+                        <h3 class="heading">Say something</h3>
+                        <form class="flex column">
+                            <div class="flex contact-left">
+                                <input type="text" placeholder="Full name" class="box-1 padding-box">
+                                <input type="email" placeholder="Email address" class="box-1 padding-box">
+                            </div>
+                            <input type="text" placeholder="Subject" class="box-2 padding-box">
+                            <textarea placeholder="Type comment" class="box-3 padding-box"></textarea>
+                            <input type="submit" value="Send Message"
+                                class="btn padding-box bold border-box bg-black clr-primary">
+                        </form>
+                    </div>
+                </div>
+                {% include 'pages/common/map.jinja' %}
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-secondary">
+        <div class="wrapper">
+            <div class="flex center footer-content">
+                <div class="flex">
+                    <a class="flex center" href="https://twitter.com/?lang=cs">
+                        <img alt="twitter"
+                            src="{{url_for('static', filename='pages/common/twitter-square-brands.svg')}}"
+                            height="35"></a>
+                    <a class="flex center" href="https://www.facebook.com/">
+                        <img alt="facebook"
+                            src="{{url_for('static', filename='pages/common/facebook-square-brands.svg')}}"
+                            height="35"></a>
+                </div>
+                <span>&copy; Jakub Chovanec 2024</span>
+            </div>
+        </div>
+    </footer>
+
+</body>

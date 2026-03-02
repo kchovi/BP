@@ -1,0 +1,22 @@
+# open street maps
+
+
+# hlavni stranka by mela vypadat stejne jako "customize" tzn bude mit postrani listu ale doprostred neco jineho
+
+# preorganizovat zalozky // udelat vice zalozek // vymyslet lepsi celkovou organizaci a workflow - asi gut
+
+# automaticke nahrani na server (muj osobni)
+
+# zmenit velikost iframe aby zabiral celou sirku
+
+# move <style> to be a jinja template - done
+# also move other stuff to a common folder - some
+
+# implement multi user
+
+# nahrani obrazku ke sluzbe
+
+# custom pallety nezustavaji 
+
+tailwind
+
