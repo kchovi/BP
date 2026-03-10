@@ -3,13 +3,23 @@
 
 <head>
     <title>Váš Web</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='pages/style1/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('preview_static', filename='style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
 
-   {% include 'pages/common/style.jinja' %}
+
 
 </head>
+
+<style id="theme-vars">
+    :root {
+        --main-clr : {{user_colors["--main-clr"]}};
+        --secondary-clr : {{user_colors["--secondary-clr"]}};
+        --acc-clr : {{user_colors["--acc-clr"]}};
+    }
+</style>
+
+{% include "contact-icons.jinja" %}
 
 <body class="bg-color-secondary">
     <header class="bg-color-primary">
@@ -22,7 +32,7 @@
 
 
 
-                
+
                 <img src="{{logo_path}}" alt="logo" class="main_logo">
                 <h1 class="heading">{{ user_info["site-name"]}}</h1>
             </hgroup>
@@ -42,7 +52,7 @@
             <div class="wrapper padding-y bg-color-secondary">
                 <h2 class="heading with-accent">O mně</h2>
                 <p class="text box-margin">
-                    {{ content['about_me'] }}
+                    {{ content['about_me']['text'] }}
                 </p>
             </div>
         </section>
@@ -55,7 +65,8 @@
                 {%- if loop.index % 2 == 1 -%}
                 {%- set reverse = "" -%}
                 {%- endif -%}
-                <div class="flex services" id="service{{ loop.index }}">
+                {%- if service['visible'] -%}
+                <div class="flex services" id="service_{{ loop.index }}">
                     <div class="flex article-services {{ reverse }} corner-2 box-shadow">
                         <div class="article bg-color-secondary">
                             <article class="box-margin">
@@ -70,6 +81,7 @@
                     <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a>
                     </div>
                 </div>
+                {%- endif -%}
                 {%- endfor -%}
 
             </div>
@@ -103,16 +115,13 @@
                 <h2 class="heading with-accent">Kontakt</h2>
                 <div class="grid-contact border">
                     <div class="bg-color-secondary">
-                        {% include 'pages/common/contact-icons.jinja' %}
+                        {% include "contact.jinja" %}
                     </div>
-                        {% include 'pages/common/map.jinja' %}
+                    {% include "map.jinja" %}
                 </div>
 
             </div>
         </section>
-
-
-
 
     </main>
 

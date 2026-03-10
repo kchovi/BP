@@ -4,21 +4,23 @@ from scp import SCPClient
 
 # ----- CONFIG -----
 LOCAL_DIR = "./"                     # Current directory
-REMOTE_DIR = "/home/youruser/flask_app"
+REMOTE_DIR = "/home/kchovi/flask_app"
 SERVER_HOST = "192.168.1.100"       # Your server IP
-SERVER_USER = "youruser"
-SERVER_PASSWORD = "yourpassword"    # SSH password
+SERVER_USER = "kchovi"
+SERVER_PASSWORD = "Halinek272911"    # SSH password
 FLASK_RUN_COMMAND = "cd /home/youruser/flask_app && nohup python3 app.py > log.txt 2>&1 &"
 KILL_COMMAND = "pkill -f app.py"
 
-EXCLUDE_DIRS = {".git", ".venv", "__pycache__"}  # Folders to skip
+EXCLUDE_DIRS = {".git", "__pycache__"}  # Folders to skip
 # -------------------
+
 
 def create_ssh():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(SERVER_HOST, username=SERVER_USER, password=SERVER_PASSWORD)
     return ssh
+
 
 def deploy():
     print("Deploying to server...")
@@ -53,6 +55,7 @@ def deploy():
     scp.close()
     ssh.close()
     print("Deployment complete!")
+
 
 if __name__ == "__main__":
     deploy()

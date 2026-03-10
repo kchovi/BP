@@ -1,8 +1,8 @@
-{% include 'common/head.jinja' %}
+{% include 'shared/head.jinja' %}
 
 <body class="flex">
-    <div id="sidebar" class="active">
-        <div id="toggleBtn"><span>&#10095;</span></div>
+    <div id="sidebar">
+        <div id="toggleBtn"><span>&#10094;</span></div>
         <!-- tab btns -->
         <div class="tab-buttons flex spread">
             <button class="tab-btn active" data-tab="style">Style</button>
@@ -105,71 +105,60 @@
             <form class="flex column" action="/logo_uploader" method="POST" enctype="multipart/form-data"
                 id="logo_form">
                 <input class="button" type="file" name="logo">
+                <button type="submit">Upload</button>
             </form>
             <button id="logo_reset">Reset</button>
         </section>
 
         <section class="tab-panel column" id="edit">
-            <h3>edit element of the site</h3>
-            <div class="flex column" id="edit_forms">
-                <form id="about_me_edit_form">
-                    <fieldset class="edit_container">
-                        <legend>About me</legend>
-                        <button class="edit_button">Edit</button>
-                        <button class="edit_remove_button">Remove</button>
-                        <button class="edit_section_reset_button">Reset</button>
+            <h3>edit elements of the site</h3>
+            <form id="content_edit_form">
 
-                        <div class="flex column edit invisible">
-                            <textarea name="about_me" class="edit_field" id="about_me_edit_field"></textarea>
-                            <button type="submit" class="button">Update</button>
-                        </div>
+                <fieldset class="edit_container">
+                    <legend>About me</legend>
 
-                    </fieldset>
-                </form>
+                    <button type="button" class="edit_button">Edit</button>
+                    <button type="button" class="edit_remove_button">Remove</button>
 
-                <!-- potrbuji dodelat to same co u "about me" u vsech dalsich (tzn okamzite prepisovani a update az pak)-->
-
-                {%- for service in content['services'] -%}
-                <fieldset class="edit_container" id="service {{ loop.index }}">
-                    <legend>Service {{ loop.index }}</legend>
-                    <button class="edit_button">Edit</button>
-                    <button class="edit_remove_button">Remove</button>
-
-
-                    <div class="flex column edit invisible">
-                        <form class="flex column">
-                            <input type="text" name="{{ loop.index }} name" value="{{ service['name'] }}">
-                            <textarea name="{{ loop.index }} text" class="edit_field">{{ service['text'] }}</textarea>
-                        </form>
-
-                        <h4>Upload img for service</h4>
-                        <input type="file" name="service{{ loop.index }}_img">
-                        <div class="flex spread">
-                            <button type="submit">Upload</button>
-                            <button type="button" class="img_reset">Reset</button>
-                        </div>
-
+                    <div class="edit_hidden invisible flex column">
+                        <label>Popisek:</label>
+                        <textarea name="about_me">{{ content['about_me'] }}</textarea>
                     </div>
                 </fieldset>
-                {%- endfor -%}
+
+
+                {% for service in content['services'] %}
+                <fieldset class="edit_container" id="service_{{ loop.index }}">
+                    <legend>Service {{ loop.index }}</legend>
+
+                    <button type="button" class="edit_button">Edit</button>
+                    <button type="button" class="edit_remove_button">Remove</button>
+
+                    <div class="edit_hidden invisible flex column">
+                        <label>Název:</label>
+                        <input type="text" name="service_{{ loop.index }}_name" value="{{ service['name'] }}">
+
+                        <label>Popisek:</label>
+                        <textarea name="service_{{ loop.index }}_text">{{ service['text'] }}</textarea>
+                    </div>
+                </fieldset>
+                {% endfor %}
+
+                <button type="button" id="add_service">Add Service</button>
 
                 <input type="submit" value="Save">
-                <button id="content_reset">Reset</button>
+                <button type="button" id="content_reset">Reset</button>
 
-
-                </form>
+            </form>
 
         </section>
-
     </div>
 
 
     <div class="preview-wrapper">
-        <iframe class="preview-page"
-        src="{{ url_for('iframe_page', filename='style' ~ session.get('style', '1') ~ '/index.html') }}"></iframe>
+        <iframe class="preview-page" src="{{ url_for('preview', filename='index.html') }}">
+        </iframe>
     </div>
-    
-
 
     <script src="../static/customize.js"></script>
 </body>

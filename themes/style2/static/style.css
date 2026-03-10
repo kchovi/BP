@@ -1,7 +1,7 @@
 :root {
   --main-clr: #f7f7ff;
   --secondary-clr: #eeeeee;
-  --acc-clr: #ff9301;
+  --acc-clr: #FFA348;
 }
 
 
@@ -162,11 +162,16 @@
     background-position-y: bottom;
   }
 
-  .bio-avatar {flex: 1 50%;}
+  .bio {gap: 4em;}
+
+  .bio-avatar {
+    flex: 1 50%;}
 
   .avatar2 {
     border-radius: 50%;
-    height: 100px;
+    height: 16vw;
+    width: 16vw;
+    overflow: hidden;
   }
 
   .dv-line {border-right: #55555552 solid 1px;} 

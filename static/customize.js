@@ -35,8 +35,7 @@ const sidebar = document.getElementById("sidebar");
 const toggleBtn = document.getElementById("toggleBtn");
 
 toggleBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("active");
-  
+  sidebar.classList.toggle("collapsed");
 });
 
 // side bar tabs
@@ -63,6 +62,7 @@ tabButtons.forEach((btn) => {
 
 const iframe = document.querySelector(".preview-page");
 
+
 document.querySelectorAll('input[name="style"]').forEach((input) => {
   input.addEventListener('change', function () {
     const selectedStyle = this.value;
@@ -75,7 +75,7 @@ document.querySelectorAll('input[name="style"]').forEach((input) => {
       body: `style=${encodeURIComponent(selectedStyle)}`
     }).then(response => {
       if (response.ok) {
-        iframe.src = `/pages/style${selectedStyle}/index.html`;
+        iframe.src = `/preview/index.html`;
       }
     });
   });
@@ -84,22 +84,23 @@ document.querySelectorAll('input[name="style"]').forEach((input) => {
 
 
 // color stuff
-const main_clr = document.querySelector(`input[name="--main-clr"]`);
-const secondary_clr = document.querySelector(`input[name="--secondary-clr"]`);
-const acc_clr = document.querySelector(`input[name="--acc-clr"]`);
+var main_clr;
+var secondary_clr;
+var acc_clr;
 
 function update_colors() {
   const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
   if (!iframeDoc) return;
 
-  iframeDoc.documentElement.style.setProperty('--main-clr', main_clr.value);
-  iframeDoc.documentElement.style.setProperty('--secondary-clr', secondary_clr.value);
-  iframeDoc.documentElement.style.setProperty('--acc-clr', acc_clr.value);
-}
+  const styleEl = iframeDoc.getElementById("theme-vars");
 
-iframe.addEventListener("load", () => {
-  update_colors();
-});
+  styleEl.textContent = `
+        :root {
+            --main-clr: ${main_clr};
+            --secondary-clr: ${secondary_clr};
+            --acc-clr: ${acc_clr};
+        }`;
+}
 
 //custom color picker
 
@@ -109,9 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    update_colors();
-
     const formData = new FormData(form);
+
+    main_clr = formData.get('--main-clr');
+    secondary_clr = formData.get('--secondary-clr');
+    acc_clr = formData.get('--acc-clr');
+
+    update_colors();
 
     const response = await fetch("/user_defined_colors", {
       method: "POST",
@@ -136,12 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new FormData(form);
 
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+      main_clr = formData.get('--main-clr');
+      secondary_clr = formData.get('--secondary-clr');
+      acc_clr = formData.get('--acc-clr');
 
-      iframeDoc.documentElement.style.setProperty('--main-clr', formData.get('--main-clr'));
-      iframeDoc.documentElement.style.setProperty('--secondary-clr', formData.get('--secondary-clr'));
-      iframeDoc.documentElement.style.setProperty('--acc-clr', formData.get('--acc-clr'));
-
+      update_colors();
 
       const response = await fetch("/user_defined_colors", {
         method: "POST",
@@ -155,15 +159,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-//rest button for both
+//reset button for both
 
 const color_reset_btn = document.getElementById("color_reset");
 
 color_reset_btn.addEventListener("click", async () => {
 
-  main_clr.value = "#f7f7ff";
-  secondary_clr.value = "#eeeeee";
-  acc_clr.value = "#f598b4";
+  main_clr = "#f7f7ff";
+  secondary_clr = "#eeeeee";
+  acc_clr = "#FFA348";
   update_colors();
 
   const response = await fetch("/user_defined_colors", {
@@ -177,10 +181,8 @@ color_reset_btn.addEventListener("click", async () => {
 
 });
 
+
 //info
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("info_form");
 
@@ -196,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (response.ok) {
       iframe.contentWindow.location.reload();
-      iframe.contentWindow.document.querySelector(".map").contentWindow.document.reload()
+      // iframe.contentWindow.document.querySelector(".map").contentWindow.document.reload()
     }
     else {
       console.error("Failed to update info.");
@@ -276,96 +278,89 @@ logo_reset_btn.addEventListener("click", async (e) => {
 
 // edit
 
-// const editFields = document.querySelectorAll(".edit_field");
-const editBtns = document.querySelectorAll(".edit_button");
+// edit system (works for static + dynamically added services)
+
+const contentForm = document.getElementById("content_edit_form");
+let serviceIndex = document.querySelectorAll('[id^="service_"]').length;
 
 
-editBtns.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
+// EDIT toggle
+contentForm.addEventListener("click", (e) => {
+
+  if (e.target.classList.contains("edit_button")) {
     e.preventDefault();
 
-    const container = btn.closest(".edit_container");
-    const editElements = container.querySelectorAll(".edit");
+    const container = e.target.closest(".edit_container");
+    const editElements = container.querySelectorAll(".edit_hidden");
 
-    editElements.forEach((element) => {
-      element.classList.toggle("invisible");
+    editElements.forEach((el) => {
+      el.classList.toggle("invisible");
     });
-  });
-});
+  }
 
-const removeBtns = document.querySelectorAll(".edit_remove_button");
-
-removeBtns.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    const container = btn.closest(".edit_container");
-    const containerId = container.getAttribute("id")
-    console.log(containerId)
-
-    iframe.contentWindow.document.getElementById(containerId).classList.toggle("invisible")
-
-  });
 });
 
 
+// REMOVE service
+contentForm.addEventListener("click", async (e) => {
 
+  if (e.target.classList.contains("edit_remove_button")) {
 
-// about me edit handler
-
-document.addEventListener("DOMContentLoaded", () => {
-  const about_me_oninput =
-    document.getElementById("about_me_edit_field");
-
-  const form =
-    document.getElementById("about_me_edit_form");
-
-  iframe.addEventListener("load", () => {
-    const about_me_text =
-      iframe.contentDocument.querySelector("#about_me p.text.box-margin");
-
-    about_me_oninput.addEventListener("input", () => {
-      about_me_text.textContent = about_me_oninput.value;
-    });
-  });
-
-  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(form);
+    const container = e.target.closest(".edit_container");
+    const containerId = container.id;
 
-    const response = await fetch("/site_content/about_me", {
+    const response = await fetch("/site_content/remove", {
       method: "POST",
-      body: formData
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ id: containerId })
     });
 
     if (response.ok) {
-      iframe.contentWindow.location.reload();
-    } else {
-      console.error("Failed to update content.");
+      container.remove();
     }
-  });
-});
-
-
-
-const content_reset_btn = document.getElementById("content_reset");
-
-content_reset_btn.addEventListener("click", async (e) => {
-  e.preventDefault();
-
-  const response = await fetch("/site_content", {
-    method: "POST",
-    body: "RESET"
-  });
-
-  if (response.ok) {
-    iframe.contentWindow.location.reload();
-  }
-  else {
-    console.error("Failed to reset content.");
   }
 
 });
 
 
+// ADD SERVICE
+const addServiceBtn = document.getElementById("add_service");
+
+if (addServiceBtn) {
+
+  addServiceBtn.addEventListener("click", () => {
+
+    serviceIndex++;
+
+    const fieldset = document.createElement("fieldset");
+    fieldset.className = "edit_container";
+    fieldset.id = `service_${serviceIndex}`;
+
+    fieldset.innerHTML = `
+      <legend>Service ${serviceIndex}</legend>
+
+      <button type="button" class="edit_button">Edit</button>
+      <button type="button" class="edit_remove_button">Remove</button>
+
+      <div class="edit_hidden invisible flex column">
+
+        <label>Název:</label>
+        <input type="text" name="service_${serviceIndex}_name">
+
+        <label>Popisek:</label>
+        <textarea name="service_${serviceIndex}_text"></textarea>
+
+      </div>
+    `;
+
+    const submitBtn = contentForm.querySelector('input[type="submit"]');
+
+    contentForm.insertBefore(fieldset, submitBtn);
+
+  });
+
+}

@@ -1,0 +1,64 @@
+project/
+├── content/
+│   ├── pages/
+│   └── uploads/
+│       ├── logo/
+│       │   ├── Hamster Icon.jpeg
+│       │   └── wallpapertip_like-wallpaper_1544107.jpg
+│       └── services/
+├── static/
+│   ├── web-gen/
+│   │   ├── logo-small.png
+│   │   └── logo.png
+│   ├── customize.js
+│   └── styles.css
+├── templates/
+│   ├── shared/
+│   │   └── head.jinja
+│   ├── customize.html
+│   └── index.html
+├── themes/
+│   ├── shared/
+│   │   ├── static/
+│   │   │   ├── 555.png
+│   │   │   ├── envelope-regular.svg
+│   │   │   ├── facebook-square-brands.svg
+│   │   │   ├── logo-placeholder.svg
+│   │   │   ├── map-marker-alt-solid.svg
+│   │   │   ├── mobile-alt-solid.svg
+│   │   │   └── twitter-square-brands.svg
+│   │   └── templates/
+│   │       ├── contact-icons.jinja
+│   │       ├── map.jinja
+│   │       └── style.jinja
+│   ├── style1/
+│   │   ├── static/
+│   │   │   ├── photoswipe/
+│   │   │   │   ├── photoswipe-lightbox.esm.js
+│   │   │   │   ├── photoswipe.css
+│   │   │   │   └── photoswipe.esm.js
+│   │   │   ├── podklady/
+│   │   │   └── style.css
+│   │   └── templates/
+│   │       ├── cenik.html
+│   │       ├── gallery.html
+│   │       └── index.html
+│   └── style2/
+│       ├── static/
+│       │   ├── podklady/
+│       │   │   ├── avatar.svg
+│       │   │   ├── avatar_CH.svg
+│       │   │   ├── border-dark.png
+│       │   │   ├── bullseye-solid.svg
+│       │   │   ├── desktop-solid.svg
+│       │   │   ├── pencil-alt-solid.svg
+│       │   │   └── trophy-solid.svg
+│       │   └── style.css
+│       └── templates/
+│           └── index.html
+├── .gitignore
+├── db.py
+├── deploy.py
+├── ideas.txt
+├── structure.txt
+└── web-gen.py

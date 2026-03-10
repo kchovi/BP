@@ -1,12 +1,29 @@
+import copy
 from flask import *
 import db
 import urllib.parse
 import os
+from jinja2 import ChoiceLoader, FileSystemLoader
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "bp"
 app.jinja_env.lstrip_blocks = True
 app.jinja_env.trim_blocks = True
+
+# jinja loader bcs i wanna separate the themes from thte main app
+theme_base = os.path.join(app.root_path, "themes")
+
+shared_templates = os.path.join(theme_base, "shared", "templates")
+style1_templates = os.path.join(theme_base, "style1", "templates")
+style2_templates = os.path.join(theme_base, "style2", "templates")
+
+app.jinja_loader = ChoiceLoader([
+    app.jinja_loader,
+    FileSystemLoader(shared_templates),
+    FileSystemLoader(style1_templates),
+    FileSystemLoader(style2_templates)
+])
 
 # main site
 
@@ -67,7 +84,6 @@ def site_info():
 
         user_info["map"] = generate_google_map_embed(user_info["addr"])
         user_info["fb-link"] = f"https://www.facebook.com/{user_info['fb']}"
-
         session['user_info'] = user_info
 
     return "OK", 200
@@ -79,66 +95,93 @@ def logo_uploader():
         session['logo_path'] = db.default_logo_path
         return "Reset Content", 205
 
-    if not request.files['logo']:
-        return "Bad reguest", 500
+    if 'logo' not in request.files:
+        return "No file part", 400
 
     file = request.files['logo']
-    upload_folder = os.path.join(
-        app.root_path, 'static/pages/uploads/logo')
-    os.makedirs(upload_folder, exist_ok=True)
-    file.save(os.path.join(upload_folder, file.filename))
 
-    session['logo_path'] = f"/static/pages/uploads/logo/{file.filename}"
+    if file.filename == '':
+        return "No selected file", 400
+
+    filename = secure_filename(file.filename)
+
+    upload_folder = os.path.join(
+        app.root_path,
+        "themes",
+        "shared",
+        "static"
+    )
+
+    os.makedirs(upload_folder, exist_ok=True)
+
+    save_path = os.path.join(upload_folder, filename)
+    file.save(save_path)
+
+    session['logo_path'] = f"/themes_shared_static/{filename}"
+
     return "OK", 200
 
 
 # content (text)
-@app.route("/site_content/<id>", methods=["POST"])
-def site_content(id):
-    content = session.get('content', db.default_content.copy())
 
-    if id == "reset":
-        pass
-    if id == "about_me":
-        print(request.form)
-        content[f'{id}'] = request.form.get(id)
-        print(content[f'{id}'])
-    session['content'] = content
+
+@app.route("/site_content", methods=["POST"])
+def site_content():
+
+    content = session.get('content', copy.deepcopy(db.default_content))
+
+    
+
     return "OK", 200
 
 
-# if request.data == b'RESET':
-    #     session['content'] = db.default_content.copy()
-    #     return "Reset Content", 205
-    # else:
-    #
- # for key in request.form:
-    #     if len(key.split()) > 1:
-    #          split_key = key.split()
-    #          content['services'][int(split_key[0]) -
-    #                              1][split_key[1]] = request.form.get(key)
-    #     else:
-    #          content[key] = request.form.get(key)
-
-    # session['content'] = content
-
-
 # stuff getter
-@app.route("/pages/<path:filename>")
-def iframe_page(filename):
-    if "index.html" in filename:
-        return render_template(f"pages/{filename}",
-                               user_info=session.get(
-                                   'user_info', db.default_info.copy()),
-                               logo_path=session.get(
-                                   'logo_path', db.default_logo_path),
-                               content=session.get('content', db.default_content.copy()))
+@app.route("/preview/<path:filename>")
+def preview(filename):
+    style = session.get("style", "1")
 
-    if filename.endswith(".html"):
-        return render_template(f"pages/{filename}", logo_path=session.get(
-            'logo_path', db.default_logo_path),)
+    template_path = os.path.join(
+        app.root_path,
+        "themes",
+        f"style{style}",
+        "templates",
+        filename
+    )  # bcs flask can see the other templates folder
 
-    return send_from_directory("/pages/", filename)
+    if not os.path.exists(template_path):
+        return "Template not found", 404
+
+    with open(template_path, "r", encoding="utf-8") as f:
+        template_content = f.read()
+
+    return render_template_string(
+        template_content,
+        user_info=session.get('user_info', db.default_info.copy()),
+        logo_path=session.get('logo_path', db.default_logo_path),
+        content=session.get('content', db.default_content.copy()),
+        user_colors=session.get('colors', db.default_colors.copy())
+    )
+
+
+@app.route("/themes_shared_static/<path:filename>")
+def themes_shared_static(filename):
+    shared_static_path = os.path.join(
+        app.root_path, "themes", "shared", "static")
+    return send_from_directory(shared_static_path, filename)
+
+
+@app.route("/preview_static/<path:filename>")
+def preview_static(filename):
+    style = session.get("style", "1")
+
+    static_path = os.path.join(
+        app.root_path,
+        "themes",
+        f"style{style}",
+        "static"
+    )
+
+    return send_from_directory(static_path, filename)
 
 
 if __name__ == '__main__':

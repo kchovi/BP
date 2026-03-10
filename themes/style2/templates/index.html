@@ -4,17 +4,24 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="{{url_for('static', filename='pages/style2/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('preview_static', filename='style.css') }}">
     <title>Web Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-
-    {% include 'pages/common/style.jinja' %}
-
 </head>
+
+<style id="theme-vars">
+    :root {
+        --main-clr : {{user_colors["--main-clr"]}};
+        --secondary-clr : {{user_colors["--secondary-clr"]}};
+        --acc-clr : {{user_colors["--acc-clr"]}};
+    }
+</style>
+
+{% include "contact-icons.jinja" %}
 
 <body class="no-margin">
     <header class="bg-secondary">
@@ -100,7 +107,7 @@
                 <div class="flex whatdoido">
                     <div class="flex column item-whatdoido padding-box bg-secondary border-style">
                         <img alt="pencil"
-                            src="{{url_for('static', filename='pages/style2/podklady/pencil-alt-solid.svg')}}"
+                            src="{{url_for('preview_static', filename='podklady/pencil-alt-solid.svg')}}"
                             height="60">
                         <article class="text-normal">
                             <h3 class="heading">Web Design</h3>
@@ -112,7 +119,7 @@
                     </div>
                     <div class="flex column item-whatdoido padding-box bg-secondary border-style">
                         <img alt="desktop"
-                            src="{{url_for('static', filename='pages/style2/podklady/desktop-solid.svg')}}" height="60">
+                            src="{{url_for('preview_static', filename='podklady/desktop-solid.svg')}}" height="60">
                         <article class="text-normal">
                             <h3 class="heading">Web Development</h3>
                             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris dolor felis, sagittis
@@ -123,7 +130,7 @@
                     </div>
                     <div class="flex column item-whatdoido padding-box bg-secondary border-style">
                         <img alt="bullseye"
-                            src="{{url_for('static', filename='pages/style2/podklady/bullseye-solid.svg')}}"
+                            src="{{url_for('preview_static', filename='podklady/bullseye-solid.svg')}}"
                             height="60">
                         <article class="text-normal">
                             <h3 class="heading">Seo Marketing</h3>
@@ -143,17 +150,17 @@
                 <h2 class="with-accent heading">Awards</h2>
                 <div class="awards flex">
                     <div class="flex column center item-awards padding-box bg-secondary border-style">
-                        <img alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}"
+                        <img alt="trophy" src="{{url_for('preview_static', filename='podklady/trophy-solid.svg')}}"
                             height="50">
                         <span class="clr-black">Creative Designer</span>
                     </div>
                     <div class="flex column center item-awards padding-box bg-secondary border-style">
-                        <img alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}"
+                        <img alt="trophy" src="{{url_for('preview_static', filename='podklady/trophy-solid.svg')}}"
                             height="50">
                         <span class="clr-black">Yearly Best Performer</span>
                     </div>
                     <div class="flex column center item-awards padding-box bg-secondary border-style">
-                        <img alt="trophy" src="{{url_for('static', filename='pages/style2/podklady/trophy-solid.svg')}}"
+                        <img alt="trophy" src="{{url_for('preview_static', filename='podklady/trophy-solid.svg')}}"
                             height="50">
                         <span class="clr-black">Best Learner Award</span>
                     </div>
@@ -224,7 +231,7 @@
 
                     {% for i in range(6) %}
                     <article class="text-normal">
-                        <img alt="dummy" src="{{ url_for('static', filename='pages/common/555.png') }}">
+                        <img alt="dummy" src="{{ url_for('themes_shared_static', filename='555.png') }}">
                         <h3 class="heading">Lorem Ipsum</h3>
                         <time datetime="2024-02-27">27/02/2024</time>
                         <p>
@@ -251,7 +258,9 @@
                                 Always available for freelancing if the right project comes along. Feel free to contact
                                 me.
                             </p>
-                            {% include 'pages/common/contact-icons.jinja' %}
+
+                            {% include "contact.jinja" %}
+                            
                         </section>
                     </div>
                     <div class="contact-item padding-sides-x">
@@ -268,7 +277,7 @@
                         </form>
                     </div>
                 </div>
-                {% include 'pages/common/map.jinja' %}
+                
             </div>
         </section>
 
@@ -280,11 +289,11 @@
                 <div class="flex">
                     <a class="flex center" href="https://twitter.com/?lang=cs">
                         <img alt="twitter"
-                            src="{{url_for('static', filename='pages/common/twitter-square-brands.svg')}}"
+                            src="{{url_for('themes_shared_static', filename='twitter-square-brands.svg')}}"
                             height="35"></a>
                     <a class="flex center" href="https://www.facebook.com/">
                         <img alt="facebook"
-                            src="{{url_for('static', filename='pages/common/facebook-square-brands.svg')}}"
+                            src="{{url_for('themes_shared_static', filename='facebook-square-brands.svg')}}"
                             height="35"></a>
                 </div>
                 <span>&copy; Jakub Chovanec 2024</span>

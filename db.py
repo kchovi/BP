@@ -3,7 +3,8 @@
 default_colors = {
     "--main-clr": "#f7f7ff",
     "--secondary-clr": "#eeeeee",
-    "--acc-clr": "#f598b4"
+    # "--acc-clr": "#f598b4"
+    "--acc-clr": "#FFA348"
 }
 
 
@@ -42,7 +43,7 @@ pallets = [
         "--main-clr": "#F7F7F7",
         "--secondary-clr": "#C0D6DF",
         "--acc-clr": "#4A6FA5"
-    },   
+    },
     {
         "--main-clr": "#EAEAEA",
         "--secondary-clr": "#A4C3B2",
@@ -73,21 +74,25 @@ default_info = {
 }
 
 
-default_logo_path = "/static/pages/common/logo-placeholder.svg"
+default_logo_path = "/themes_shared_static/logo-placeholder.svg"
 
 
 default_content = {
-    "about_me": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin mattis lacinia justo. Duis risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Etiam quis quam. Aliquam in lorem sit amet leo accumsan lacinia. Donec vitae arcu. Nunc dapibus tortor vel mi dapibus sollicitudin.",
+    "about_me": {"text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin mattis lacinia justo. Duis risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Etiam quis quam. Aliquam in lorem sit amet leo accumsan lacinia. Donec vitae arcu. Nunc dapibus tortor vel mi dapibus sollicitudin.",
+                 "visible": True
+                 },
     "services": [
         {
             "name": "Služba 1",
             "text": "Integer vulputate sem a nibh rutrum consequat. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.",
-            "img": "/static/pages/common/555.png",
+            "img": "/themes_shared_static/555.png",
+            "visible": True
         },
         {
             "name": "Služba 2",
             "text": "Integer vulputate sem a nibh rutrum consequat. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.",
-            "img": "/static/pages/common/555.png",
+            "img": "/themes_shared_static/555.png",
+            "visible": True
         },
     ]
 }

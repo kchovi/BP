@@ -79,26 +79,29 @@ body {
 
 @layer sidebar {
     #sidebar {
-        position: absolute;
-        inset: 0 auto 0 0;
         width: 320px;
         background: var(--main-clr);
         border-right: 1px solid var(--border-soft);
         box-shadow: var(--shadow-soft);
-        transform: translateX(-100%);
-        transition: transform 0.25s ease;
-        z-index: 1000;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: visible;
+        z-index: 10;
     }
 
-    #sidebar.active {
-        transform: translateX(0);
+    #sidebar.collapsed {
+        width: 0;
+        border-right: none;
     }
 
-    /* Toggle button = map control */
+    #sidebar.collapsed *:not(#toggleBtn):not(#toggleBtn span) {
+        display: none;
+    }
+
     #toggleBtn {
         position: absolute;
         top: 40vh;
-        right: -32px;
+        right: -33px;
         width: 32px;
         height: 64px;
         background: var(--main-clr);
@@ -109,7 +112,10 @@ body {
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: var(--shadow-soft);
+        box-shadow:
+            4px 0 6px rgba(0, 0, 0, 0.06),
+            8px 0 18px rgba(0, 0, 0, 0.08);
+        ;
     }
 
     #toggleBtn span {
@@ -118,7 +124,7 @@ body {
         transition: transform 0.25s ease;
     }
 
-    #sidebar.active #toggleBtn span {
+    #sidebar.collapsed #toggleBtn span {
         transform: rotate(180deg);
     }
 
@@ -287,13 +293,16 @@ button[type="submit"] {
     font-size: 0.75rem;
 }
 
+.preview-wrapper {
+    height: 100%;
+    border: none;
+    flex: 1;
+    transition: all 0.25s ease;
+}
 
 .preview-page {
     width: 100%;
     height: 100%;
     border: none;
-}
-
-.preview-wrapper {
-
+    transition: width 0.25s ease;
 }

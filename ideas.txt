@@ -7,16 +7,15 @@
 
 # automaticke nahrani na server (muj osobni)
 
-# zmenit velikost iframe aby zabiral celou sirku
 
-# move <style> to be a jinja template - done
 # also move other stuff to a common folder - some
 
 # implement multi user
 
 # nahrani obrazku ke sluzbe
 
-# custom pallety nezustavaji 
+rozhodl jsem se nemit v "edit" instantni prepisovani !jedno update tlacitko! 
 
-tailwind
+tailwind?
 
+"customi
