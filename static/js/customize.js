@@ -130,6 +130,7 @@ function colorPicker(initialMain, initialSecondary, initialAccent) {
     main: initialMain,
     secondary: initialSecondary,
     accent: initialAccent,
+    selectedPalette: null,
 
     updateIframe() {
       const iframe = document.querySelector("#preview-page");
@@ -142,12 +143,12 @@ function colorPicker(initialMain, initialSecondary, initialAccent) {
         iframeDoc.head.appendChild(styleEl);
       }
       styleEl.textContent = `
-                :root {
-                    --main-clr: ${this.main};
-                    --secondary-clr: ${this.secondary};
-                    --acc-clr: ${this.accent};
-                }
-            `;
+        :root {
+          --main-clr: ${this.main};
+          --secondary-clr: ${this.secondary};
+          --acc-clr: ${this.accent};
+        }
+      `;
     },
 
     async saveColors() {
@@ -155,17 +156,14 @@ function colorPicker(initialMain, initialSecondary, initialAccent) {
       formData.append("--main-clr", this.main);
       formData.append("--secondary-clr", this.secondary);
       formData.append("--acc-clr", this.accent);
-
-      await fetch("/user_defined_colors", {
-        method: "POST",
-        body: formData
-      });
+      await fetch("/user_defined_colors", { method: "POST", body: formData });
     },
 
-    applyPalette(main, secondary, accent) {
+    applyPalette(main, secondary, accent, index) {
       this.main = main;
       this.secondary = secondary;
       this.accent = accent;
+      this.selectedPalette = index;
       this.updateIframe();
       this.saveColors();
     },
@@ -174,12 +172,9 @@ function colorPicker(initialMain, initialSecondary, initialAccent) {
       this.main = "#f7f7ff";
       this.secondary = "#eeeeee";
       this.accent = "#FFA348";
+      this.selectedPalette = null;
       this.updateIframe();
-
-      await fetch("/user_defined_colors", {
-        method: "POST",
-        body: "RESET"
-      });
+      await fetch("/user_defined_colors", { method: "POST", body: "RESET" });
     },
 
     init() {

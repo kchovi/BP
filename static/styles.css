@@ -280,6 +280,10 @@ button[type="submit"] {
     pointer-events: none;
 }
 
+.color-form.selected {
+    border-color: var(--accent);
+}
+
 
 .edit_container {
     border: 1px solid var(--border-soft);

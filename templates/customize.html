@@ -109,8 +109,8 @@
 
             <h3>Predefined palettes</h3>
             {%- for palette in pallets -%}
-            <div class="color-form flex spread form-item"
-                @click="applyPalette('{{ palette['--main-clr'] }}', '{{ palette['--secondary-clr'] }}', '{{ palette['--acc-clr'] }}')">
+            <div class="color-form flex spread form-item" :class="{ 'selected': selectedPalette === {{ loop.index }} }"
+                @click="applyPalette('{{ palette['--main-clr'] }}', '{{ palette['--secondary-clr'] }}', '{{ palette['--acc-clr'] }}', {{ loop.index }})">
                 <input type="color" class="color-input" value="{{ palette['--main-clr'] }}">
                 <input type="color" class="color-input" value="{{ palette['--secondary-clr'] }}">
                 <input type="color" class="color-input" value="{{ palette['--acc-clr'] }}">
