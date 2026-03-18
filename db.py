@@ -65,7 +65,7 @@ pallets = [
 
 # basic info for the main site ( might wanna do this in a database but too lazy for that now)
 default_info = {
-    "site-name": "Váš Nadpis",
+    "site_name": "Váš Nadpis",
     "email": "jmeno@domain.com",
     "fb": "user.example",
     "tel": "+420 XXX XXX XXX",
@@ -78,9 +78,35 @@ default_logo_path = "/themes_shared_static/logo-placeholder.svg"
 
 
 default_content = {
-    "about_me": {"text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin mattis lacinia justo. Duis risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Etiam quis quam. Aliquam in lorem sit amet leo accumsan lacinia. Donec vitae arcu. Nunc dapibus tortor vel mi dapibus sollicitudin.",
-                 "visible": True
-                 },
+    "sections": [
+        {
+            "type": "about",
+            "text": "Hello I am a designer"
+        },
+        {
+            "type": "hero",
+            "text": "hero section"
+        },
+        {
+            "type": "service",
+            "name": "Web Design",
+            "text": "Modern UI/UX",
+            "img": "/themes_shared_static/555.png",
+        },
+        {
+            "type": "service",
+            "name": "Development",
+            "text": "Flask apps",
+            "img": "/themes_shared_static/555.png",
+        }
+    ]
+}
+
+
+default_content_old = {
+    "about": {"text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin mattis lacinia justo. Duis risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Etiam quis quam. Aliquam in lorem sit amet leo accumsan lacinia. Donec vitae arcu. Nunc dapibus tortor vel mi dapibus sollicitudin.",
+              "visible": True
+              },
     "services": [
         {
             "name": "Služba 1",

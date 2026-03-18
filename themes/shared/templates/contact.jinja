@@ -1,15 +1,14 @@
 <ul class="no-padding">
-    <li class="custom-bullet" id="fb">
-        <p class="bold"><a href="{{ user_info["fb-link"] }}">{{ user_info["fb"] }}</a></p>
+    <li class="custom-bullet {% if not user_info.fb %}invisible{% endif %}" id="fb">
+        <p class="bold"><a href="{{ user_info['fb-link'] }}" id="fb">{{ user_info["fb"] }}</a></p>
     </li>
-    <li class="custom-bullet" id="tel">
-        <p class="bold">{{ user_info["tel"] }} </p>
+    <li class="custom-bullet {% if not user_info.tel %}invisible{% endif %}" id="tel">
+        <p class="bold">{{ user_info["tel"] }}</p>
     </li>
-    <li class="custom-bullet" id="email">
+    <li class="custom-bullet {% if not user_info.email %}invisible{% endif %}" id="email">
         <p class="bold">{{ user_info["email"] }}</p>
     </li>
-
-    <li class="custom-bullet" id="map">
+    <li class="custom-bullet {% if not user_info.addr %}invisible{% endif %}" id="addr">
         <p class="bold">{{ user_info["addr"] }}</p>
     </li>
 </ul>

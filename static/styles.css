@@ -20,7 +20,7 @@
 }
 
 html {
-    font-family: system-ui, "Segoe UI", sans-serif;
+    font-family: "Segoe UI", sans-serif;
     color: var(--text-primary);
 }
 
@@ -115,7 +115,6 @@ body {
         box-shadow:
             4px 0 6px rgba(0, 0, 0, 0.06),
             8px 0 18px rgba(0, 0, 0, 0.08);
-        ;
     }
 
     #toggleBtn span {
@@ -127,8 +126,6 @@ body {
     #sidebar.collapsed #toggleBtn span {
         transform: rotate(180deg);
     }
-
-
 
     .tab-buttons {
         background: var(--secondary-clr);
@@ -152,13 +149,7 @@ body {
         box-shadow: inset 0 -2px 0 var(--accent);
     }
 
-
     .tab-panel {
-        display: none;
-    }
-
-    .tab-panel.active {
-        display: flex;
         flex-direction: column;
         padding: 0.75em;
         gap: 0.75em;
@@ -237,7 +228,16 @@ button[type="submit"] {
     border: none;
 }
 
+.round {
+    border-radius: 50%;
+    margin: 1em;
+    background-color: var(--accent);
+}
 
+.color-form {
+    margin-block: 1em;
+    cursor: pointer;
+}
 
 .color-input {
     width: 5em;
@@ -276,7 +276,7 @@ button[type="submit"] {
 }
 
 
-.color_form .color-input {
+.color-form .color-input {
     pointer-events: none;
 }
 
@@ -300,9 +300,36 @@ button[type="submit"] {
     transition: all 0.25s ease;
 }
 
-.preview-page {
+#preview-page {
     width: 100%;
     height: 100%;
     border: none;
     transition: width 0.25s ease;
+}
+
+.style_picker_item {
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 1em;
+    cursor: pointer;
+
+}
+
+.scroll {
+    overflow-y: scroll;
+}
+
+#services_container {
+    max-height: 20vw;
+}
+
+#progress-container {
+    width: 100%;
+    background: #eee;
+    height: 6px;
+    margin-top: 8px;
+}
+
+.active-pallete {
+    border-color: var(--accent);
 }

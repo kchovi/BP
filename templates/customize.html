@@ -1,164 +1,199 @@
 {% include 'shared/head.jinja' %}
 
-<body class="flex">
+<body x-data="sidebarTabs('{{ last_tab or 'style' }}')" class="flex">
     <div id="sidebar">
-        <div id="toggleBtn"><span>&#10094;</span></div>
-        <!-- tab btns -->
+        <div id="toggleBtn" @click="collapsed = !collapsed"><span>&#10094;</span></div>
+
+        <!-- tab buttons -->
         <div class="tab-buttons flex spread">
-            <button class="tab-btn active" data-tab="style">Style</button>
-            <button class="tab-btn" data-tab="palette">Palette</button>
-            <button class="tab-btn" data-tab="info">Info</button>
-            <button class="tab-btn" data-tab="edit">Edit</button>
+            <button class="tab-btn" :class="{ 'active': activeTab === 'info' }" @click="setTab('info')">Info</button>
+            <button class="tab-btn" :class="{ 'active': activeTab === 'style' }" @click="setTab('style')">Style</button>
+            <button class="tab-btn" :class="{ 'active': activeTab === 'palette' }"
+                @click="setTab('palette')">Palette</button>
+            <button class="tab-btn" :class="{ 'active': activeTab === 'edit' }" @click="setTab('edit')">Edit</button>
         </div>
 
         <!-- tabs -->
+        <section class="tab-panel column" id="info" x-show="activeTab === 'info'" x-transition>
+            <h3>Please fill out your info :)</h3>
+            <form class="flex column" id="info_form" x-data="liveInfoUpdate()" @submit.prevent="saveInfo($el)">
 
-        <section class="tab-panel column active" id="style">
+                <fieldset class="form-item">
+                    <legend>Name of your site</legend>
+                    <input type="text" name="site_name" @input="updateIframe('site_name', $event.target.value)">
+                </fieldset>
+
+                <fieldset class="form-item">
+                    <legend>Your email</legend>
+                    <input type="email" name="email" @input="updateIframe('email', $event.target.value)">
+                </fieldset>
+
+                <fieldset class="form-item">
+                    <legend>Facebook</legend>
+                    <input type="fb" name="fb" @input="updateIframe('fb', $event.target.value)">
+                </fieldset>
+
+                <fieldset class="form-item">
+                    <legend>Telefon</legend>
+                    <input type="tel" name="tel" @input="updateIframe('tel', $event.target.value)">
+                </fieldset>
+
+                <fieldset class="form-item">
+                    <legend>Adresa</legend>
+                    <input type="addr" name="addr" @input="handleAddr($event.target.value)">
+                </fieldset>
+
+                <button type="reset" hx-post="/site_info" hx-vals='{"reset": true}' hx-target="#preview-page">
+                    Reset
+                </button>
+            </form>
+
+
+
+            <h3>Upload your logo here</h3>
+            <form hx-post="/logo_uploader" hx-trigger="change" hx-target="#preview-page" enctype="multipart/form-data"
+                class="flex column">
+                <input class="button" type="file" name="logo">
+                <button type="reset" hx-post="/logo_uploader" hx-vals='{"reset": true}'>
+                    Reset
+                </button>
+            </form>
+
+        </section>
+
+        <section class="tab-panel column" id="style" x-show="activeTab === 'style'" x-transition>
             <h3>Choose your style</h3>
-            <form class="flex column" id="style_form">
-                <div class="flex spread">
-                    <label for="style1">Style 1</label>
-                    <input type="radio" name="style" value="1" checked="checked">
-                </div>
+            <form class="flex column" id="style_form" hx-post="/site_style" hx-trigger="change"
+                hx-target="#preview-page">
 
-                <div class="flex spread">
-                    <label for="style2">Style 2</label>
-                    <input type="radio" name="style" value="2">
-                </div>
+                <label class="flex column style_picker_item">
+                    <div class="flex spread">
+                        <h4>Style 1</h4>
+                        <input type="radio" name="style" value="1" checked>
+                    </div>
+                    <img src="{{ url_for('static', filename='web-gen/style1.png')}}">
+                </label>
+
+                <label class="flex column style_picker_item">
+                    <div class="flex spread">
+                        <h4>Style 2</h4>
+                        <input type="radio" name="style" value="2">
+                    </div>
+                    <img src="{{ url_for('static', filename='web-gen/style2.png')}}">
+                </label>
+
             </form>
         </section>
 
+        <section
+            x-data="colorPicker('{{ colors['--main-clr'] }}', '{{ colors['--secondary-clr'] }}', '{{ colors['--acc-clr'] }}')"
+            class="tab-panel column" id="palette" x-show="activeTab === 'palette'" x-transition>
 
-        <section class="tab-panel column" id="palette">
-            <h3>Choose a color pallete</h3>
-            <form class="flex column" method="POST" id="custom_color_form">
+            <h3>Choose a color palette</h3>
+            <form class="flex column" id="custom_color_form">
                 <div class="form-item center flex spread">
                     <label>Main colour</label>
-                    <input class="color-input" type="color" name="--main-clr" value="{{ colors['--main-clr'] }}">
+                    <input type="color" class="color-input" x-model="main" @input="updateIframe" name="--main-clr">
                 </div>
                 <div class="form-item center flex spread">
                     <label>Secondary colour</label>
-                    <input class="color-input" type="color" name="--secondary-clr"
-                        value="{{ colors['--secondary-clr'] }}">
+                    <input type="color" class="color-input" x-model="secondary" @input="updateIframe"
+                        name="--secondary-clr">
                 </div>
                 <div class="form-item center flex spread">
                     <label>Accent colour</label>
-                    <input class="color-input" type="color" name="--acc-clr" value="{{ colors['--acc-clr'] }}">
-                </div>
-                <div class="center flex spread">
-                    <button type="submit">Apply</button>
+                    <input type="color" class="color-input" x-model="accent" @input="updateIframe" name="--acc-clr">
                 </div>
             </form>
-            <button id="color_reset">Reset</button>
+            <button @click="resetColors">Reset</button>
 
-            <h3>Predefined pallets</h3>
-
-
+            <h3>Predefined palettes</h3>
             {%- for palette in pallets -%}
-            <form class="flex column color_form" method="POST">
-                <div class="flex spread form-item">
-                    <input class="color-input" type="color" name="--main-clr" value="{{ palette['--main-clr'] }}">
-                    <input class="color-input" type="color" name="--secondary-clr"
-                        value="{{ palette['--secondary-clr'] }}">
-                    <input class="color-input" type="color" name="--acc-clr" value="{{ palette['--acc-clr'] }}">
-                </div>
-
-                <button type="submit">Apply</button>
-            </form>
-
+            <div class="color-form flex spread form-item"
+                @click="applyPalette('{{ palette['--main-clr'] }}', '{{ palette['--secondary-clr'] }}', '{{ palette['--acc-clr'] }}')">
+                <input type="color" class="color-input" value="{{ palette['--main-clr'] }}">
+                <input type="color" class="color-input" value="{{ palette['--secondary-clr'] }}">
+                <input type="color" class="color-input" value="{{ palette['--acc-clr'] }}">
+            </div>
             {%- endfor -%}
 
         </section>
 
-        <section class="tab-panel column" id="info">
-            <h3>Please fill out your info :)</h3>
-            <form class="flex column" method="POST" id="info_form">
-                <fieldset class="form-item">
-                    <legend>Name of your site</legend>
-                    <input type="text" name="site-name">
-                </fieldset>
-                <fieldset class="form-item">
-                    <legend>Your Email</legend>
-                    <input type="email" name="email">
-                </fieldset>
-                <fieldset class="form-item">
-                    <legend>Facebook</legend>
-                    <input type="url/text" name="fb">
-                </fieldset>
-                <fieldset class="form-item">
-                    <legend>Mobile numer</legend>
-                    <input type="tel" name="tel">
-                </fieldset>
-                <fieldset class="form-item">
-                    <legend>Your bussines´s address</legend>
-                    <input type="text" name="addr">
-                </fieldset>
 
-                <div class="flex spread">
-                    <button type="submit">Submit</button>
-                </div>
-                <button id="info_reset">Reset</button>
-            </form>
-
-
-            <h3>Upload your logo here</h3>
-            <form class="flex column" action="/logo_uploader" method="POST" enctype="multipart/form-data"
-                id="logo_form">
-                <input class="button" type="file" name="logo">
-                <button type="submit">Upload</button>
-            </form>
-            <button id="logo_reset">Reset</button>
-        </section>
-
-        <section class="tab-panel column" id="edit">
-            <h3>edit elements of the site</h3>
+        <section class="tab-panel column" id="edit" x-show="activeTab === 'edit'" x-transition>
             <form id="content_edit_form">
+                <h3>Záhlaví</h3>
+                {% for section in content["sections"] %}
+                {% if not section["type"] == "service" %}
+                <fieldset class="edit_container section_block" data-type="{{ section.type }}">
 
-                <fieldset class="edit_container">
-                    <legend>About me</legend>
+                    <legend>{{ section["type"]|capitalize }} Section</legend>
 
-                    <button type="button" class="edit_button">Edit</button>
-                    <button type="button" class="edit_remove_button">Remove</button>
+                    <div class="flex spread center">
+                        <button type="button" class="edit_button">Edit</button>
+                        <input type="checkbox" checked>
+                    </div>
 
                     <div class="edit_hidden invisible flex column">
                         <label>Popisek:</label>
-                        <textarea name="about_me">{{ content['about_me'] }}</textarea>
+                        <textarea class="{{ section.type }}_text">{{ section["text"] }}</textarea>
                     </div>
+
                 </fieldset>
-
-
-                {% for service in content['services'] %}
-                <fieldset class="edit_container" id="service_{{ loop.index }}">
-                    <legend>Service {{ loop.index }}</legend>
-
-                    <button type="button" class="edit_button">Edit</button>
-                    <button type="button" class="edit_remove_button">Remove</button>
-
-                    <div class="edit_hidden invisible flex column">
-                        <label>Název:</label>
-                        <input type="text" name="service_{{ loop.index }}_name" value="{{ service['name'] }}">
-
-                        <label>Popisek:</label>
-                        <textarea name="service_{{ loop.index }}_text">{{ service['text'] }}</textarea>
-                    </div>
-                </fieldset>
+                {% endif %}
                 {% endfor %}
 
-                <button type="button" id="add_service">Add Service</button>
+                <h3>Služby</h3>
+                <div class="scroll" id="services_container">
+                    {% for section in content["sections"] %}
+                    {% if section["type"] == "service" %}
+                    <fieldset class="edit_container section_block" data-type="{{ section.type }}">
 
-                <input type="submit" value="Save">
-                <button type="button" id="content_reset">Reset</button>
+                        <legend>{{ section["type"]|capitalize }} Section</legend>
 
+                        <button type="button" class="edit_button">Edit</button>
+                        <button type="button" class="edit_remove_button">Remove</button>
+
+                        <div class="edit_hidden invisible flex column">
+
+                            <label>Název:</label>
+                            <input type="text" class="service_name" value="{{ section['name'] }}">
+
+                            <label>Popisek:</label>
+                            <textarea class="service_text">{{ section["text"] }}</textarea>
+
+                            <label>Obrázek služby</label>
+                            <input class="button service_img" type="file">
+                        </div>
+
+                    </fieldset>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="flex center">
+                    <button type="button" id="add_service_section" class="button round">+</button>
+                </div>
+
+
+
+
+                <button type="submit">Save</button>
+                <button type="reset">Reset</button>
             </form>
 
         </section>
     </div>
 
 
-    <div class="preview-wrapper">
-        <iframe class="preview-page" src="{{ url_for('preview', filename='index.html') }}">
+    <div class="preview-wrapper flex column">
+        <!-- <div class="topbar flex center bg-color-primary">
+            <button class="resize-btn button" data-width="375px">Mobile</button>
+            <button class="resize-btn button" data-width="768px">Tablet</button>
+            <button class="resize-btn button" data-width="100%">Desktop</button>
+        </div> -->
+
+        <iframe id="preview-page" src="{{ url_for('preview', filename='index.html') }}">
         </iframe>
     </div>
-
-    <script src="../static/customize.js"></script>
+    <script src="{{ url_for('static', filename='js/customize.js') }}"></script>
 </body>

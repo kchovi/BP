@@ -1,4 +1,4 @@
-# open street maps
+# open street maps / mapy.cz
 
 
 # hlavni stranka by mela vypadat stejne jako "customize" tzn bude mit postrani listu ale doprostred neco jineho
@@ -14,8 +14,15 @@
 
 # nahrani obrazku ke sluzbe
 
-rozhodl jsem se nemit v "edit" instantni prepisovani !jedno update tlacitko! 
+[rozhodl jsem se nemit v "edit" instantni prepisovani !jedno update tlacitko! ]????? spis ne
 
 tailwind?
 
-"customi
+predelat if na match kde je to vhodne 
+
+pamatovani posledniho otevreneho tabu
+
+alpine.js, htmx, FullCalendar, Flask-WTF
+
+
+palleety šipka zpět na posůedni zvolenou paletu

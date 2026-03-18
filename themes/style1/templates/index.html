@@ -25,16 +25,8 @@
     <header class="bg-color-primary">
         <div class="wrapper flex header-in">
             <hgroup>
-
-
-
-
-
-
-
-
                 <img src="{{logo_path}}" alt="logo" class="main_logo">
-                <h1 class="heading">{{ user_info["site-name"]}}</h1>
+                <h1 id="site-name" class="heading">{{ user_info.site_name }}</h1>
             </hgroup>
 
             <ul class="nav-bar">
@@ -46,47 +38,48 @@
             </ul>
         </div>
     </header>
-
+    
     <main>
-        <section id="about_me">
+        {%- for section in content['sections'] -%}
+
+        {%- if section['type'] == "about" -%}
+        <section>
             <div class="wrapper padding-y bg-color-secondary">
                 <h2 class="heading with-accent">O mně</h2>
                 <p class="text box-margin">
-                    {{ content['about_me']['text'] }}
+                    {{ section['text'] }}
                 </p>
             </div>
         </section>
+        {%- endif -%}
+        {%- endfor -%}
 
-        <section id="services" class="bg-color-primary">
+        <section class="bg-color-primary">
             <div class="wrapper padding-y">
                 <h2 class="heading with-accent">Služby</h2>
-                {% set reverse = "reverse" %}
-                {%- for service in content['services'] -%}
-                {%- if loop.index % 2 == 1 -%}
-                {%- set reverse = "" -%}
-                {%- endif -%}
-                {%- if service['visible'] -%}
+                {%- for section in content['sections'] -%}
+                    {%- if section['type'] == "service" -%}        
+                        {% set reverse = "reverse" if loop.index % 2 == 0 else "" %}
                 <div class="flex services" id="service_{{ loop.index }}">
                     <div class="flex article-services {{ reverse }} corner-2 box-shadow">
                         <div class="article bg-color-secondary">
                             <article class="box-margin">
-                                <h3 class="heading">{{ service['name'] }}</h3>
+                                <h3 class="heading">{{ section['name'] }}</h3>
                                 <p class="text">
-                                    {{ service['text'] }}
+                                    {{ section['text'] }}
                                 </p>
                             </article>
                         </div>
-                        <img src="{{ service['img'] }}" alt="img">
+                        <img src="{{ section['img'] }}" alt="img">
                     </div>
                     <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a>
                     </div>
                 </div>
                 {%- endif -%}
                 {%- endfor -%}
-
             </div>
         </section>
-
+    
 
 
         <section id="recenze" class="padding-y bg-color-secondary">
