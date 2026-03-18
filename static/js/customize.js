@@ -52,14 +52,6 @@ function liveInfoUpdate() {
       const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
       if (!iframeDoc) return;
 
-      const map = {
-        site_name: "#site-name",
-        email: "#email",
-        tel: "#tel",
-        addr: "#addr",
-        fb: "#fb",
-      };
-
       const liMap = {
         fb: "fb",
         email: "email",
@@ -67,7 +59,10 @@ function liveInfoUpdate() {
         addr: "addr",
       };
 
-      const el = iframeDoc.querySelector(map[field]);
+      const site_name = iframeDoc.getElementById("site-name");
+      if (site_name) site_name.textContent = value;
+
+      const el = iframeDoc.getElementById(liMap[field]);
       if (el) el.querySelector("p").textContent = value;
 
       // if no info == no contact item
