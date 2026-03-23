@@ -81,24 +81,20 @@ default_content = {
     "sections": [
         {
             "type": "about",
-            "text": "Hello I am a designer"
-        },
-        {
-            "type": "hero",
-            "text": "hero section"
+            "text": "Toto je text o mně"
         },
         {
             "type": "service",
-            "name": "Web Design",
-            "text": "Modern UI/UX",
+            "name": "Služba",
+            "text": "Popisek Služby...",
             "img": "/themes_shared_static/555.png",
         },
         {
             "type": "service",
-            "name": "Development",
-            "text": "Flask apps",
+            "name": "Služba",
+            "text": "Popisek Služby...",
             "img": "/themes_shared_static/555.png",
-        }
+        },
     ]
 }
 

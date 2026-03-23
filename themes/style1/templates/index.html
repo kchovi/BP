@@ -43,10 +43,10 @@
         {%- for section in content['sections'] -%}
 
         {%- if section['type'] == "about" -%}
-        <section>
+        <section id="{{section.type}}">
             <div class="wrapper padding-y bg-color-secondary">
                 <h2 class="heading with-accent">O mně</h2>
-                <p class="text box-margin">
+                <p class="text box-margin section_text">
                     {{ section['text'] }}
                 </p>
             </div>
@@ -55,17 +55,17 @@
         {%- endfor -%}
 
         <section class="bg-color-primary">
-            <div class="wrapper padding-y">
+            <div class="wrapper padding-y" id="services-list">
                 <h2 class="heading with-accent">Služby</h2>
                 {%- for section in content['sections'] -%}
                     {%- if section['type'] == "service" -%}        
                         {% set reverse = "reverse" if loop.index % 2 == 0 else "" %}
-                <div class="flex services" id="service_{{ loop.index }}">
+                <div class="flex services" id="service_{{ loop.index0 }}">
                     <div class="flex article-services {{ reverse }} corner-2 box-shadow">
                         <div class="article bg-color-secondary">
                             <article class="box-margin">
-                                <h3 class="heading">{{ section['name'] }}</h3>
-                                <p class="text">
+                                <h3 class="heading section_name">{{ section['name'] }}</h3>
+                                <p class="text section_text">
                                     {{ section['text'] }}
                                 </p>
                             </article>
@@ -78,6 +78,23 @@
                 {%- endif -%}
                 {%- endfor -%}
             </div>
+
+            <template class="invisible" id="service-template">
+                    <div class="flex article-services corner-2 box-shadow">
+                        <div class="article bg-color-secondary">
+                            <article class="box-margin">
+                                <h3 class="heading section_name">Služba</h3>
+                                <p class="text section_text">
+                                    Popisek Služby...
+                                </p>
+                            </article>
+                        </div>
+                        <img src="/themes_shared_static/555.png" alt="img">
+                    </div>
+                    <div class="flex center">
+                        <a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a>
+                    </div>
+            </template>
         </section>
     
 

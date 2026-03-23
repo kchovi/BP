@@ -323,16 +323,10 @@ button[type="submit"] {
     overflow-y: scroll;
 }
 
-#services_container {
+/* #services_container {
     max-height: 20vw;
-}
+} */
 
-#progress-container {
-    width: 100%;
-    background: #eee;
-    height: 6px;
-    margin-top: 8px;
-}
 
 .active-pallete {
     border-color: var(--accent);

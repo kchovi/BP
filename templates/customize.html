@@ -1,7 +1,7 @@
 {% include 'shared/head.jinja' %}
 
-<body x-data="sidebarTabs('{{ last_tab or 'style' }}')" class="flex">
-    <div id="sidebar">
+<body x-data="sidebarTabs('{{ last_tab or 'style' }}')"  x-data="{collapsed : false}" class="flex">
+    <div id="sidebar" :class="collapsed ? 'collapsed' : ''">
         <div id="toggleBtn" @click="collapsed = !collapsed"><span>&#10094;</span></div>
 
         <!-- tab buttons -->
@@ -16,7 +16,7 @@
         <!-- tabs -->
         <section class="tab-panel column" id="info" x-show="activeTab === 'info'" x-transition>
             <h3>Please fill out your info :)</h3>
-            <form class="flex column" id="info_form" x-data="liveInfoUpdate()" @submit.prevent="saveInfo($el)">
+            <form class="flex column" id="info_form" x-data="liveInfoUpdate()">
 
                 <fieldset class="form-item">
                     <legend>Name of your site</legend>
@@ -53,7 +53,7 @@
             <h3>Upload your logo here</h3>
             <form hx-post="/logo_uploader" hx-trigger="change" hx-target="#preview-page" enctype="multipart/form-data"
                 class="flex column">
-                <input class="button" type="file" name="logo">
+                <input class="" type="file" name="logo" accept="image/*">
                 <button type="reset" hx-post="/logo_uploader" hx-vals='{"reset": true}'>
                     Reset
                 </button>
@@ -120,25 +120,23 @@
         </section>
 
 
-        <section class="tab-panel column" id="edit" x-show="activeTab === 'edit'" x-transition>
+        <section class="tab-panel column" id="edit" x-data="editor" x-show="activeTab === 'edit'"
+            x-transition>
+
             <form id="content_edit_form">
                 <h3>Záhlaví</h3>
                 {% for section in content["sections"] %}
                 {% if not section["type"] == "service" %}
-                <fieldset class="edit_container section_block" data-type="{{ section.type }}">
-
+                <fieldset class="edit_container section_block" data-type="{{ section.type }}" id="{{ section.type }}" x-data="{invisible : true}">
                     <legend>{{ section["type"]|capitalize }} Section</legend>
-
                     <div class="flex spread center">
-                        <button type="button" class="edit_button">Edit</button>
-                        <input type="checkbox" checked>
+                        <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
+                        <input type="checkbox" checked @change="toggleRemove('{{ section.type }}')">
                     </div>
-
-                    <div class="edit_hidden invisible flex column">
+                    <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
                         <label>Popisek:</label>
-                        <textarea class="{{ section.type }}_text">{{ section["text"] }}</textarea>
+                        <textarea id="{{ section.type }}_text" @input="updateSection('{{ section.type }}', 'text' ,$event.target.value)">{{ section["text"] }}</textarea>
                     </div>
-
                 </fieldset>
                 {% endif %}
                 {% endfor %}
@@ -147,43 +145,33 @@
                 <div class="scroll" id="services_container">
                     {% for section in content["sections"] %}
                     {% if section["type"] == "service" %}
-                    <fieldset class="edit_container section_block" data-type="{{ section.type }}">
-
-                        <legend>{{ section["type"]|capitalize }} Section</legend>
-
-                        <button type="button" class="edit_button">Edit</button>
-                        <button type="button" class="edit_remove_button">Remove</button>
-
-                        <div class="edit_hidden invisible flex column">
-
+                    <fieldset id="service_{{loop.index0}}" class="edit_container section_block" x-data="{invisible : true}" data-type="service" data-img="{{ section['img'] }}">
+                        <legend>Service Section</legend>
+                        <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
+                        <button type="button" class="edit_remove_button" @click="remove('service_{{loop.index0}}')">Remove</button>
+                        <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
                             <label>Název:</label>
-                            <input type="text" class="service_name" value="{{ section['name'] }}">
-
+                            <input type="text" class="service_name" value="{{ section['name'] }}" @input="updateSection('service_{{loop.index0}}', 'name', $event.target.value)">
                             <label>Popisek:</label>
-                            <textarea class="service_text">{{ section["text"] }}</textarea>
-
+                            <textarea class="service_text" @input="updateSection('service_{{loop.index0}}', 'text', $event.target.value)">{{ section["text"] }}</textarea>
                             <label>Obrázek služby</label>
                             <input class="button service_img" type="file">
                         </div>
-
                     </fieldset>
                     {% endif %}
                     {% endfor %}
                 </div>
+
                 <div class="flex center">
-                    <button type="button" id="add_service_section" class="button round">+</button>
+                    <button type="button" class="button round" @click="addService">+</button>
                 </div>
 
-
-
-
-                <button type="submit">Save</button>
-                <button type="reset">Reset</button>
+                <button type="reset" hx-post="/site_content" hx-vals='{"reset": true}' hx-target="#preview-page" @click="reset">
+                    Reset
+                </button>
             </form>
-
         </section>
     </div>
-
 
     <div class="preview-wrapper flex column">
         <!-- <div class="topbar flex center bg-color-primary">

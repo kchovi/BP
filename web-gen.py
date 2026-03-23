@@ -2,7 +2,6 @@ from flask import *
 import db
 import urllib.parse
 import os
-import re
 from jinja2 import ChoiceLoader, FileSystemLoader
 from werkzeug.utils import secure_filename
 
@@ -25,13 +24,6 @@ app.jinja_loader = ChoiceLoader([
     FileSystemLoader(style1_templates),
     FileSystemLoader(style2_templates)
 ])
-
-ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "svg"}
-
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 # main site
 @app.route("/")
@@ -124,12 +116,17 @@ def logo_uploader():
     return "OK", 200
 
 
+ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "svg"}
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
 # content - sections, images, and so on
 @app.route("/site_content", methods=["POST"])
 def site_content():
-    if request.data == b'RESET':
+    if request.form.get("reset"):
         session['content'] = db.default_content.copy()
-        return "Reset Content", 205
+        return "", 205
 
     data = request.get_json()
     sections = data["sections"]
@@ -142,7 +139,21 @@ def site_content():
     return "OK", 200
 
 
-# save last active tab (keeps per-session state)
+@app.route("/upload_service_img", methods=["POST"])
+def upload_service_img():
+    file = request.files.get("img")
+    if not file or not allowed_file(file.filename):
+        return {"error": "invalid file"}, 400
+
+    filename = secure_filename(file.filename)
+    folder = os.path.join(app.root_path, "themes/shared/static/uploads/services")
+    os.makedirs(folder, exist_ok=True)
+    file.save(os.path.join(folder, filename))
+
+    url = f"/themes_shared_static/uploads/services/{filename}"
+    return {"url": url}
+
+# save last active tab
 @app.route('/save_last_tab', methods=['POST'])
 def save_last_tab():
     data = request.get_json(silent=True) or {}
