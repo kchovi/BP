@@ -2,6 +2,7 @@ from flask import *
 import db
 import urllib.parse
 import os
+import copy
 from jinja2 import ChoiceLoader, FileSystemLoader
 from werkzeug.utils import secure_filename
 
@@ -26,6 +27,8 @@ app.jinja_loader = ChoiceLoader([
 ])
 
 # main site
+
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -34,8 +37,8 @@ def home():
 # customize site
 @app.route('/customize')
 def customize():
-    user_content = session.get('content', db.default_content.copy())
-    user_colors = session.get('colors', db.default_colors.copy())
+    user_content = session.get('content', copy.deepcopy(db.default_content))
+    user_colors = session.get('colors', copy.deepcopy(db.default_colors))
     last_tab = session.get('last_tab')
     return render_template("customize.html", colors=user_colors, pallets=db.pallets, content=user_content, last_tab=last_tab)
 
@@ -51,7 +54,7 @@ def site_style():
 @app.route("/user_defined_colors", methods=["POST"])
 def user_defined_colors():
     if request.data == b'RESET':
-        session['colors'] = db.default_colors.copy()
+        session['colors'] = copy.deepcopy(db.default_colors)
         return "Reset Content", 205
 
     colors = session.get('colors', db.default_colors.copy())
@@ -66,7 +69,7 @@ def user_defined_colors():
 @app.route("/site_info", methods=["POST"])
 def site_info():
     if request.form.get("reset"):
-        session['user_info'] = db.default_info.copy()
+        session['user_info'] = copy.deepcopy(db.default_info)
         return "", 205
 
     user_info = session.get('user_info', db.default_info.copy())
@@ -100,9 +103,6 @@ def logo_uploader():
 
     file = request.files.get("logo")
 
-    if not file or not file.filename:
-        return {"errors": {"logo": ["Please select a file to upload"]}}, 400
-
     if not allowed_file(file.filename):
         return {"errors": {"logo": ["Allowed types: jpg, jpeg, png, gif, svg"]}}, 400
 
@@ -118,24 +118,27 @@ def logo_uploader():
 
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "svg"}
 
+
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # content - sections, images, and so on
+
+
 @app.route("/site_content", methods=["POST"])
 def site_content():
     if request.form.get("reset"):
-        session['content'] = db.default_content.copy()
-        return "", 205
+        session['content'] = copy.deepcopy(db.default_content)
+        print(session['content'])
+        return "OK", 205
 
     data = request.get_json()
-    sections = data["sections"]
-    content = {"sections": sections}
-    for section in content["sections"]:
-        if section["type"] == "service":
-            if not section["img"]:
-                section["img"] = db.default_content["sections"][2]["img"]
-    session['content'] = content
+    print(data)
+    for service in data["services"]:
+        if not service.get("img"):
+            service["img"] = db.default_content["services"][0]["img"]
+
+    session['content'] = data
     return "OK", 200
 
 
@@ -146,7 +149,8 @@ def upload_service_img():
         return {"error": "invalid file"}, 400
 
     filename = secure_filename(file.filename)
-    folder = os.path.join(app.root_path, "themes/shared/static/uploads/services")
+    folder = os.path.join(
+        app.root_path, "themes/shared/static/uploads/services")
     os.makedirs(folder, exist_ok=True)
     file.save(os.path.join(folder, filename))
 
@@ -154,6 +158,8 @@ def upload_service_img():
     return {"url": url}
 
 # save last active tab
+
+
 @app.route('/save_last_tab', methods=['POST'])
 def save_last_tab():
     data = request.get_json(silent=True) or {}
@@ -178,10 +184,10 @@ def preview(filename):
 
     return render_template_string(
         template_content,
-        user_info=session.get('user_info', db.default_info.copy()),
+        user_info=session.get('user_info', copy.deepcopy(db.default_info)),
         logo_path=session.get('logo_path', db.default_logo_path),
-        content=session.get('content', db.default_content.copy()),
-        user_colors=session.get('colors', db.default_colors.copy())
+        content=session.get('content', copy.deepcopy(db.default_content)),
+        user_colors=session.get('colors', copy.deepcopy(db.default_colors))
     )
 
 

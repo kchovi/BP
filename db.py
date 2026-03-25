@@ -78,43 +78,21 @@ default_logo_path = "/themes_shared_static/logo-placeholder.svg"
 
 
 default_content = {
-    "sections": [
-        {
-            "type": "about",
-            "text": "Toto je text o mně"
-        },
-        {
-            "type": "service",
-            "name": "Služba",
-            "text": "Popisek Služby...",
-            "img": "/themes_shared_static/555.png",
-        },
-        {
-            "type": "service",
-            "name": "Služba",
-            "text": "Popisek Služby...",
-            "img": "/themes_shared_static/555.png",
-        },
-    ]
-}
+    "about": {
+        "text": "Toto je text o mně",
+        "visible" : True
+    },
 
-
-default_content_old = {
-    "about": {"text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin mattis lacinia justo. Duis risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Etiam quis quam. Aliquam in lorem sit amet leo accumsan lacinia. Donec vitae arcu. Nunc dapibus tortor vel mi dapibus sollicitudin.",
-              "visible": True
-              },
     "services": [
         {
-            "name": "Služba 1",
-            "text": "Integer vulputate sem a nibh rutrum consequat. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.",
+            "name": "Služba",
+            "text": "Popisek Služby...",
             "img": "/themes_shared_static/555.png",
-            "visible": True
         },
         {
-            "name": "Služba 2",
-            "text": "Integer vulputate sem a nibh rutrum consequat. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Nullam rhoncus aliquam metus.",
+            "name": "Služba",
+            "text": "Popisek Služby...",
             "img": "/themes_shared_static/555.png",
-            "visible": True
-        },
+        }
     ]
 }

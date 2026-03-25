@@ -175,19 +175,39 @@ function colorPicker(initialMain, initialSecondary, initialAccent) {
 }
 
 
+
 function editor() {
     return {
         toggleRemove(id) {
             iframe.getElementById(id).classList.toggle("invisible");
+            this.debouncedSave();
         },
 
         remove(id) {
 
             document.getElementById(id).remove();
             iframe.getElementById(id).remove();
+            this.fixReverse();
+            this.debouncedSave();
+        },
+
+        fixReverse() {
+            const servicesList = iframe.getElementById('services-list');
+            const lst = servicesList.querySelectorAll('.services')
+
+            for (let index = 0; index < lst.length; index++) {
+                const service = lst[index];
+                const inner = service.querySelector('.article-services');
+                inner.classList.remove('reverse');
+                if ((index + 1) % 2 === 0) {
+                    inner.classList.add('reverse');
+                }
+            }
+
         },
 
         reset() {
+            document.getElementById('about_text').textContent = "Toto je text o mě"
             document.getElementById('services_container').replaceChildren();
             this.addServiceToSidebar('service_1');
             this.addServiceToSidebar('service_2');
@@ -197,31 +217,30 @@ function editor() {
             const id = `service_${crypto.randomUUID()}`
             this.addServiceToSidebar(id)
             this.addServiceToIframe(id)
+            this.debouncedSave();
         },
-        
+
 
         addServiceToSidebar(id) {
             const container = document.getElementById('services_container');
             const fs = document.createElement('fieldset');
-            fs.className = 'edit_container section_block';
+            fs.className = 'edit_container service';
             fs.id = id;
             fs.setAttribute('x-data', "{invisible : true}");
-            fs.dataset.type = 'service';
-            fs.dataset.img = ''; 'service_{$}'
+            fs.dataset.img = '';
             fs.innerHTML = `
                 <legend>Service Section</legend>
                 <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
                 <button type="button" class="edit_remove_button" @click="remove('${fs.id}')">Remove</button>
                 <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
                     <label>Název:</label>
-                    <input type="text" class="service_name" value="" @input="updateSection('${fs.id}', 'name', $event.target.value)">
+                    <input type="text" class="service_name" value="Služba" @input="updateSection('${fs.id}', 'name', $event.target.value)">
                     <label>Popisek:</label>
-                    <textarea class="service_text" @input="updateSection('${fs.id}', 'text', $event.target.value)"></textarea>
+                    <textarea class="service_text" @input="updateSection('${fs.id}', 'text', $event.target.value)">Popisek služby...</textarea>
                     <label>Obrázek služby</label>
-                    <input class="button service_img" type="file">
+                    <input class="button service_img" type="file" @change="updateImg">
                 </div>
             `;
-
             container.appendChild(fs);
         },
 
@@ -235,7 +254,7 @@ function editor() {
             newService.className = 'flex services';
             newService.id = `${id}`;
 
-            const idx = wrapper.querySelectorAll('.services').length;
+            const idx = wrapper.querySelectorAll('.services').length + 1;
             const inner = newService.querySelector('.article-services');
             if (idx % 2 === 0) {
                 inner.classList.add('reverse');
@@ -244,9 +263,33 @@ function editor() {
             wrapper.appendChild(newService);
         },
 
+        updateImg(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+           
+            const serviceId = event.target.closest('.edit_container.service').id;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.updateSection(serviceId, 'img', e.target.result);
+            };
+            reader.readAsDataURL(file);
+
+            const form = new FormData();
+            form.append("img", file);
+            fetch("/upload_service_img", { method: "POST", body: form })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.url) {
+                        this.updateSection(serviceId, "img", data.url);
+                        this.debouncedSave();
+                    }
+                });
+        },
+
         updateSection(id, type, value) {
             const section = iframe.getElementById(id);
-            
+
             if (type === 'name') {
                 section.querySelector('.section_name').textContent = value;
             }
@@ -254,211 +297,52 @@ function editor() {
             if (type === 'text') {
                 section.querySelector('.section_text').textContent = value;
             }
+
+            if (type === 'img') {
+                const img = section.querySelector('img');
+                img.src = value;
+                document.getElementById(id).dataset.img = value;
+            }
+            this.debouncedSave();
         },
-        
-    }
-}
 
-
-
-function liveEditUpdate() {
-    return {
         saveTimeout: null,
-
-        init() {
-            // wire up existing (server-rendered) service fieldsets
-            document.querySelectorAll('#services_container .section_block').forEach(fs => {
-                this.bindFieldset(fs);
-            });
-
-            // non-service section textareas
-            document.querySelectorAll('#content_edit_form > fieldset.section_block').forEach(block => {
-                const type = block.dataset.type;
-
-                block.querySelector('textarea')?.addEventListener('input', e => {
-                    this.updateSectionText(type, e.target.value);
-                });
-                block.querySelector('input[type="checkbox"]')?.addEventListener('change', e => {
-                    this.toggleSection(type, e.target.checked);
-                });
-                block.querySelector('.edit_button')?.addEventListener('click', () => {
-                    block.querySelector('.edit_hidden').classList.toggle('invisible');
-                });
-            });
-
-            // event delegation for dynamic service fieldsets (edit / remove buttons)
-            document.getElementById('services_container').addEventListener('click', e => {
-                const fs = e.target.closest('.section_block');
-                if (!fs) return;
-                if (e.target.classList.contains('edit_button'))
-                    fs.querySelector('.edit_hidden').classList.toggle('invisible');
-                if (e.target.classList.contains('edit_remove_button'))
-                    this.removeService(fs);
-            });
-
-            // add service button
-            // document.getElementById('add_service_section').addEventListener('click', () => {
-            //     this.addService();
-            // });
-        },
-
-        // ─── helpers ──────────────────────────────────────────
-
-        // 1-based position of a service fieldset in the editor
-        serviceIndex(fieldset) {
-            return [...document.querySelectorAll('#services_container .section_block')]
-                .indexOf(fieldset);
-        },
-
-        // ─── non-service sections ─────────────────────────────
-
-        updateSectionText(type, value) {
-            const selectors = { about: '#about p.text', hero: '#hero p.text' };
-            const el = iframe.querySelector(selectors[type]);
-            if (el) el.textContent = value;
-            this.debouncedSave();
-        },
-
-        toggleSection(type, visible) {
-            iframe.querySelector(`#${type}`)?.classList.toggle('invisible', !visible);
-            this.debouncedSave();
-        },
-
-        // ─── service sections ─────────────────────────────────
-
-        // bind inputs on a fieldset (works for both existing and newly created ones)
-        bindFieldset(fs) {
-            fs.querySelector('.service_name')?.addEventListener('input', e => {
-                const el = iframe.querySelector(`#service_${this.serviceIndex(fs)} h3.heading`);
-                if (el) el.textContent = e.target.value;
-                this.debouncedSave();
-            });
-            fs.querySelector('.service_text')?.addEventListener('input', e => {
-                const el = iframe.querySelector(`#service_${this.serviceIndex(fs)} p.text`);
-                if (el) el.textContent = e.target.value;
-                this.debouncedSave();
-            });
-            fs.querySelector('.service_img')?.addEventListener('change', async e => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const fd = new FormData();
-                fd.append('img', file);
-                const res = await fetch('/upload_service_img', { method: 'POST', body: fd });
-                const { url } = await res.json();
-                const img = iframe.querySelector(`#service_${this.serviceIndex(fs)} img`);
-                if (img) img.src = url;
-                fs.dataset.img = url;
-                this.debouncedSave();
-            });
-        },
-
-        addService() {
-            const container = document.getElementById('services_container');
-            const idx = container.querySelectorAll('.section_block').length + 1;
-
-            // 1. add fieldset to editor
-            const fs = document.createElement('fieldset');
-            fs.className = 'edit_container section_block';
-            fs.dataset.type = 'service';
-            fs.dataset.img = '';
-            fs.innerHTML = `
-                <legend>Service Section</legend>
-                <button type="button" class="edit_button">Edit</button>
-                <button type="button" class="edit_remove_button">Remove</button>
-                <div class="edit_hidden flex column">
-                    <label>Název:</label>
-                    <input type="text" class="service_name" placeholder="Název služby">
-                    <label>Popisek:</label>
-                    <textarea class="service_text" placeholder="Popis služby..."></textarea>
-                    <label>Obrázek služby</label>
-                    <input class="button service_img" type="file">
-                </div>`;
-            container.appendChild(fs);
-            this.bindFieldset(fs);
-
-            // 2. mirror into iframe
-            this.insertIframeService(idx, '', '', '/themes_shared_static/555.png');
-            this.debouncedSave();
-        },
-
-        removeService(fs) {
-            const idx = this.serviceIndex(fs);
-
-            // remove from iframe and re-number
-            iframe.getElementById(`service_${idx}`)?.remove();
-            iframe.querySelectorAll('[id^="service_"]').forEach((el, i) => {
-                el.id = `service_${i + 1}`;
-                // keep reverse class in sync with odd/even
-                const inner = el.querySelector('.article-services');
-                if (inner) {
-                    inner.classList.toggle('reverse', (i + 1) % 2 === 0);
-                }
-            });
-
-            fs.remove();
-            this.debouncedSave();
-        },
-
-        // builds and appends a service block into the iframe
-        insertIframeService(idx, name, text, imgSrc) {
-            const wrapper = iframe.getElementById('services-list');
-            if (!wrapper) return;
-
-            const reverse = idx % 2 === 0 ? 'reverse' : '';
-            const div = iframe.doc.createElement('div');
-            div.className = 'flex services';
-            div.id = `service_${idx}`;
-            div.innerHTML = `
-                <div class="flex article-services ${reverse} corner-2 box-shadow">
-                    <div class="article bg-color-secondary">
-                        <article class="box-margin">
-                            <h3 class="heading">${name}</h3>
-                            <p class="text">${text}</p>
-                        </article>
-                    </div>
-                    <img src="${imgSrc}" alt="img">
-                </div>
-                <div class="flex center">
-                    <a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a>
-                </div>`;
-            wrapper.appendChild(div);
-        },
-
-        // ─── persistence ──────────────────────────────────────
 
         debouncedSave() {
             clearTimeout(this.saveTimeout);
-            this.saveTimeout = setTimeout(() => this.saveContent(), 600);
+            this.saveTimeout = setTimeout(() => this.save(), 500);
         },
 
-        saveContent() {
-            const sections = [];
+        async save() {
+            const aboutSection = document.getElementById('about');
+            const aboutText = aboutSection?.querySelector('#about_text')?.value || "";
+            const aboutVisibility = aboutSection?.querySelector('#about_visibility').checked;
 
-            // non-service (preserves order from the DOM)
-            document.querySelectorAll('#content_edit_form > fieldset.section_block').forEach(block => {
-                sections.push({
-                    type: block.dataset.type,
-                    text: block.querySelector('textarea')?.value ?? '',
+            const services = [];
+            document.querySelectorAll('.service').forEach(service => {
+                services.push({
+                    name: service.querySelector(".service_name")?.value || "",
+                    text: service.querySelector(".service_text")?.value || "",
+                    img: service.dataset.img || ""
                 });
             });
 
-            // services
-            document.querySelectorAll('#services_container .section_block').forEach(block => {
-                sections.push({
-                    type: 'service',
-                    name: block.querySelector('.service_name')?.value ?? '',
-                    text: block.querySelector('.service_text')?.value ?? '',
-                    img: block.dataset.img ?? '',
-                });
-            });
+            const formData = {
+                about: {
+                    text: aboutText,
+                    visible: aboutVisibility
+                },
+                services: services
+            };
 
-            return fetch('/site_content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sections }),
+            await fetch("/site_content", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
             });
-        },
-    };
+        }
+
+    }
 }
 
 

@@ -123,42 +123,41 @@
         <section class="tab-panel column" id="edit" x-data="editor" x-show="activeTab === 'edit'"
             x-transition>
 
-            <form id="content_edit_form">
+            <form id="content_edit_form" autocomplete="off">
                 <h3>Záhlaví</h3>
-                {% for section in content["sections"] %}
-                {% if not section["type"] == "service" %}
-                <fieldset class="edit_container section_block" data-type="{{ section.type }}" id="{{ section.type }}" x-data="{invisible : true}">
-                    <legend>{{ section["type"]|capitalize }} Section</legend>
+                {%- for section_name, section in content.items() -%}
+                {%- if section_name != 'services' -%}
+                {% set visibility = "checked" if content.about.visible else "" %}
+                <fieldset class="edit_container"  id="{{ section_name }}" x-data="{invisible : true}">
+                    <legend>{{ section_name|capitalize }} Section</legend>
                     <div class="flex spread center">
                         <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
-                        <input type="checkbox" checked @change="toggleRemove('{{ section.type }}')">
+                        <input id="{{ section_name }}_visibility" type="checkbox" {{visibility}} @change="toggleRemove('{{ section_name }}')">
                     </div>
                     <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
                         <label>Popisek:</label>
-                        <textarea id="{{ section.type }}_text" @input="updateSection('{{ section.type }}', 'text' ,$event.target.value)">{{ section["text"] }}</textarea>
+                        <textarea id="{{ section_name }}_text" @input="updateSection('{{ section_name }}', 'text' ,$event.target.value)">{{ section.text }}</textarea>
                     </div>
                 </fieldset>
-                {% endif %}
-                {% endfor %}
+                {%- endif -%}
+                {%- endfor -%}
 
                 <h3>Služby</h3>
                 <div class="scroll" id="services_container">
-                    {% for section in content["sections"] %}
-                    {% if section["type"] == "service" %}
-                    <fieldset id="service_{{loop.index0}}" class="edit_container section_block" x-data="{invisible : true}" data-type="service" data-img="{{ section['img'] }}">
+                    {% for service in content.services %}
+                    <fieldset id="service_{{loop.index}}" class="edit_container service" x-data="{invisible : true}" data-img="{{ service.img }}">
                         <legend>Service Section</legend>
                         <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
-                        <button type="button" class="edit_remove_button" @click="remove('service_{{loop.index0}}')">Remove</button>
+                        <button type="button" class="edit_remove_button" @click="remove('service_{{loop.index}}')">Remove</button>
                         <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
                             <label>Název:</label>
-                            <input type="text" class="service_name" value="{{ section['name'] }}" @input="updateSection('service_{{loop.index0}}', 'name', $event.target.value)">
+                            <input type="text" class="service_name" value="{{ service.name }}" @input="updateSection('service_{{loop.index}}', 'name', $event.target.value)">
                             <label>Popisek:</label>
-                            <textarea class="service_text" @input="updateSection('service_{{loop.index0}}', 'text', $event.target.value)">{{ section["text"] }}</textarea>
+                            <textarea class="service_text" @input="updateSection('service_{{loop.index}}', 'text', $event.target.value)">{{ service.text }}</textarea>
                             <label>Obrázek služby</label>
-                            <input class="button service_img" type="file">
+                            <input class="button service_img" type="file" accept="image/*" @change="updateImg">
                         </div>
                     </fieldset>
-                    {% endif %}
                     {% endfor %}
                 </div>
 
@@ -166,7 +165,7 @@
                     <button type="button" class="button round" @click="addService">+</button>
                 </div>
 
-                <button type="reset" hx-post="/site_content" hx-vals='{"reset": true}' hx-target="#preview-page" @click="reset">
+                <button type="reset" form="content_edit_form" hx-post="/site_content" hx-vals='{"reset": true}' hx-target="#preview-page" @click="reset">
                     Reset
                 </button>
             </form>
