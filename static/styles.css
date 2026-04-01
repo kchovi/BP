@@ -21,7 +21,7 @@
 
 html {
     font-family: "Segoe UI", sans-serif;
-    color: var(--text-primary);
+
 }
 
 html,
@@ -323,11 +323,16 @@ button[type="submit"] {
     overflow-y: scroll;
 }
 
-/* #services_container {
-    max-height: 20vw;
-} */
 
 
 .active-pallete {
     border-color: var(--accent);
 }
+
+.img-preview {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: var(--radius-sm, 4px);
+    object-fit: cover;
+}
+

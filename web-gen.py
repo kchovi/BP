@@ -40,7 +40,15 @@ def customize():
     user_content = session.get('content', copy.deepcopy(db.default_content))
     user_colors = session.get('colors', copy.deepcopy(db.default_colors))
     last_tab = session.get('last_tab')
-    return render_template("customize.html", colors=user_colors, pallets=db.pallets, content=user_content, last_tab=last_tab)
+    logo_path = session.get('logo_path', db.default_logo_path)
+    return render_template("customize.html", 
+                           colors=user_colors, 
+                           pallets=db.pallets, 
+                           content=user_content, 
+                           last_tab=last_tab, 
+                           logo_path=logo_path, 
+                           default_logo_path=db.default_logo_path,
+                           default_service_img=db.default_content[1]["service_list"][0]["img"])
 
 
 @app.route("/site_style", methods=["POST"])
@@ -133,12 +141,18 @@ def site_content():
         return "OK", 205
 
     data = request.get_json()
-    print(data)
-    for service in data["services"]:
-        if not service.get("img"):
-            service["img"] = db.default_content["services"][0]["img"]
 
-    session['content'] = data
+    for section in data["content"]:
+        section_id = section.get("id")
+        if section_id == "services":
+            service_list = section.get("service_list", [])
+            for service in service_list:
+                if not service.get("img"):
+                    service["img"] = db.default_content[1]["service_list"][0]["img"]
+            section["service_list"] = service_list
+
+    session['content'] = data["content"]
+    print(session['content'])
     return "OK", 200
 
 
@@ -146,16 +160,14 @@ def site_content():
 def upload_service_img():
     file = request.files.get("img")
     if not file or not allowed_file(file.filename):
-        return {"error": "invalid file"}, 400
+        return "", 400
 
     filename = secure_filename(file.filename)
-    folder = os.path.join(
-        app.root_path, "themes/shared/static/uploads/services")
+    folder = os.path.join(app.root_path, "themes/shared/static/uploads/services")
     os.makedirs(folder, exist_ok=True)
     file.save(os.path.join(folder, filename))
 
-    url = f"/themes_shared_static/uploads/services/{filename}"
-    return {"url": url}
+    return {"filename": filename}, 200
 
 # save last active tab
 

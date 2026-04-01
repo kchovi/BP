@@ -21,61 +21,54 @@
 
 {% include "contact-icons.jinja" %}
 
-<body class="bg-color-secondary">
-    <header class="bg-color-primary">
+<body>
+    <header class="bg-color-secondary">
         <div class="wrapper flex header-in">
             <hgroup>
-                <img src="{{logo_path}}" alt="logo" class="main_logo">
+                <img id="logo" src="{{logo_path}}" alt="logo" class="main_logo">
                 <h1 id="site-name" class="heading">{{ user_info.site_name }}</h1>
             </hgroup>
 
-            <ul class="nav-bar">
-                <!-- <li class="nav-item"><a class="text" href="#services">Služby</a></li> -->
-                <li class="nav-item"><a class="text" href="cenik.html">Ceník</a></li>
-                <li class="nav-item"><a class="text" href="gallery.html">Galerie</a></li>
-                <li class="nav-item"><a class="text" href="#contact">Kontakt</a></li>
-                <li class="nav-item"><a class="text" href="">Objednat se</a></li>
-            </ul>
+            {% include "navbar.jinja" %}
         </div>
     </header>
     
     <main>
-        {%- if content.about -%}
-        {% set visibility
-             = "" if content.about.visible else "invisible" %}
-
-             
-        <section id="about" class="{{visibility}}">
-            <div class="wrapper padding-y bg-color-secondary">
-                <h2 class="heading with-accent">O mně</h2>
-                <p class="text box-margin section_text">
-                    {{ content.about.text }}
-                </p>
+        {%- for section in content -%}
+        {%- if section.id == 'about' -%}
+        {% set visibility = "" if section.visible else "invisible" %}
+        <section id="{{section.id}}" class="{{visibility}} bg-color-primary">
+            <div class="wrapper padding-y">
+                <h2 class="heading with-accent section_name">{{ section.name }}</h2>
+                <p class="text box-margin section_text">{{ section.text }}</p>
             </div>
         </section>
         {%- endif -%}
+        {%- endfor -%}
        
 
         <section class="bg-color-primary">
             <div class="wrapper padding-y" id="services-list">
                 <h2 class="heading with-accent">Služby</h2>
-                {%- for service in content.services -%}
+                {%- for section in content -%}
+                {%- if section.id == 'services' -%}
+                {%- for service in section.service_list -%}
                 {% set reverse = "reverse" if loop.index % 2 == 0 else "" %}
                 <div class="flex services" id="service_{{ loop.index }}">
                     <div class="flex article-services {{ reverse }} corner-2 box-shadow">
                         <div class="article bg-color-secondary">
                             <article class="box-margin">
                                 <h3 class="heading section_name">{{ service.name }}</h3>
-                                <p class="text section_text">
-                                    {{ service.text }}
-                                </p>
+                                <p class="text section_text">{{ service.text }}</p>
                             </article>
                         </div>
-                        <img src="{{ service.img }}" alt="img">
+                        <img src="{{ service.img }}" alt="img" class="service-img">
                     </div>
                     <div class="flex center"><a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a>
                     </div>
                 </div>
+                {%- endfor -%}
+                {%- endif -%}
                 {%- endfor -%}
                    
             </div>
@@ -90,7 +83,7 @@
                                 </p>
                             </article>
                         </div>
-                        <img src="/themes_shared_static/555.png" alt="img">
+                        <img src="/themes_shared_static/555.png" alt="img" class="service-img">
                     </div>
                     <div class="flex center">
                         <a class="button box-margin box-shadow" href="gallery.html">Více Fotek</a>
@@ -99,8 +92,10 @@
         </section>
     
 
-
-        <section id="recenze" class="padding-y bg-color-secondary">
+        {%- for section in content -%}
+        {%- if section.id == 'reviews' -%}
+        {% set visibility = "" if section.visible else "invisible" %}
+        <section id="{{section.id}}" class="padding-y bg-color-secondary {{visibility}}">
             <div class="wrapper">
                 <h2 class="heading with-accent">Napište mi recenzi</h2>
                 <div class="flex services">
@@ -113,19 +108,24 @@
                                 </p>
                             </section>
                         </div>
-                        <div class="flex center img-services"><a class="button box-margin box-shadow" href="">Napsat
-                                Recenzi</a></div>
+                        <div class="flex center img-services">
+                            <a class="button box-margin box-shadow" href="">
+                                Napsat Recenzi
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+        {%- endif -%}
+        {%- endfor -%}
 
 
-        <section id="contact" class="padding-y bg-color-secondary">
+        <section id="contact" class="padding-y bg-color-primary">
             <div class="wrapper">
                 <h2 class="heading with-accent">Kontakt</h2>
                 <div class="grid-contact border">
-                    <div class="bg-color-secondary">
+                    <div>
                         {% include "contact.jinja" %}
                     </div>
                     {% include "map.jinja" %}
@@ -136,7 +136,7 @@
 
     </main>
 
-    <footer class="bg-color-primary">
+    <footer class="bg-color-secondary">
         <div class="wrapper flex center">
             <span>&copy;Jakub Chovanec 2024</span>
         </div>

@@ -1,6 +1,6 @@
 {% include 'shared/head.jinja' %}
 
-<body x-data="sidebarTabs('{{ last_tab or 'style' }}')"  x-data="{collapsed : false}" class="flex">
+<body x-data="sidebarTabs('{{ last_tab or 'info' }}')" x-data="{collapsed : false}" class="flex">
     <div id="sidebar" :class="collapsed ? 'collapsed' : ''">
         <div id="toggleBtn" @click="collapsed = !collapsed"><span>&#10094;</span></div>
 
@@ -49,12 +49,15 @@
             </form>
 
 
-
             <h3>Upload your logo here</h3>
-            <form hx-post="/logo_uploader" hx-trigger="change" hx-target="#preview-page" enctype="multipart/form-data"
-                class="flex column">
-                <input class="" type="file" name="logo" accept="image/*">
-                <button type="reset" hx-post="/logo_uploader" hx-vals='{"reset": true}'>
+            <form class="flex column" x-data="logoUploader">
+                <input id="logo_input" type="file" name="logo" accept="image/*" @change="upload">
+                <div id="logo_preview">
+                    {%- if logo_path != default_logo_path -%}
+                    <img src="{{ logo_path }}" class="img-preview">
+                    {%- endif -%}
+                </div>
+                <button type="reset" @click="reset">
                     Reset
                 </button>
             </form>
@@ -120,64 +123,119 @@
         </section>
 
 
-        <section class="tab-panel column" id="edit" x-data="editor" x-show="activeTab === 'edit'"
-            x-transition>
+        <section class="tab-panel column" id="edit" x-data="editor" x-show="activeTab === 'edit'" x-transition>
 
-            <form id="content_edit_form" autocomplete="off">
+            <form id="content_edit_form" autocomplete="off" class="scroll">
+                <h3>Podstránky</h3>
+
+                {%- for section in content -%}
+                {%- if section.id not in ['about', 'services', 'reviews'] -%}
+                {% set visibility = "checked" if section.visible else "" %}
+                <fieldset class="edit_container" id="{{ section.id }}" x-data="{invisible : true}">
+                    <legend>{{ section.name }}</legend>
+                    <div class="flex spread center">
+                        <input id="{{ section.id }}_visibility" type="checkbox" {{visibility}}
+                            @change="toggleRemove('{{ section.id }}')">
+                    </div>
+                </fieldset>
+                {%- endif -%}
+                {%- endfor -%}
+
                 <h3>Záhlaví</h3>
-                {%- for section_name, section in content.items() -%}
-                {%- if section_name != 'services' -%}
-                {% set visibility = "checked" if content.about.visible else "" %}
-                <fieldset class="edit_container"  id="{{ section_name }}" x-data="{invisible : true}">
-                    <legend>{{ section_name|capitalize }} Section</legend>
+                {%- for section in content -%}
+                {%- if section.id == 'about' -%}
+                {%- set visibility = "checked" if section.visible else "" -%}
+                <fieldset class="edit_container" id="{{ section.id }}" x-data="{invisible : true}">
+                    <legend>Uvodní Sekce</legend>
                     <div class="flex spread center">
                         <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
-                        <input id="{{ section_name }}_visibility" type="checkbox" {{visibility}} @change="toggleRemove('{{ section_name }}')">
+                        <input id="{{ section.id }}_visibility" type="checkbox" {{visibility}}
+                            @change="toggleRemove('{{ section.id }}')">
                     </div>
                     <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
+                        <label>Název:</label>
+                        <input type="text" id="{{ section.id }}_name" value="{{ section.name }}"
+                            @input="updateSection('{{ section.id }}', 'name', $event.target.value)">
                         <label>Popisek:</label>
-                        <textarea id="{{ section_name }}_text" @input="updateSection('{{ section_name }}', 'text' ,$event.target.value)">{{ section.text }}</textarea>
+                        <textarea id="{{ section.id }}_text"
+                            @input="updateSection('{{ section.id }}', 'text', $event.target.value)">{{ section.text }}</textarea>
+
                     </div>
                 </fieldset>
                 {%- endif -%}
                 {%- endfor -%}
 
                 <h3>Služby</h3>
-                <div class="scroll" id="services_container">
-                    {% for service in content.services %}
-                    <fieldset id="service_{{loop.index}}" class="edit_container service" x-data="{invisible : true}" data-img="{{ service.img }}">
-                        <legend>Service Section</legend>
+                <div id="services_container">
+                    {%- for section in content -%}
+                    {%- if section.id == 'services' -%}
+                    {%- for service in section.service_list -%}
+                    <fieldset id="service_{{loop.index}}" class="edit_container service" x-data="{invisible : true}"
+                        data-img="{{ service.img }}">
+                        <legend class="fieldset_name">{{ service.name }}</legend>
                         <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
-                        <button type="button" class="edit_remove_button" @click="remove('service_{{loop.index}}')">Remove</button>
+                        <button type="button" class="edit_remove_button"
+                            @click="remove('service_{{loop.index}}')">Remove</button>
                         <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
                             <label>Název:</label>
-                            <input type="text" class="service_name" value="{{ service.name }}" @input="updateSection('service_{{loop.index}}', 'name', $event.target.value)">
+                            <input type="text" class="service_name" value="{{ service.name }}"
+                                @input="updateSection('service_{{loop.index}}', 'name', $event.target.value)">
                             <label>Popisek:</label>
-                            <textarea class="service_text" @input="updateSection('service_{{loop.index}}', 'text', $event.target.value)">{{ service.text }}</textarea>
-                            <label>Obrázek služby</label>
-                            <input class="button service_img" type="file" accept="image/*" @change="updateImg">
+                            <textarea class="service_text"
+                                @input="updateSection('service_{{loop.index}}', 'text', $event.target.value)">{{ service.text }}</textarea>
+                            <label>Úvodní fotografie:</label>
+                            <input class="button service_img" type="file" accept="image/*" @change="updateSection('service_{{loop.index}}', 'img', $event.target.files[0])">
+                            <div class="service_img_preview">
+                                {%- if service.img != default_service_img -%}
+                                <img src="{{ service.img }}" class="img-preview">
+                                {%- endif -%}
+                            </div>
+                            <label>Cena:</label>
+                            <input type="number" min="0" step="50" value="{{service.price}}" class="service_price"
+                                @input="updateSection('service_{{loop.index}}', 'price', $event.target.value)">
                         </div>
                     </fieldset>
-                    {% endfor %}
+                    {%- endfor -%}
+                    {%- endif -%}
+                    {%- endfor -%}
                 </div>
 
                 <div class="flex center">
                     <button type="button" class="button round" @click="addService">+</button>
                 </div>
 
-                <button type="reset" form="content_edit_form" hx-post="/site_content" hx-vals='{"reset": true}' hx-target="#preview-page" @click="reset">
+                <h3>Další sekce</h3>
+                <div>
+                    {%- for section in content -%}
+                    {%- if section.id == 'reviews' -%}
+                    {% set visibility = "checked" if section.visible else "" %}
+                    <fieldset class="edit_container" id="{{ section.id }}" x-data="{invisible : true}">
+                        <legend>{{ section.name }}</legend>
+                        <div class="flex spread center">
+                            <input id="{{ section.id }}_visibility" type="checkbox" {{visibility}}
+                                @change="toggleRemove('{{ section.id }}')">
+                        </div>
+                    </fieldset>
+                    {%- endif -%}
+                    {%- endfor -%}
+                </div>
+                <h3></h3>
+                <button type="button" hx-post="/site_content" hx-vals='{"reset": true}' hx-target="#preview-page"
+                    @click="reset">
                     Reset
                 </button>
             </form>
+
+
         </section>
     </div>
 
     <div class="preview-wrapper flex column">
-        <!-- <div class="topbar flex center bg-color-primary">
-            <button class="resize-btn button" data-width="375px">Mobile</button>
-            <button class="resize-btn button" data-width="768px">Tablet</button>
-            <button class="resize-btn button" data-width="100%">Desktop</button>
-        </div> -->
+        <div class="topbar flex center">
+            <button class="resize-btn button" @click="resizeIframe('mobile')">Mobile</button>
+            <button class="resize-btn button" @click="resizeIframe('tablet')">Tablet</button>
+            <button class="resize-btn button" @click="resizeIframe('desktop')">Desktop</button>
+        </div>
 
         <iframe id="preview-page" src="{{ url_for('preview', filename='index.html') }}">
         </iframe>

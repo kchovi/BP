@@ -8,21 +8,12 @@
 # automaticke nahrani na server (muj osobni)
 
 
-# also move other stuff to a common folder - some
-
 # implement multi user
 
-# nahrani obrazku ke sluzbe
 
-[rozhodl jsem se nemit v "edit" instantni prepisovani !jedno update tlacitko! ]????? spis ne
 
-tailwind?
+tailwind 
 
 predelat if na match kde je to vhodne 
 
-pamatovani posledniho otevreneho tabu
-
-alpine.js, htmx, FullCalendar, Flask-WTF
-
-
-palleety šipka zpět na posůedni zvolenou paletu
+alpine.js, htmx, FullCalendar,

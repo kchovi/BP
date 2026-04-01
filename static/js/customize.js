@@ -110,6 +110,37 @@ function liveInfoUpdate() {
     };
 }
 
+function logoUploader() {
+    return {
+        upload(event) {
+            const file = event.target.files[0];
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('logo_preview').innerHTML = `<img src="${e.target.result}" class="img-preview">`;
+                const img = iframe.getElementById('logo');
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            const form = new FormData();
+            form.append('logo', file);
+            fetch('/logo_uploader', { method: 'POST', body: form });
+        },
+
+        reset() {
+            document.getElementById('logo_preview').innerHTML = '';
+            document.getElementById('logo_input').value = '';
+            const img = iframe.getElementById('logo');
+            img.src = "/themes_shared_static/logo-placeholder.svg";
+
+            const form = new FormData();
+            form.append('reset', 'true');
+            fetch('/logo_uploader', { method: 'POST', body: form });
+        }
+    }
+}
+
 //style
 document.body.addEventListener("htmx:afterRequest", (e) => {
     if (e.detail.target.id === "preview-page") {
@@ -184,7 +215,6 @@ function editor() {
         },
 
         remove(id) {
-
             document.getElementById(id).remove();
             iframe.getElementById(id).remove();
             this.fixReverse();
@@ -211,6 +241,9 @@ function editor() {
             document.getElementById('services_container').replaceChildren();
             this.addServiceToSidebar('service_1');
             this.addServiceToSidebar('service_2');
+            document.querySelectorAll('input[id$="_visibility"]').forEach(checkbox => {
+                checkbox.checked = true;
+            });
         },
 
         addService() {
@@ -229,7 +262,7 @@ function editor() {
             fs.setAttribute('x-data', "{invisible : true}");
             fs.dataset.img = '';
             fs.innerHTML = `
-                <legend>Service Section</legend>
+                <legend class="fieldset_name">Služba</legend>
                 <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
                 <button type="button" class="edit_remove_button" @click="remove('${fs.id}')">Remove</button>
                 <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
@@ -238,7 +271,10 @@ function editor() {
                     <label>Popisek:</label>
                     <textarea class="service_text" @input="updateSection('${fs.id}', 'text', $event.target.value)">Popisek služby...</textarea>
                     <label>Obrázek služby</label>
-                    <input class="button service_img" type="file" @change="updateImg">
+                    <input class="button service_img" type="file" accept="image/*" @change="updateSection('${id}', 'img', $event.target.files[0])">
+                    <div class="service_img_preview"></div>
+                    <label>Cena:</label>
+                    <input type="number" min="0" step="50" value="0" class="service_price">
                 </div>
             `;
             container.appendChild(fs);
@@ -263,35 +299,46 @@ function editor() {
             wrapper.appendChild(newService);
         },
 
-        updateImg(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-           
-            const serviceId = event.target.closest('.edit_container.service').id;
+        updateImg(file, id) {
             const reader = new FileReader();
             reader.onload = (e) => {
-                this.updateSection(serviceId, 'img', e.target.result);
+                const sidebarEl = document.getElementById(id);
+                this.showPreview(sidebarEl?.querySelector('.service_img_preview'), e.target.result);
+                this.setIframeImg(id, e.target.result);
             };
             reader.readAsDataURL(file);
 
             const form = new FormData();
-            form.append("img", file);
-            fetch("/upload_service_img", { method: "POST", body: form })
+            form.append('img', file);
+            fetch('/upload_service_img', { method: 'POST', body: form })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.url) {
-                        this.updateSection(serviceId, "img", data.url);
-                        this.debouncedSave();
-                    }
+                    const path = `/themes_shared_static/uploads/services/${data.filename}`;
+                    document.getElementById(id).dataset.img = path;
+                    this.debouncedSave();
                 });
+        },
+
+        setIframeImg(id, src) {
+            const section = iframe.getElementById(id);
+            const img = section.querySelector('.service-img');
+            img.src = src;
+        },
+
+        showPreview(container, imageUrl) {
+            if (container?.classList.contains('service_img_preview')) {
+                container.innerHTML = `<img src="${imageUrl}" class="img-preview">`;
+            }
         },
 
         updateSection(id, type, value) {
             const section = iframe.getElementById(id);
+            const siderbarSection = document.getElementById(id);
+
 
             if (type === 'name') {
                 section.querySelector('.section_name').textContent = value;
+                siderbarSection.querySelector('.fieldset_name').textContent = value;
             }
 
             if (type === 'text') {
@@ -299,10 +346,11 @@ function editor() {
             }
 
             if (type === 'img') {
-                const img = section.querySelector('img');
-                img.src = value;
-                document.getElementById(id).dataset.img = value;
+                this.updateImg(value, id);
+                return;
             }
+
+            if (type === 'price') { }
             this.debouncedSave();
         },
 
@@ -314,31 +362,43 @@ function editor() {
         },
 
         async save() {
-            const aboutSection = document.getElementById('about');
-            const aboutText = aboutSection?.querySelector('#about_text')?.value || "";
-            const aboutVisibility = aboutSection?.querySelector('#about_visibility').checked;
+            const content = [];
 
-            const services = [];
-            document.querySelectorAll('.service').forEach(service => {
-                services.push({
-                    name: service.querySelector(".service_name")?.value || "",
-                    text: service.querySelector(".service_text")?.value || "",
-                    img: service.dataset.img || ""
-                });
+            const aboutSection = document.getElementById('about');
+            content.push({
+                id: "about",
+                name: aboutSection?.querySelector('#about_name')?.value || "",
+                text: aboutSection?.querySelector('#about_text')?.value || "",
+                visible: aboutSection?.querySelector('#about_visibility')?.checked || false,
             });
 
-            const formData = {
-                about: {
-                    text: aboutText,
-                    visible: aboutVisibility
-                },
-                services: services
-            };
+            const services = Array.from(document.querySelectorAll('.service')).map(service => ({
+                name: service.querySelector(".service_name")?.value || "",
+                text: service.querySelector(".service_text")?.value || "",
+                img: service.dataset.img || "",
+                price: service.querySelector(".service_price")?.value || 0,
+            }));
+
+            content.push({
+                id: "services",
+                name: "Služby",
+                service_list: services
+            });
+
+            document.querySelectorAll('.edit_container:not(.service)').forEach(section => {
+                if (['about', 'services'].includes(section.id)) return;
+
+                content.push({
+                    id: section.id,
+                    name: section.querySelector('legend')?.textContent || "",
+                    visible: section.querySelector(`#${section.id}_visibility`)?.checked || false
+                });
+            });
 
             await fetch("/site_content", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({ content })
             });
         }
 
@@ -346,4 +406,62 @@ function editor() {
 }
 
 
+function initEditFormMonitoring() {
+    const iframeEl = iframe.el;
+    const editPanel = document.querySelector('#edit');
+    const editForm = document.querySelector('#content_edit_form');
+
+    // Create warning message once
+    let messageEl = document.querySelector('.edit-disabled-message');
+    if (!messageEl) {
+        messageEl = document.createElement('div');
+        messageEl.className = 'edit-disabled-message';
+        messageEl.innerHTML = `<span>⚠️</span><p>Vraťte se zpět na <strong>Úvod</strong> pro úpravu obsahu</p>`;
+        messageEl.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            transform: translate(-50%, -50%);
+            background-color: var(--main-clr);
+            color: var(--text-primary);
+            padding: 20px 30px;
+            border-radius: var(--radius-md);
+            border: var(--border-strong);
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            z-index: 1000;
+            box-shadow: var(--shadow-soft);
+        `;
+        editPanel.style.position = 'relative';
+        editPanel.appendChild(messageEl);
+    }
+
+    function updateFormState() {
+
+        const currentUrl = iframeEl.contentWindow.location.href;
+        const isMainPage = currentUrl.includes('index.html') ||
+            currentUrl.endsWith('/') ||
+            !currentUrl.includes('.html') ||
+            currentUrl.includes('index.html#');
+
+        if (isMainPage) {
+            editForm.style.pointerEvents = 'auto';
+            editForm.style.opacity = '1';
+            messageEl.style.display = 'none';
+        } else {
+            editForm.style.pointerEvents = 'none';
+            editForm.style.opacity = '0.5';
+            messageEl.style.display = 'block';
+        }
+    }
+
+    iframeEl.addEventListener('load', updateFormState);
+    updateFormState();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initEditFormMonitoring();
+});
 

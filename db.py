@@ -1,10 +1,9 @@
 
 # default colors for the iframe
 default_colors = {
-    "--main-clr": "#f7f7ff",
-    "--secondary-clr": "#eeeeee",
-    # "--acc-clr": "#f598b4"
-    "--acc-clr": "#FFA348"
+    "--main-clr": "#F5F6FA",
+    "--secondary-clr": "#D9E1E8",
+    "--acc-clr": "#0077B6"
 }
 
 
@@ -77,22 +76,49 @@ default_info = {
 default_logo_path = "/themes_shared_static/logo-placeholder.svg"
 
 
-default_content = {
-    "about": {
+default_content = [
+    {
+        "id": "about",
+        "name": "O vás",
         "text": "Toto je text o mně",
-        "visible" : True
+        "plural": False,
+        "visible": True
     },
 
-    "services": [
-        {
-            "name": "Služba",
-            "text": "Popisek Služby...",
-            "img": "/themes_shared_static/555.png",
-        },
-        {
-            "name": "Služba",
-            "text": "Popisek Služby...",
-            "img": "/themes_shared_static/555.png",
-        }
-    ]
-}
+    {
+        "id": "services",
+        "name": "Služby",
+        "service_list": [
+            {
+                "name": "Služba",
+                "text": "Popisek Služby...",
+                "img": "/themes_shared_static/555.png",
+                "price": 0
+            },
+            {
+                "name": "Služba",
+                "text": "Popisek Služby...",
+                "img": "/themes_shared_static/555.png",
+                "price": 0
+            }
+        ],
+    },
+
+    {
+        "id": "pricelist",
+        "name": "Ceník",
+        "visible": True
+    },
+
+    {
+        "id": "gallery",
+        "name": "Galerie",
+        "visible": True
+    },
+
+    {
+        "id": "reviews",
+        "name": "Recenze",
+        "visible": True
+    },
+]

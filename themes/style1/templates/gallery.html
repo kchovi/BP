@@ -19,24 +19,20 @@
 </style>
 
 <body>
-    <header class="bg-color-primary">
+    <header class="bg-color-secondary">
         <div class="wrapper flex header-subpg">
             <hgroup>
                 <img src="{{ logo_path }}" alt="logo" class="main_logo"> 
                 <h1 class="heading">Galerie</h1>
             </hgroup>
 
-            <div class="flex column header-left">
-                <ul class="nav-bar back-link">
-                    <li class="nav-item"><a class="text" href="javascript:window.history.back();">Zpět</a></li>
-                </ul>
-            </div>
+            {% include "navbar.jinja" %}
         </div>
     </header>
 
-    <main class="padding-bottom-extra bg-color-secondary">
+    <main class="padding-bottom-extra bg-color-primary">
         <div class="wrapper">
-            <section id="osetreni-pleti" class="bg-color-secondary padding-y">
+            <section id="osetreni-pleti" class="padding-y">
                 <h2 class="heading with-accent">Služba-1</h2>
                 
                 <div class="pswp-gallery gallery-container" id="my-gallery">
@@ -63,7 +59,7 @@
           
             </section>
 
-            <section id="osetreni-pleti" class="bg-color-secondary padding-y">
+            <section id="osetreni-pleti" class="padding-y">
                 <h2 class="heading with-accent">Služba-2</h2>
                 
                 <div class="pswp-gallery gallery-container" id="my-gallery">
@@ -83,7 +79,7 @@
         </div>
     </main>
 
-    <footer class="bg-color-primary">
+    <footer class="bg-color-secondary">
         <div class="wrapper flex center">
             <span>&copy;Jakub Chovanec 2024</span>
         </div>
