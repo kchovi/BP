@@ -418,11 +418,7 @@ function initEditFormMonitoring() {
         messageEl.className = 'edit-disabled-message';
         messageEl.innerHTML = `<span>⚠️</span><p>Vraťte se zpět na <strong>Úvod</strong> pro úpravu obsahu</p>`;
         messageEl.style.cssText = `
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 60%;
-            transform: translate(-50%, -50%);
+            transform: translateY(-50%);
             background-color: var(--main-clr);
             color: var(--text-primary);
             padding: 20px 30px;
@@ -431,11 +427,14 @@ function initEditFormMonitoring() {
             text-align: center;
             font-weight: 500;
             display: none;
-            z-index: 1000;
             box-shadow: var(--shadow-soft);
-        `;
-        editPanel.style.position = 'relative';
-        editPanel.appendChild(messageEl);
+            width: 60%;
+            margin: 0 auto;
+`;
+        const anchor = document.createElement('div');
+        anchor.style.cssText = 'position: sticky; top: 50%; height: 0; overflow: visible; z-index: 1000;';
+        anchor.appendChild(messageEl);
+        editPanel.prepend(anchor);
     }
 
     function updateFormState() {
