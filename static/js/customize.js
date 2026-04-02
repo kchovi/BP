@@ -464,3 +464,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initEditFormMonitoring();
 });
 
+function resize() {
+    return {
+        resizeIframe(width) {
+           document.getElementById('preview-page').style.width = width;
+        }
+    }
+}
+

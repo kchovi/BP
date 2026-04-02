@@ -26,6 +26,7 @@ html {
 
 html,
 body {
+    background-color: var(--secondary-clr);
     margin: 0;
     padding: 0;
     height: 100%;
@@ -307,7 +308,8 @@ button[type="submit"] {
 #preview-page {
     width: 100%;
     height: 100%;
-    border: none;
+    border: var(--border-strong);
+    box-shadow: var(--shadow-soft);
     transition: width 0.25s ease;
 }
 
@@ -335,4 +337,7 @@ button[type="submit"] {
     border-radius: var(--radius-sm, 4px);
     object-fit: cover;
 }
+
+
+
 

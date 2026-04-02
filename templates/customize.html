@@ -184,7 +184,8 @@
                             <textarea class="service_text"
                                 @input="updateSection('service_{{loop.index}}', 'text', $event.target.value)">{{ service.text }}</textarea>
                             <label>Úvodní fotografie:</label>
-                            <input class="button service_img" type="file" accept="image/*" @change="updateSection('service_{{loop.index}}', 'img', $event.target.files[0])">
+                            <input class="button service_img" type="file" accept="image/*"
+                                @change="updateSection('service_{{loop.index}}', 'img', $event.target.files[0])">
                             <div class="service_img_preview">
                                 {%- if service.img != default_service_img -%}
                                 <img src="{{ service.img }}" class="img-preview">
@@ -230,11 +231,11 @@
         </section>
     </div>
 
-    <div class="preview-wrapper flex column">
-        <div class="topbar flex center">
-            <button class="resize-btn button" @click="resizeIframe('mobile')">Mobile</button>
-            <button class="resize-btn button" @click="resizeIframe('tablet')">Tablet</button>
-            <button class="resize-btn button" @click="resizeIframe('desktop')">Desktop</button>
+    <div class="preview-wrapper flex column center">
+        <div class="topbar flex center" x-data="resize()">
+            <button class="resize-btn button" @click="resizeIframe('360px')">Mobile</button>
+            <button class="resize-btn button" @click="resizeIframe('959px')">Tablet</button>
+            <button class="resize-btn button" @click="resizeIframe('100%')">Desktop</button>
         </div>
 
         <iframe id="preview-page" src="{{ url_for('preview', filename='index.html') }}">
