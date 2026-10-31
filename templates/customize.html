@@ -1,7 +1,7 @@
 {% include 'shared/head.jinja' %}
 
 <body x-data="sidebarTabs('{{ last_tab or 'info' }}')" x-data="{collapsed : false}" class="flex">
-    <div id="sidebar" :class="collapsed ? 'collapsed' : ''">
+    <div id="sidebar" :class="collapsed ? 'collapsed' : ''" x-transition>
         <div id="toggleBtn" @click="collapsed = !collapsed"><span>&#10094;</span></div>
 
         <!-- tab buttons -->
@@ -11,6 +11,7 @@
             <button class="tab-btn" :class="{ 'active': activeTab === 'palette' }"
                 @click="setTab('palette')">Palette</button>
             <button class="tab-btn" :class="{ 'active': activeTab === 'edit' }" @click="setTab('edit')">Edit</button>
+            <!-- <button class="tab-btn" :class="{ 'active': activeTab === 'export' }" @click="setTab('export')">Export</button> -->
         </div>
 
         <!-- tabs -->
@@ -44,7 +45,7 @@
                 </fieldset>
 
                 <button type="reset" hx-post="/site_info" hx-vals='{"reset": true}' hx-target="#preview-page">
-                    Reset
+                    Resetovat
                 </button>
             </form>
 
@@ -58,7 +59,7 @@
                     {%- endif -%}
                 </div>
                 <button type="reset" @click="reset">
-                    Reset
+                    Resetovat
                 </button>
             </form>
 
@@ -85,6 +86,14 @@
                     <img src="{{ url_for('static', filename='web-gen/style2.png')}}">
                 </label>
 
+                <label class="flex column style_picker_item">
+                    <div class="flex spread">
+                        <h4>Style 3</h4>
+                        <input type="radio" name="style" value="3">
+                    </div>
+                    <img src="{{ url_for('static', filename='web-gen/style1.png')}}">
+                </label>
+
             </form>
         </section>
 
@@ -107,8 +116,9 @@
                     <label>Accent colour</label>
                     <input type="color" class="color-input" x-model="accent" @input="updateIframe" name="--acc-clr">
                 </div>
+
+                <button type="button" @click="resetColors">Resetovat</button>
             </form>
-            <button @click="resetColors">Reset</button>
 
             <h3>Predefined palettes</h3>
             {%- for palette in pallets -%}
@@ -148,7 +158,7 @@
                 <fieldset class="edit_container" id="{{ section.id }}" x-data="{invisible : true}">
                     <legend>Uvodní Sekce</legend>
                     <div class="flex spread center">
-                        <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
+                        <button type="button" class="edit_button" @click="invisible = !invisible">Upravit</button>
                         <input id="{{ section.id }}_visibility" type="checkbox" {{visibility}}
                             @change="toggleRemove('{{ section.id }}')">
                     </div>
@@ -173,9 +183,9 @@
                     <fieldset id="service_{{loop.index}}" class="edit_container service" x-data="{invisible : true}"
                         data-img="{{ service.img }}">
                         <legend class="fieldset_name">{{ service.name }}</legend>
-                        <button type="button" class="edit_button" @click="invisible = !invisible">Edit</button>
+                        <button type="button" class="edit_button" @click="invisible = !invisible">Upravit</button>
                         <button type="button" class="edit_remove_button"
-                            @click="remove('service_{{loop.index}}')">Remove</button>
+                            @click="remove('service_{{loop.index}}')">Odstranit</button>
                         <div class="edit_hidden flex column" :class="invisible ? 'invisible' : ''">
                             <label>Název:</label>
                             <input type="text" class="service_name" value="{{ service.name }}"
@@ -202,7 +212,7 @@
                 </div>
 
                 <div class="flex center">
-                    <button type="button" class="button round" @click="addService">+</button>
+                    <button type="button" class="button plus" @click="addService">+</button>
                 </div>
 
                 <h3>Další sekce</h3>
@@ -223,23 +233,55 @@
                 <h3></h3>
                 <button type="button" hx-post="/site_content" hx-vals='{"reset": true}' hx-target="#preview-page"
                     @click="reset">
-                    Reset
+                    Resetovat
                 </button>
             </form>
+        </section>
 
+        <section class="tab-panel column" id="export" x-show="activeTab === 'export'">
 
         </section>
     </div>
 
     <div class="preview-wrapper flex column center">
-        <div class="topbar flex center" x-data="resize()">
-            <button class="resize-btn button" @click="resizeIframe('360px')">Mobile</button>
-            <button class="resize-btn button" @click="resizeIframe('959px')">Tablet</button>
-            <button class="resize-btn button" @click="resizeIframe('100%')">Desktop</button>
+        <div class="topbar flex spread" x-data="resize">
+            <div class="flex center start">
+                <a href="{{ url_for('home') }}"><button>⬅️ Hlavní Nabídka</button></a>
+            </div>
+
+
+            <div class="flex center">
+                <button class="resize-btn button" @click="resizeIframe('365px')">
+                    <img src="{{ url_for('static', filename='web-gen/mobile.svg')}}" alt="">
+                </button>
+                <button class="resize-btn button" @click="resizeIframe('959px')"><img
+                        src="{{ url_for('static', filename='web-gen/tablet.svg')}}" alt="">
+                </button>
+                <button class="resize-btn button" @click="resizeIframe('100%')"><img
+                        src="{{ url_for('static', filename='web-gen/desktop.svg')}}" alt="">
+                </button>
+            </div>
+
+
+
+            <div class="flex center end" x-data="{ open: false }">
+                <div class="relative">
+                    <button class="button" @click="open = !open">...</button>
+
+                    <div x-show="open" @click.outside="open = false" x-transition class="dropdown-window">
+                        <ul>
+                            <li><button @click="open = false">⬇️ Download</button></li>
+                            <li><button @click="open = false">📋 Copy HTML</button></li>
+                            <li><button @click="open = false">🗑️ Delete</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <iframe id="preview-page" src="{{ url_for('preview', filename='index.html') }}">
         </iframe>
     </div>
+
     <script src="{{ url_for('static', filename='js/customize.js') }}"></script>
 </body>

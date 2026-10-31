@@ -1,0 +1,11 @@
+<ul class="nav-bar">
+    <li class="nav-item"><a class="text" href="index.html">Úvod</a></li>
+    {%- for section in content -%}
+    {%- if section.id in ['pricelist', 'gallery'] -%}
+    {% set visibility = "" if section.visible else "invisible" %}
+    <li class="nav-item {{visibility}}" id="{{section.id}}"><a class="text" href="{{section.id}}.html">{{section.name}}</a></li>
+    {%- endif -%}
+    {%- endfor -%}
+    <li class="nav-item"><a class="text" href="index.html#contact">Kontakt</a></li>
+    <li class="nav-item"><a class="text" href="">Objednat se</a></li>
+</ul>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='web-gen/logo-small.png')}}" type="image/x-icon">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-secondary flex column">
+    <header>
+        <div class="wrapper">
+            <hgroup class="flex">
+                <img src="{{ url_for('static', filename='web-gen/logo.png')}}" alt="logo" id="logo">
+            </hgroup>
+        </div>
+    </header>
+    <main class="fill-space">
+        {% block index %} {% endblock %}
+    </main>
+    
+    <!-- <footer class="bg-secondary">
+        <div class="wrapper flex center">
+            <span>&copy;Jakub Chovanec 2024</span>
+        </div>
+    </footer> -->
+    {% block script %} {% endblock %}
+    
+</body>
+</html>

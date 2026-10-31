@@ -237,7 +237,7 @@ function editor() {
         },
 
         reset() {
-            document.getElementById('about_text').textContent = "Toto je text o mě"
+            document.getElementById('about_text').textContent = "Toto je text o mně"
             document.getElementById('services_container').replaceChildren();
             this.addServiceToSidebar('service_1');
             this.addServiceToSidebar('service_2');
